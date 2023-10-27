@@ -1,5 +1,4 @@
 import Map, { Marker, NavigationControl } from "react-map-gl";
-import ControlPanel from "./components/ControlPanel";
 import Pin from "./components/Pin";
 import { useState, useCallback } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -30,35 +29,37 @@ const ClickableMap = () => {
     logEvents((_events) => ({ ..._events, onDragEnd: event.lngLat }));
   }, []);
 
+  const onMapClick = useCallback((event) => {
+    setMarker({ longitude: event.lngLat.lng, latitude: event.lngLat.lat });
+  }, [])
 
   return (
     <div className="min-h-screen">
-      <Map
-        initialViewState={INITIAL_VIEW_STATE}
-        reuseMaps
-        controller={true}
-        style={{ width: "600px", height: "400px" }}
-        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-        mapStyle="mapbox://styles/mapbox/dark-v10"
-        onClick={(e) => {
-          setMarker({ longitude: e.lngLat.lng, latitude: e.lngLat.lat });
-        }}
-      >
-        <Marker
-          longitude={marker.longitude}
-          latitude={marker.latitude}
-          anchor="bottom"
-          draggable
-          onDragStart={onMarkerDragStart}
-          onDrag={onMarkerDrag}
-          onDragEnd={onMarkerDragEnd}
+      <div className="w-fit h-fit">
+        <Map
+          initialViewState={INITIAL_VIEW_STATE}
+          reuseMaps
+          controller={true}
+          style={{ width: "600px", height: "400px" }}
+          mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+          mapStyle="mapbox://styles/mapbox/dark-v10"
+          onClick={onMapClick}
         >
-          <Pin size={20} />
-        </Marker>
+          <Marker
+            longitude={marker.longitude}
+            latitude={marker.latitude}
+            anchor="bottom"
+            draggable
+            onDragStart={onMarkerDragStart}
+            onDrag={onMarkerDrag}
+            onDragEnd={onMarkerDragEnd}
+          >
+            <Pin size={20} />
+          </Marker>
 
-        <NavigationControl />
-      </Map>
-      <ControlPanel events={events} />
+          <NavigationControl />
+        </Map>
+      </div>
     </div>
   );
 };
