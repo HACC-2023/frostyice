@@ -10,32 +10,29 @@ const ClickableMap = () => {
     latitude: INITIAL_VIEW_STATE.latitude,
     // zoom: 5.6,
   });
-  const [events, logEvents] = useState({});
-
-  const onMarkerDragStart = useCallback((event) => {
-    logEvents((_events) => ({ ..._events, onDragStart: event.lngLat }));
-  }, []);
-
-  const onMarkerDrag = useCallback((event) => {
-    logEvents((_events) => ({ ..._events, onDrag: event.lngLat }));
-
-    setMarker({
-      longitude: event.lngLat.lng,
-      latitude: event.lngLat.lat,
-    });
-  }, []);
-
+  const [locations, setLocations] = useState([]);
+  // When done dragging, update marker position
   const onMarkerDragEnd = useCallback((event) => {
-    logEvents((_events) => ({ ..._events, onDragEnd: event.lngLat }));
+    setMarker({ longitude: event.lngLat.lng, latitude: event.lngLat.lat });
+    setLocations((current) => [
+      ...current,
+      { longitude: event.lngLat.lng, latitude: event.lngLat.lat },
+    ]);
   }, []);
-
+  // When clicked, update marker position
   const onMapClick = useCallback((event) => {
     setMarker({ longitude: event.lngLat.lng, latitude: event.lngLat.lat });
-  }, [])
+    setLocations((current) => [
+      ...current,
+      { longitude: event.lngLat.lng, latitude: event.lngLat.lat },
+    ]);
+  }, []);
 
+  // console.log(marker.longitude, marker.latitude)
   return (
     <div className="min-h-screen">
       <div className="w-fit h-fit">
+        {console.log("locations:", locations)}
         <Map
           initialViewState={INITIAL_VIEW_STATE}
           reuseMaps
@@ -50,8 +47,6 @@ const ClickableMap = () => {
             latitude={marker.latitude}
             anchor="bottom"
             draggable
-            onDragStart={onMarkerDragStart}
-            onDrag={onMarkerDrag}
             onDragEnd={onMarkerDragEnd}
           >
             <Pin size={20} />
@@ -60,6 +55,15 @@ const ClickableMap = () => {
           <NavigationControl />
         </Map>
       </div>
+      <a
+        className="underline text-blue-600"
+        href={`data:text/json;charset=utf-8,${encodeURIComponent(
+          JSON.stringify(locations)
+        )}`}
+        download="locations.json"
+      >
+        {`Download Locations JSON`}
+      </a>
     </div>
   );
 };
