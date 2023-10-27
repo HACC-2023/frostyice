@@ -40,6 +40,9 @@ const ClickableMap = () => {
         style={{ width: "600px", height: "400px" }}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         mapStyle="mapbox://styles/mapbox/dark-v10"
+        onClick={(e) => {
+          console.log(e.lngLat);
+        }}
       >
         <Marker
           longitude={marker.longitude}
