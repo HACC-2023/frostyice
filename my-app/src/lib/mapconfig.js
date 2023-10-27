@@ -1,5 +1,6 @@
 import { AmbientLight, PointLight, LightingEffect } from "@deck.gl/core";
 
+// Configurations for the rendering on top of the map
 export const ambientLight = new AmbientLight({
   color: [255, 255, 255],
   intensity: 1.0,
@@ -31,13 +32,13 @@ export const material = {
 };
 
 export const INITIAL_VIEW_STATE = {
-  longitude: 19.134378,
-  latitude: 51.9189,
-  zoom: 6.8,
+  longitude: -157,
+  latitude: 21,
+  zoom: 5.6,
   minZoom: 5,
   maxZoom: 15,
   pitch: 40.5,
-  bearing: -27
+  bearing: 0
 };
 
 export const colorRange = [
