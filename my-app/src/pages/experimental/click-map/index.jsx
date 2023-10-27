@@ -1,6 +1,6 @@
 import Map, { Marker, NavigationControl } from "react-map-gl";
-import ControlPanel from "./ControlPanel";
-import Pin from "./Pin";
+import ControlPanel from "./components/ControlPanel";
+import Pin from "./components/Pin";
 import { useState, useCallback } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { INITIAL_VIEW_STATE } from "@/lib/mapconfig";
@@ -9,7 +9,7 @@ const ClickableMap = () => {
   const [marker, setMarker] = useState({
     longitude: INITIAL_VIEW_STATE.longitude,
     latitude: INITIAL_VIEW_STATE.latitude,
-    zoom: 5.6,
+    // zoom: 5.6,
   });
   const [events, logEvents] = useState({});
 
@@ -30,7 +30,7 @@ const ClickableMap = () => {
     logEvents((_events) => ({ ..._events, onDragEnd: event.lngLat }));
   }, []);
 
-  console.log("marker", marker);
+
   return (
     <div className="min-h-screen">
       <Map
@@ -41,7 +41,7 @@ const ClickableMap = () => {
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         mapStyle="mapbox://styles/mapbox/dark-v10"
         onClick={(e) => {
-          console.log(e.lngLat);
+          setMarker({ longitude: e.lngLat.lng, latitude: e.lngLat.lat });
         }}
       >
         <Marker
