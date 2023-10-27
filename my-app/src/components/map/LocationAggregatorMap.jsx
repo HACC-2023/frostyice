@@ -52,7 +52,7 @@ const LocationAggregatorMap = ({
           reuseMaps
           controller={true}
           mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-          mapStyle="mapbox://styles/mapbox/dark-v11"
+          mapStyle="mapbox://styles/mapbox/dark-v10"
         ></Map>
       </DeckGL>
     </div>

@@ -35,7 +35,7 @@ export const INITIAL_VIEW_STATE = {
   longitude: -157,
   latitude: 21,
   zoom: 5.6,
-  minZoom: 5,
+  // minZoom: 5, temporarily commenting this out for testing
   maxZoom: 15,
   pitch: 40.5,
   bearing: 0
