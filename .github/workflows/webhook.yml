@@ -2,17 +2,14 @@ name: Webhook on Main Branch
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   webhook:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Trigger Webhook
-      run: |
-        COMMIT_MESSAGE=${{ github.event.head_commit.message }}
-        COMMIT_AUTHOR=${{ github.event.head_commit.author.name }}
-        PAYLOAD="{\"text\": \"New push on main branch. Message: $COMMIT_MESSAGE by $COMMIT_AUTHOR\"}"
-        curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" ${{ secrets.WEBHOOK_URL }}
+    - name: Webhook
+      uses: distributhor/workflow-webhook@v3
+      env:
+        webhook_url: ${{ secrets.WEBHOOK_URL }}
