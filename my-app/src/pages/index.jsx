@@ -1,3 +1,4 @@
+//import DialogflowChatWidget from "@/components/chatbot/DialogflowChatWidget";
 
 const Home = () => {
   return (
@@ -5,6 +6,7 @@ const Home = () => {
       <div className="flex justify-center items-center min-h-screen">
           Welcome to Next.js Template
       </div>
+      {/* <DialogflowChatWidget/> */}
     </div>
   )
 }
