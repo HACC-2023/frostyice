@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const Report = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -21,18 +22,18 @@ const Report = () => {
 
   return (
     <div className="h-[70vh] flex justify-center items-center">
+
       {isMobile ? (
         <div className="flex-1 px-2">
-          <a href="/your-page-url">
-            <div className="card w-100 bg-base-100 shadow-xl image-full p-4">
-              <div className="card-body">
-                <h2 className="card-title">Online Form (DOBOR)</h2>
-                <p>Fill out information about the debris found.</p>
+          <Link href="/report-form">
+              <div className="card w-100 bg-base-100 shadow-xl image-full p-4">
+                <div className="card-body">
+                  <h2 className="card-title">Online Form (DOBOR)</h2>
+                  <p>Fill out information about the debris found.</p>
+                </div>
               </div>
-            </div>
-          </a>
+          </Link>
         </div>
-
       ) : (
 
         <>

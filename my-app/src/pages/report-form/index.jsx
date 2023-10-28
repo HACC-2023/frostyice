@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Dropzone from "react-dropzone";
+import GoogleMap from "../../components/Map";
 
 const ReportForm = () => {
   const [imageURLArray, setImageURLArray] = useState([]);
@@ -7,7 +8,7 @@ const ReportForm = () => {
 
   return (
     <div className="flex justify-center items-center">
-      <div className="mt-10 bg-white p-4">
+      <div className="mt-10 bg-white p-14">
         <div className="p-4 shadow mb-8">
           <Dropzone
             onDrop={(acceptedFiles) => {
@@ -23,12 +24,12 @@ const ReportForm = () => {
               <section>
                 <div
                   {...getRootProps()}
-                  className="h-28 justify-center items-center bg-gray-200 text-slate-500 border-2 border-dashed border-slate-300"
+                  className="h-36 bg-gray-200 text-slate-500 border-2 border-slate-300"
                 >
                   <input {...getInputProps()} />
                   <div className="text-center">
                     <svg
-                      className="mx-auto h-12 w-12 text-gray-300"
+                      className="mx-auto h-38 w-20 text-gray-300"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                       aria-hidden="true"
@@ -39,7 +40,7 @@ const ReportForm = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <div className="flex text-sm leading-6 text-gray-600">
+                    <div className="flex w-120 justify-center items-center text-sm leading-6 text-gray-600">
                       <label
                         htmlFor="file-upload"
                         className="relative cursor-pointer rounded-md bg-white font-semibold focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
@@ -62,35 +63,36 @@ const ReportForm = () => {
               </section>
             )}
           </Dropzone>
+          <br />
           {imageURLArray.map((image, index) => (
             <img
               key={index}
               src={image}
               alt=""
               className="self-center"
-              width="250px"
-              height="300px"
+              width="300px"
+              height="240px"
             />
           ))}
         </div>
+
         <div className="p-4 mb-4">
-          <div className="form-control">
-            <label
-              htmlFor="description"
-              className="block text-gray-600 font-semibold mb-2"
-            >
-              Location
-            </label>
-            <label className="input-group">
-              <input
-                type="text"
-                placeholder="Honolulu"
-                className="input input-bordered"
-              />
-              <button className="btn">Search</button>
-            </label>
-          </div>
+          <label
+            htmlFor="description"
+            className="block text-gray-600 font-semibold mb-2"
+          >
+            Location
+          </label>
+
+          <input
+            id="pac-input"
+            type="text"
+            placeholder="Search for places..."
+            className="p-2 border text-gray-600 bg-white w-full border rounded-md"
+          />
+          <GoogleMap />
         </div>
+
         <div className="p-4 mb-4">
           <label
             htmlFor="description"
@@ -99,12 +101,12 @@ const ReportForm = () => {
             Description
           </label>
           <textarea
-            className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
+            className="w-full text-gray-600 p-2 border rounded-md bg-white focus:outline-none focus:ring focus:border-blue-500"
             rows="4" // Set the number of rows for the input
             placeholder="Enter your description here"
           ></textarea>
 
-          <button className="btn btn-outline btn-info">Submit</button>
+          <button className="btn btn-outline">Submit</button>
         </div>
       </div>
     </div>
