@@ -24,7 +24,7 @@ const LocationAggregatorMap = ({
       colorRange,
       coverage,
       data,
-      elevationRange: [0, 3000],
+      elevationRange: [0, 400],
       elevationScale: data && data.length ? 50 : 0,
       extruded: true,
       getPosition: (d) => d,
@@ -34,7 +34,7 @@ const LocationAggregatorMap = ({
       material,
 
       transitions: {
-        elevationScale: 3000,
+        elevationScale: 400,
       },
     }),
   ];
