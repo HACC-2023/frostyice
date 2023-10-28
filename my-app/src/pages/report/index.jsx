@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
 const Report = () => {
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect screen size on component load and window resize
   useEffect(() => {
     function handleResize() {
       setIsMobile(window.innerWidth < 768);
@@ -12,50 +11,47 @@ const Report = () => {
 
     handleResize();
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      // Clean up the listener when the component unmounts
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
     <div className="h-[70vh] flex justify-center items-center">
-
       {isMobile ? (
         <div className="flex-1 px-2">
           <Link href="/report-form">
-              <div className="card w-100 bg-base-100 shadow-xl image-full p-4">
-                <div className="card-body">
-                  <h2 className="card-title">Online Form (DOBOR)</h2>
-                  <p>Fill out information about the debris found.</p>
-                </div>
+            <div className="card w-100 bg-base-100 shadow-xl image-full p-4">
+              <div className="card-body">
+                <h2 className="card-title">Online Form (DOBOR)</h2>
+                <p>Fill out information about the debris found.</p>
               </div>
+            </div>
           </Link>
         </div>
       ) : (
-
         <>
-          <div class="flex-1 px-2">
-            <div class="card w-100 bg-base-100 shadow-xl image-full p-4">
+          <div className="flex-1 px-2">
+            <div className="card w-100 bg-base-100 shadow-xl image-full p-4">
               <figure>
                 <img
                   src="https://wallpapers.com/images/hd/blank-white-background-xbsfzsltjksfompa.jpg"
                   alt="dar"
                 />
               </figure>
-              <div class="card-body">
-                <h2 class="card-title">Call Hot-line (DAR)</h2>
+              <div className="card-body">
+                <h2 className="card-title">Call Hot-line (DAR)</h2>
                 <p>Automated phone system</p>
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6 mr-1"
+                    className="w-6 h-6 mr-1"
                   >
                     <path
                       strokeLinecap="round"
@@ -68,46 +64,48 @@ const Report = () => {
                   </p>
                 </div>
 
-                <div class="card-actions justify-end"></div>
+                <div className="card-actions justify-end"></div>
               </div>
             </div>
           </div>
-          <div class="flex-1 px-2">
-            <div class="card w-100 bg-base-100 shadow-xl image-full p-4">
+          <div className="flex-1 px-2">
+            <div className="card w-100 bg-base-100 shadow-xl image-full p-4">
               <figure>
                 <img
                   src="https://wallpapers.com/images/hd/blank-white-background-xbsfzsltjksfompa.jpg"
                   alt="dobor"
                 />
               </figure>
-              <div class="card-body">
-                <h2 class="card-title">Online Form (DOBOR)</h2>
+              <div className="card-body">
+                <h2 className="card-title">Online Form (DOBOR)</h2>
                 <p>Fill out information about the debris found.</p>
-                <div class="card-actions justify-end">
-                  <button class="btn btn-primary">Fill Form</button>
+                <div className="card-actions justify-end">
+                  <Link href="/report-form">
+                    <button className="btn btn-primary">Fill Form</button>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
-          <div class="flex-1 px-2">
-            <div class="card w-100 bg-base-100 shadow-xl image-full p-4">
+          <div className="flex-1 px-2">
+            <div className="card w-100 bg-base-100 shadow-xl image-full p-4">
               <figure>
                 <img
                   src="https://wallpapers.com/images/hd/blank-white-background-xbsfzsltjksfompa.jpg"
                   alt="cmdr"
                 />
               </figure>
-              <div class="card-body">
-                <h2 class="card-title">Call/Text Dedicated Cell (CMDR)</h2>
+              <div className="card-body">
+                <h2 className="card-title">Call/Text Dedicated Cell (CMDR)</h2>
                 <p>Registered fishers call or text the CMDR cell phone.</p>
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6 mr-1"
+                    className="w-6 h-6 mr-1"
                   >
                     <path
                       strokeLinecap="round"
@@ -119,7 +117,7 @@ const Report = () => {
                     <b>(844) 734-6869</b>
                   </p>
                 </div>
-                <div class="card-actions justify-end"></div>
+                <div className="card-actions justify-end"></div>
               </div>
             </div>
           </div>
