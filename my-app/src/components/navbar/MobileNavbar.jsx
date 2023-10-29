@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 
 const MobileNavbar = () => {
   return (
-    <div className={styles.footerStyle}>
+    <div className={styles.mobileFooterStyle}>
       <ul class='flex'>
         <li class='flex-1 mr-2'>
           <Link
