@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import MobileNavbar from './navbar/MobileNavbar';
+import Sidebar from './sidebar/Sidebar';
 import Link from 'next/link';
 import {
   Dialog,
@@ -91,6 +92,7 @@ const Navbar = () => {
             />
           </Link>
         </div>
+        <Sidebar />
         <div className='flex lg:hidden'>
           <button
             type='button'
