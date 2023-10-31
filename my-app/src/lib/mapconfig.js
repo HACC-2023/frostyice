@@ -41,6 +41,11 @@ export const INITIAL_VIEW_STATE = {
   bearing: 0
 };
 
+export const INITIAL_VIEW_STATE_CLICK_MAP = {
+  zoom: 5.6,
+  maxZoom: 15,
+}
+
 export const colorRange = [
   [1, 152, 189],
   [73, 227, 206],
