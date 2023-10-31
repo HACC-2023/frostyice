@@ -1,4 +1,4 @@
-//import DialogflowChatWidget from "@/components/chatbot/DialogflowChatWidget";
+import DialogflowChatWidget from "@/components/chatbot/DialogflowChatWidget";
 import MobileNavbar from '@/components/navbar/MobileNavbar';
 const Home = () => {
   return (
@@ -7,7 +7,7 @@ const Home = () => {
       <div className='flex justify-center items-center min-h-screen'>
         Welcome to Next.js Template
       </div>
-      {/* <DialogflowChatWidget/> */}
+      <DialogflowChatWidget/>
     </div>
   );
 };
