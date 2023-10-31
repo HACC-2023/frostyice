@@ -1,4 +1,4 @@
-import ClickableMap from "./components/ClickableMap";
+import ClickableMap from "../../../components/map/ClickableMap/ClickableMap";
 
 // setCoordinates is a function that sets the coordinates in the parent component
 const ClickableMapPage = () => {
