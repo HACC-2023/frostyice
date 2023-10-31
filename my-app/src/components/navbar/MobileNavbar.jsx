@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styles from '../navbar/styles/MobileNavbar.module.css';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 
 const MobileNavbar = () => {
   return (

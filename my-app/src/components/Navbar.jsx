@@ -1,6 +1,5 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import MobileNavbar from './navbar/MobileNavbar';
 import Link from 'next/link';
 import {
   Dialog,
