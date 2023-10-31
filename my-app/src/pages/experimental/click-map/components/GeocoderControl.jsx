@@ -98,7 +98,7 @@ const GeocoderControl = (props) => {
       geocoder.setOrigin(props.origin);
     }
   }
-  return null;
+  return null
 };
 
 export default GeocoderControl;
