@@ -3,6 +3,7 @@ import Pin from "./components/Pin";
 import { useState, useCallback } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { INITIAL_VIEW_STATE } from "@/lib/mapconfig";
+import GeocoderControl from "./components/GeocoderControl";
 
 const ClickableMap = () => {
   const [marker, setMarker] = useState({
@@ -51,7 +52,10 @@ const ClickableMap = () => {
           >
             <Pin size={20} />
           </Marker>
-
+          <GeocoderControl
+            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+            setMarker={setMarker}
+          />
           <NavigationControl />
         </Map>
       </div>
