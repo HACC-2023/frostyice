@@ -2,23 +2,52 @@ import { useEffect } from 'react';
 
 const DialogflowChatWidget = () => {
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1';
-    script.async = true;
-    document.body.appendChild(script);
+    if (typeof window !== 'undefined' && !window.dialogflowMessengerLoaded) {
+      window.dialogflowMessengerLoaded = true;
 
-    return () => {
-      document.body.removeChild(script);
-    };
+      const script = document.createElement('script');
+      script.src =
+        'https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js';
+      script.async = true;
+
+      script.onload = () => {
+        // for the messeger to appear
+        const dfMessenger = document.createElement('df-messenger');
+        dfMessenger.setAttribute('project-id', 'white-sunspot-403307');
+        dfMessenger.setAttribute('agent-id', '48d6d88b-9934-406d-8523-e3ec7f4f7381');
+        dfMessenger.setAttribute('language-code', 'en');
+
+        // for the chat bubble to appear
+        const chatBubble = document.createElement('df-messenger-chat-bubble');
+        chatBubble.setAttribute('chat-title', 'testagent');
+
+        dfMessenger.appendChild(chatBubble);
+
+        document.body.appendChild(dfMessenger);
+      };
+
+      document.body.appendChild(script);
+    }
   }, []);
 
+  const dfMessengerStyle = {
+    zIndex: 999,
+    position: 'fixed',
+    bottom: '70px',
+    right: '16px',
+  };
+
   return (
-    <df-messenger
-      intent="WELCOME"
-      chat-title="DebrisWatchBot"
-      agent-id="f6e2032d-4820-4617-93e7-9e1a74d3d6fc"
-      language-code="en"
-    ></df-messenger>
+    <style>
+      {`
+        df-messenger {
+          z-index: ${dfMessengerStyle.zIndex};
+          position: ${dfMessengerStyle.position};
+          bottom: ${dfMessengerStyle.bottom};
+          right: ${dfMessengerStyle.right};
+        }
+      `}
+    </style>
   );
 };
 

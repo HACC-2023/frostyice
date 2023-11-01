@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 export default async function handler(req, res) {
   try {
     if (req.method === "POST") {
-      const { firstName, lastName, email, role, password } = await req.body;
+      const { firstName, lastName, email, role, password, orgId } = await req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
       await connectDB();
       await User.create({
@@ -14,6 +14,7 @@ export default async function handler(req, res) {
         email,
         role,
         password: hashedPassword,
+        orgId,
       });
     }
     res.status(200).json({ msg: "User added successfully!" });

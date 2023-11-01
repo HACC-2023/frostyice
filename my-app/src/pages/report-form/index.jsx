@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Dropzone from "react-dropzone";
-import GoogleMap from "../../components/Map";
+//import GoogleMap from "../../components/Map";
+import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
 
 const ReportForm = () => {
   const [imageURLArray, setImageURLArray] = useState([]);
@@ -295,8 +296,8 @@ const ReportForm = () => {
           </div>
 
           <div className="flex flex-col w-full lg:flex-row">
-            <div className="grid flex-grow card rounded-box">
-              <p className="text-gray-600 mt-4 mb-4 max-w-xl">
+            <div className="grid w-40 flex-grow card rounded-box">
+              <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
                 <b>
                   If located offshore, enter latitude and longitude (i.e.
                   21.3161 -157.8906) or provide a position description and any
@@ -330,7 +331,7 @@ const ReportForm = () => {
               <input className="input input-bordered bg-white text-gray-600 mb-2" />
               <span className="text-gray-400">0 of 120 max characters</span>
 
-              <p className="text-gray-600 mt-4 max-w-xl">
+              <p className="text-gray-600 mt-4 max-w-2xl">
                 <b>
                   Where is the debris situated in relation to the landmark you
                   provided (i.e. 200 feet north, etc.)
@@ -352,14 +353,8 @@ const ReportForm = () => {
                 >
                   Select Location
                 </label>
-
-                <input
-                  id="pac-input"
-                  type="text"
-                  placeholder="Search for places..."
-                  className="p-2 border text-gray-600 bg-white w-full border rounded-md"
-                />
-                <GoogleMap />
+                <br/>
+                <ClickableMap />
               </div>
             </div>
           </div>
