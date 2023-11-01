@@ -6,10 +6,9 @@ import Link from "next/link";
 // TODO: update elements depending on user's role
 // TODO: change icons
 // TODO: add sign out button if logged in
+// TODO: show active page
 const Navbar = () => {
   const { data: session } = useSession();
-
-  // have state regarding user's role. this will determine what navbar to show
 
   const publicNav = [
     { label: "Home", icon: HomeIcon, link: "/home" },
@@ -35,7 +34,7 @@ const Navbar = () => {
     { label: "Manage Organizations", icon: PlusCircleIcon, link: "/manage-organizations" },
   ];
 
-  // check role: "session && session.user.role === "org_admin" && "
+  // TODO: add this back: "session && session.user.role === "org_admin" && "
   const NavContainer = () => (
     <ul className="menu p-5 w-80 min-h-full bg-base-200 pt-14">
       {!session && <NavContent nav={publicNav} />}
@@ -50,23 +49,19 @@ const Navbar = () => {
     <div className="flex gap-2 m-2">
       <UserCircleIcon className="h-12 w-12" />
       <div className="flex flex-col justify-center">
-        <div>
-          name
-        </div>
-        <div>
-          org name
-        </div>
+        <div>name</div>
+        <div>org name</div>
       </div>
-
     </div>
   );
 
-  // TODO: change naming?
-  const UserInfo = () => <>{!session ? <AccountInfo /> : <MenuItem label={"Login"} link={"/login"} />}</>;
+  const Header = () => (
+    <>{!session ? <AccountInfo /> : <MenuItem label={"Login"} link={"/login"} />}</>
+  );
 
   const NavContent = ({ nav }) => (
     <>
-      <UserInfo />
+      <Header />
       {nav.map((navItem) => (
         <MenuItem label={navItem.label} icon={navItem.icon} link={navItem.link} />
       ))}
