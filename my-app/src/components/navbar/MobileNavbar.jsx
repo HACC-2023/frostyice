@@ -1,40 +1,31 @@
-import Link from 'next/link';
-import styles from '../navbar/styles/MobileNavbar.module.css';
+import Link from "next/link";
 // import { useSession } from 'next-auth/react';
 
+// TODO: use "active" class to highlight current page
+// TODO: update links
 const MobileNavbar = () => {
   return (
-    <div className={styles.mobileFooterStyle}>
-      <ul className='flex'>
-        <li className='flex-1 mr-2'>
-          <Link
-            href='/'
-            className='text-center block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-2 px-4'>
-            HOME
-          </Link>
-        </li>
-        <li className='flex-1 mr-2'>
-          <a
-            className='text-center block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-2 px-4'
-            href='#'>
-            REPORT
-          </a>
-        </li>
-        <li className='flex-1 mr-2'>
-          <a
-            className='text-center block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-2 px-4'
-            href='#'>
-            DATA
-          </a>
-        </li>
-        <li className='flex-1 mr-2'>
-          <a
-            className='text-center block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-2 px-4'
-            href='#'>
-            LOGIN
-          </a>
-        </li>
-      </ul>
+    <div className="btm-nav lg:hidden">
+      <Link href="/home">
+        <button>
+          <span className="btm-nav-label">Home</span>
+        </button>
+      </Link>
+      <Link href="/report">
+        <button>
+          <span className="btm-nav-label">Report</span>
+        </button>
+      </Link>
+      <Link href="/data">
+        <button>
+          <span className="btm-nav-label">Data</span>
+        </button>
+      </Link>
+      <Link href="/login">
+        <button>
+          <span className="btm-nav-label">Login</span>
+        </button>
+      </Link>
     </div>
   );
 };
