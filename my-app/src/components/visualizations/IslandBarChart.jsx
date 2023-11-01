@@ -13,7 +13,7 @@ const IslandBarChart = () => {
       const trace1 = {
         x: xValues,
         y: yTrace1,
-        name: 'Removed',
+        name: 'Solved',
         type: 'bar',
         marker: { color: trace1Color },
       };
@@ -21,7 +21,7 @@ const IslandBarChart = () => {
       const trace2 = {
         x: xValues,
         y: yTrace2,
-        name: 'Not Removed',
+        name: 'Not Solved',
         type: 'bar',
         marker: { color: trace2Color },
       };
@@ -30,6 +30,8 @@ const IslandBarChart = () => {
 
       const layout = {
         barmode: 'group',
+        margin: { r: 12, t: 10, b: 20, l: 20 },
+        height: 260,
       };
 
       Plotly.newPlot('islandBarChart', data, layout, {displayModeBar: false});

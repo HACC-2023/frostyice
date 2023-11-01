@@ -33,7 +33,7 @@ const CityMapBox = () => {
       const size = cityReport.map((pop) => (pop * 20) / data.scale);
 
       const trace = {
-        type: "scattermapbox", // Use scattermapbox type
+        type: "scattermapbox",
         lat: data.lat,
         lon: data.lon,
         hoverinfo: "text",
@@ -55,16 +55,37 @@ const CityMapBox = () => {
           style: "open-street-map",
           center: { lat: 21.307264, lon: -157.79729 },
           zoom: 9,
+
         },
+        margin: { r: 12, t: 10, b: 10, l: 0 },
+        height: 600,
       };
 
-      const config = { displaylogo: false, modeBarButtonsToRemove: ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleSpikelines', 'hoverClosestGl2d', 'hoverClosestPie', 'toggleHover', 'resetViews', 'toggleSpikeLines'] };
-
-
+      const config = {
+        displaylogo: false,
+        modeBarButtonsToRemove: [
+          "zoom2d",
+          "pan2d",
+          "select2d",
+          "lasso2d",
+          "zoomIn2d",
+          "zoomOut2d",
+          "autoScale2d",
+          "resetScale2d",
+          "hoverClosestCartesian",
+          "hoverCompareCartesian",
+          "toggleSpikelines",
+          "hoverClosestGl2d",
+          "hoverClosestPie",
+          "toggleHover",
+          "resetViews",
+          "toggleSpikeLines",
+        ],
+      };
 
       Plotly.newPlot("CityMapBox", [trace], layout, config);
 
-      document.getElementById('CityMapBox').on('plotly_click', (eventData) => {
+      document.getElementById("CityMapBox").on("plotly_click", (eventData) => {
         if (eventData && eventData.points && eventData.points.length > 0) {
           const point = eventData.points[0];
           const cityName = data.cityName[point.pointNumber];
@@ -85,15 +106,16 @@ const CityMapBox = () => {
   }, []);
 
   return (
-    <div>
-      <div id="CityMapBox" />
+    <div id="CityMapBox">
       {selectedCity && (
         <div>
           <h2>{selectedCity.name}</h2>
           <p>Coordinates:</p>
           <ul>
             {selectedCity.latitudes.map((lat, index) => (
-              <li key={index}>Latitude: {lat}, Longitude: {selectedCity.longitudes[index]}</li>
+              <li key={index}>
+                Latitude: {lat}, Longitude: {selectedCity.longitudes[index]}
+              </li>
             ))}
           </ul>
         </div>
