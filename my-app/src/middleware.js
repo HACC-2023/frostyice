@@ -1,5 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import { ROLES } from "./roles/roles";
 // Without a defined matcher, this one line applies next-auth to entire project
 // export { default } from "next-auth/middleware"
 
@@ -9,7 +10,7 @@ export default withAuth(
     // If the user's role is not admin, redirect to the denied page
     if (
       request.nextUrl.pathname.startsWith("/admin") &&
-      request.nextauth.token?.role !== "admin"
+      request.nextauth.token?.role !== ROLES.ADMIN
     ) {
       return NextResponse.rewrite(new URL("/denied", request.url));
     }

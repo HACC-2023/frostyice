@@ -52,12 +52,18 @@ export const options = {
   callbacks: {
     // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
     async jwt({ token, user }) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.role = user.role;
+        token.orgId = user.orgId;
+      }
       return token;
     },
     // If you want to use the role in client components
     async session({ session, token }) {
-      if (session?.user) session.user.role = token.role;
+      if (session?.user) {
+        session.user.role = token.role;
+        session.user.orgId = token.orgId;
+      }
       return session;
     },
   },

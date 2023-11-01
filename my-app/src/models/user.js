@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { ROLES } from "@/roles/roles";
 
 const userSchema = new Schema({
   firstName: {
@@ -20,12 +21,17 @@ const userSchema = new Schema({
   role: {
     type: String,
     required: true,
-    default: "user"
+    enum: Object.values(ROLES),
   },
   password: {
     type: String,
     required: true,
   },
+  orgId: {
+    type: Schema.Types.ObjectId,
+    ref: "Organization",
+    required: true,
+  }
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
