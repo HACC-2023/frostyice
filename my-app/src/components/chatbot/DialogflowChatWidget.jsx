@@ -33,7 +33,7 @@ const DialogflowChatWidget = () => {
   const dfMessengerStyle = {
     zIndex: 999,
     position: 'fixed',
-    bottom: '16px',
+    bottom: '70px',
     right: '16px',
   };
 
