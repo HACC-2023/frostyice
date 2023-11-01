@@ -72,10 +72,9 @@ const DataInsights = () => {
         </div>
       </div>
     </div>,
-    "Content for Tab 3 goes here.",
   ];
 
-  const tabNames = ["Reported", "Removal", "Sorting & Disposal"];
+  const tabNames = ["Reports", "Sorting & Disposal"];
 
   return (
     <div className="justify-center items-center">
