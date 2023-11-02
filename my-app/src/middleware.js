@@ -7,7 +7,7 @@ import { ROLES } from "./roles/roles";
 export const ADMIN_ROUTES = [
   "/admin",
   // "/experimental"
-]
+];
 
 export default withAuth(
   function middleware(request) {
@@ -43,6 +43,9 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    "/((?!api/uploadthing|).*)", "/admin", "/items", "/experimental"
+    "/((?!api/uploadthing|).*)",
+    "/admin",
+    "/items",
+    "/experimental",
   ],
 };
