@@ -27,7 +27,7 @@ const dashboardDummyData = [
 
 const DashboardTable = () => {
   return (
-    <div className="overflow-x-auto bg-white p-8 shadow">
+    <div className="overflow-x-auto bg-white">
       <table className="table table-pin-rows table-pin-cols bg-white text-gray-500">
         <thead>
           <tr className="text-gray-200">
