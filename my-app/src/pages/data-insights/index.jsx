@@ -6,6 +6,7 @@ import ReportTimesSeries from "@/components/visualizations/ReportTimeSeries";
 import OrganizationFunnel from "@/components/visualizations/OrganizationFunnel";
 import ComponentsPieChart from "@/components/visualizations/ComponentsPieChart";
 import DisposalBarChart from "@/components/visualizations/DisposalBarChart";
+import SankeyChart from "@/components/visualizations/SankeyChart";
 
 const DataInsights = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -65,7 +66,14 @@ const DataInsights = () => {
           <DisposalBarChart />
         </div>
       </div>
-      <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow"></div>
+      <div className="flex flex-row justify-between pt-6 p-8 mt-4 shadow">
+        <div className="w-1/1">
+          <h6 className="text-lg font-semibold text-gray-600 mb-4">
+            Flow of Fishery Resources: From Islands to Disposal
+          </h6>
+          <SankeyChart />
+        </div>
+      </div>
     </div>,
   ];
 
