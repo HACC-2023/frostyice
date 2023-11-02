@@ -47,5 +47,6 @@ export const config = {
     "/admin",
     "/items",
     "/experimental",
+    "/manage-organizations"
   ],
 };
