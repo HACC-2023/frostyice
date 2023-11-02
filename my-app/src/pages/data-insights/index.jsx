@@ -69,7 +69,7 @@ const DataInsights = () => {
       <div className="flex flex-row justify-between pt-6 p-8 mt-4 shadow">
         <div className="w-1/1">
           <h6 className="text-lg font-semibold text-gray-600 mb-4">
-            Flow of Fishery Resources: From Islands to Disposal
+            Flow of Marine Debris: From Islands to Disposal
           </h6>
           <SankeyChart />
         </div>
