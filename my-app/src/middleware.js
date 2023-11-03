@@ -6,6 +6,7 @@ import { ROLES } from "./roles/roles";
 
 export const ADMIN_ROUTES = [
   "/admin",
+  "/manage-organizations",
   // "/experimental"
 ];
 

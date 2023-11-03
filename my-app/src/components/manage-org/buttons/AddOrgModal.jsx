@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import "react-toastify/dist/ReactToastify.min.css";
 
 const AddOrgModal = ({ id }) => {
   const { register, handleSubmit, reset } = useForm();

@@ -5,14 +5,18 @@ const userSchema = new Schema({
   firstName: {
     type: String,
     required: true,
+    trim: true
   },
   lastName: {
     type: String, 
     required: true,
+    trim: true
   },
   email: {
     type: String,
     required: true,
+    unique: true,
+    trim: true
   },
   image: {
     type: String,
@@ -21,6 +25,7 @@ const userSchema = new Schema({
   role: {
     type: String,
     required: true,
+    trim: true,
     enum: Object.values(ROLES),
   },
   password: {
