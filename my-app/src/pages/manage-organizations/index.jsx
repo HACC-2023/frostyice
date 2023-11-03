@@ -1,5 +1,5 @@
-import AddMemberModal from "@/components/manage-org/buttons/AddMemberModal";
-import AddOrgModal from "@/components/manage-org/buttons/AddOrgModal";
+import AddMemberModal from "@/components/manage-org/modals/AddMemberModal";
+import AddOrgModal from "@/components/manage-org/modals/AddOrgModal";
 import TableRow from "@/components/manage-org/table/TableRow";
 import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";

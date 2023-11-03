@@ -1,5 +1,6 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import PropTypes from "prop-types";
+import DeleteOrgModal from "../modals/DeleteOrgModal";
 
 const TableRow = ({ org, index }) => {
   return (
@@ -7,9 +8,10 @@ const TableRow = ({ org, index }) => {
       <th>{index + 1}</th>
       <td>{org.name}</td>
       <td>
-        <button>
+        <button onClick={() => document.getElementById(`delete_org_modal_${index}`).showModal()}>
           <TrashIcon className="w-4 h-4" />
         </button>
+        <DeleteOrgModal id={`delete_org_modal_${index}`} org={org} />
       </td>
     </tr>
   );
