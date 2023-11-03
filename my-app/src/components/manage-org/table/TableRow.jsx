@@ -8,14 +8,18 @@ const TableRow = ({ org, index }) => {
       <th>{index + 1}</th>
       <td>{org.name}</td>
       <td>
-        <button onClick={() => document.getElementById(`delete_org_modal_${index}`).showModal()}>
+        <button
+          onClick={() =>
+            document.getElementById(`delete_org_modal_${index}`).showModal()
+          }
+        >
           <TrashIcon className="w-4 h-4" />
         </button>
         <DeleteOrgModal id={`delete_org_modal_${index}`} org={org} />
       </td>
     </tr>
   );
-}
+};
 
 export default TableRow;
 

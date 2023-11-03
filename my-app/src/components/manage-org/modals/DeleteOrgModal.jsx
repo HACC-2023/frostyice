@@ -4,12 +4,9 @@ const DeleteOrgModal = ({ id, org }) => {
   async function deleteOrganization(orgData) {
     console.log("orgdata", orgData);
     try {
-      const res = await fetch(
-        `/api/mongo/organization/id/${orgData._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/api/mongo/organization/id/${orgData._id}`, {
+        method: "DELETE",
+      });
       console.log(res);
 
       const res2 = await fetch(
