@@ -6,7 +6,7 @@ const handler = async (req, res) => {
     switch (method) {
       case 'POST':
         {
-          await sendEmail('TEST', 'saitoshin2145@gmail.com', 'test');
+          await sendEmail('TEST', 'test@gmail.com', 'test');
         }
         res.status(200).send('success');
         break;
