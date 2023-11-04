@@ -5,7 +5,7 @@ import Link from "next/link";
 // TODO: update links
 const MobileNavbar = () => {
   return (
-    <div className="btm-nav lg:hidden">
+    <div className="btm-nav md:hidden">
       <Link href="/home">
         <button>
           <span className="btm-nav-label">Home</span>
