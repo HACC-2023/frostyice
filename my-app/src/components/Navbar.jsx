@@ -45,7 +45,7 @@ const Navbar = () => {
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
       {session && session.user.role === "admin" && <NavContent nav={adminNav} />}
-      <div className="divider m-0" />
+      {session && <div className="divider m-0" />}
       {session && <MenuItem label="Sign out" icon={ArrowLeftCircleIcon} link="/api/auth/signout" />}
     </ul>
   );
