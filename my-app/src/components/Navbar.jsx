@@ -4,12 +4,12 @@ import {
   HomeIcon,
   PlusCircleIcon,
   ChartPieIcon,
-  UserCircleIcon,
   RectangleGroupIcon,
   InboxIcon,
   RectangleStackIcon,
   BuildingOfficeIcon,
   BuildingOffice2Icon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
@@ -41,18 +41,20 @@ const Navbar = () => {
   ];
 
   const NavContainer = () => (
-    <ul className="menu p-5 w-72 min-h-full bg-base-200 pt-14 font-medium">
+    <ul className="menu p-5 w-72 min-h-full bg-base-200 pt-10 font-medium">
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
       {session && session.user.role === "admin" && <NavContent nav={adminNav} />}
+      <div className="divider"></div> 
+      {session && (<MenuItem label="Sign out" icon={ArrowLeftOnRectangleIcon} link="/api/auth/signout" />)}
     </ul>
   );
 
   const AccountInfo = () => (
     <>
       {session ? (
-        <div className="flex gap-4 m-2">
+        <div className="flex gap-4 m-4">
           <div className="avatar placeholder">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-14">
               <span className="text-2xl">{session.user.firstName.charAt(0)}</span>
