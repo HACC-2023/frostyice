@@ -1,4 +1,5 @@
 import EventCollapse from "./common/EventCollapse";
+import RemovalStorageRow from "./removal-and-storage/RemovalStorageRow";
 
 const RemovalAndStorage = ({ event }) => {
   return (
@@ -48,8 +49,53 @@ const RemovalAndStorage = ({ event }) => {
         {event.multiEventShipment && (
           <>
             <div className="divider" />
-            <div>
-              Multievent shipment
+            <h1 className="font-bold text-xl"> Multievent Shipment </h1>
+            <div className="flex flex-col md:flex-row gap-3 my-3 py-6 px-3 bg-base-100 rounded-xl">
+              {/* Table */}
+              <div className="overflow-x-auto w-full md:w-3/4 flex items-start rounded-xl p-3 h-96 border border-neutral">
+                <table className="table table-zebra table-pin-rows">
+                  <thead>
+                    <tr>
+                      <th>Event ID</th>
+                      <th>
+                        Debris Size (
+                        <var>
+                          kg/cm<sup>2</sup>
+                        </var>
+                        )
+                      </th>
+                      <th>
+                        Debris Mass (<var>kg</var>)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <RemovalStorageRow event={event} />
+                  </tbody>
+                </table>
+              </div>
+              {/* Stats */}
+              <div>
+                <div>
+                  <div className="stat place-items-center">
+                    <div className="stat-title">
+                      Total Debris Size
+                    </div>
+                    <div className="stat-value">31</div>
+                    <div className="stat-desc">
+                      <var>
+                        Units: kg/cm<sup>2</sup>
+                      </var>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="stat place-items-center">
+                    <div className="stat-title">Total Debris Mass</div>
+                    <div className="stat-value text-secondary">4,200</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </>
         )}
