@@ -98,7 +98,7 @@ const ComponentsPieChart = () => {
         margin: { r: 100, t: 10, b: 20, l: 0 },
       };
 
-      Plotly.newPlot("componentPieChart", data, layout);
+      Plotly.newPlot("componentPieChart", data, layout, {displayModeBar: false});
     });
   }, []);
 

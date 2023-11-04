@@ -12,8 +12,9 @@ export async function sendEmail(subject, toEmail, emailText) {
   var mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
     to: toEmail,
+    cc: process.env.NODEMAILER_EMAIL,
     subject: subject,
-    text: emailText,
+    html: emailText,
   };
 
   await new Promise((resolve, reject) => {
