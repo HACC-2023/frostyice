@@ -39,7 +39,7 @@ const ReporTimesSeries = () => {
       const trace1 = {
         type: "scatter",
         mode: "lines",
-        name: "Organization 2",
+        name: "Org. 1",
         x: unpack(data, "Month"),
         y: unpack(data, "Organization1"),
         line: { color: "#17BECF" },
@@ -48,7 +48,7 @@ const ReporTimesSeries = () => {
       const trace2 = {
         type: "scatter",
         mode: "lines",
-        name: "Organization 1",
+        name: "Org. 2",
         x: unpack(data, "Month"),
         y: unpack(data, "Organization2"),
         line: { color: "#7F7F7F" },
@@ -57,6 +57,8 @@ const ReporTimesSeries = () => {
       const chartData = [trace1, trace2];
 
       const layout = {
+        margin: { r: 10, t: 18, b: 20, l: 26 },
+        height: 300,
         xaxis: {
           autorange: true,
           range: ["2015-02-17", "2017-02-16"],
@@ -87,7 +89,29 @@ const ReporTimesSeries = () => {
         },
       };
 
-      Plotly.newPlot("reportTimeSeries", chartData, layout);
+      const config = {
+        displaylogo: false,
+        modeBarButtonsToRemove: [
+          "zoom2d",
+          "pan2d",
+          "select2d",
+          "lasso2d",
+          "zoomIn2d",
+          "zoomOut2d",
+          "autoScale2d",
+          "resetScale2d",
+          "hoverClosestCartesian",
+          "hoverCompareCartesian",
+          "toggleSpikelines",
+          "hoverClosestGl2d",
+          "hoverClosestPie",
+          "toggleHover",
+          "resetViews",
+          "toggleSpikeLines",
+        ],
+      };
+
+      Plotly.newPlot("reportTimeSeries", chartData, layout, config);
     });
   }, []);
 

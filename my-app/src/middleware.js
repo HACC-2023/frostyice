@@ -4,12 +4,18 @@ import { ROLES } from "./roles/roles";
 // Without a defined matcher, this one line applies next-auth to entire project
 // export { default } from "next-auth/middleware"
 
+export const ADMIN_ROUTES = [
+  "/admin",
+  "/manage-organizations",
+  // "/experimental"
+];
+
 export default withAuth(
   function middleware(request) {
     // console.log("middleware", request.nextauth.token);
     // If the user's role is not admin, redirect to the denied page
     if (
-      request.nextUrl.pathname.startsWith("/admin") &&
+      ADMIN_ROUTES.some((path) => request.nextUrl.pathname.startsWith(path)) &&
       request.nextauth.token?.role !== ROLES.ADMIN
     ) {
       return NextResponse.rewrite(new URL("/denied", request.url));
@@ -38,6 +44,10 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    "/((?!api/uploadthing|).*)", "/admin", "/items"
+    "/((?!api/uploadthing|).*)",
+    "/admin",
+    "/items",
+    "/experimental",
+    "/manage-organizations"
   ],
 };
