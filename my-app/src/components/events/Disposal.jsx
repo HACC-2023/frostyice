@@ -5,7 +5,7 @@ const Disposal = ({ event }) => {
     <EventCollapse title="Disposal">
       <div> Hello world</div>
     </EventCollapse>
-  );
-};
+  )
+}
 
 export default Disposal;
