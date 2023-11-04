@@ -6,18 +6,18 @@ import { ToastContainer } from "react-toastify";
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
-    <div className="min-h-screen">
+    <>
       <SessionProvider session={session}>
-        <div className="flex md:flex-col lg:flex-row">
+        <div className="flex md:flex-col lg:flex-row min-h-screen">
           <Navbar />
-          <div className="flex-grow">
+          <div className="flex-1">
             <Component {...pageProps} />
           </div>
           <MobileNavbar />
           <ToastContainer />
         </div>
       </SessionProvider>
-    </div>
+    </>
   );
 };
 

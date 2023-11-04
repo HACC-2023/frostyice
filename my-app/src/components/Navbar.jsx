@@ -1,67 +1,90 @@
 import { Fragment, useState } from "react";
 import { useSession } from "next-auth/react";
-import { HomeIcon, PlusCircleIcon, ChartPieIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import {
+  HomeIcon,
+  PlusCircleIcon,
+  ChartPieIcon,
+  UserCircleIcon,
+  RectangleGroupIcon,
+  InboxIcon,
+  RectangleStackIcon,
+  BuildingOfficeIcon,
+  BuildingOffice2Icon,
+} from "@heroicons/react/24/solid";
 import Link from "next/link";
 
-// TODO: update elements depending on user's role
-// TODO: change icons
 // TODO: add sign out button if logged in
-// TODO: show active page
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const publicNav = [
     { label: "Home", icon: HomeIcon, link: "/home" },
-    { label: "Report Event", icon: PlusCircleIcon, link: "/report-event" },
+    { label: "Report Event", icon: PlusCircleIcon, link: "/report-form" },
     { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
   ];
 
   const orgMemberNav = [
-    ...publicNav, // might change if report and report event and data and data insights are different
-
-    { label: "Organization Dashboard", icon: PlusCircleIcon, link: "/organization-dashboard" },
-    { label: "Manage Events", icon: UserCircleIcon, link: "/manage-events" },
-    { label: "Threads", icon: UserCircleIcon, link: "/threads" },
+    ...publicNav,
+    { label: "Organization Dashboard", icon: RectangleGroupIcon, link: "/dashboard" },
+    { label: "Manage Events", icon: InboxIcon, link: "/manage-events" },
+    { label: "Threads", icon: RectangleStackIcon, link: "/threads" },
   ];
 
   const orgAdminNav = [
     ...orgMemberNav,
-    { label: "My Organization", icon: PlusCircleIcon, link: "/my-organization" },
+    { label: "My Organization", icon: BuildingOfficeIcon, link: "/my-organization" },
   ];
 
   const adminNav = [
     ...orgAdminNav,
-    { label: "Manage Organizations", icon: PlusCircleIcon, link: "/manage-organizations" },
+    { label: "Manage Organizations", icon: BuildingOffice2Icon, link: "/manage-organizations" },
   ];
 
-  // TODO: add this back: "session && session.user.role === "org_admin" && "
   const NavContainer = () => (
-    <ul className="menu p-5 w-80 min-h-full bg-base-200 pt-14">
+    <ul className="menu p-5 w-80 min-h-full bg-base-200 pt-14 font-medium">
       {!session && <NavContent nav={publicNav} />}
-      {<NavContent nav={orgMemberNav} />}
-      {<NavContent nav={orgAdminNav} />}
-      {<NavContent nav={adminNav} />}
+      {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
+      {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
+      {session && session.user.role === "admin" && <NavContent nav={adminNav} />}
     </ul>
   );
 
-  // TODO: change labels
   const AccountInfo = () => (
-    <div className="flex gap-2 m-2">
-      <UserCircleIcon className="h-12 w-12" />
-      <div className="flex flex-col justify-center">
-        <div>name</div>
-        <div>org name</div>
-      </div>
-    </div>
-  );
-
-  const Header = () => (
-    <>{!session ? <AccountInfo /> : <MenuItem label={"Login"} link={"/login"} />}</>
+    <>
+      {session ? (
+        <div className="flex gap-4 m-2">
+          <div className="avatar placeholder">
+            <div className="bg-neutral-focus text-neutral-content rounded-full w-14">
+              <span className="text-2xl">{session.user.firstName.charAt(0)}</span>
+              <span className="text-2xl">{session.user.lastName.charAt(0)}</span>
+            </div>
+          </div>
+          <div className="flex flex-col justify-center">
+            <div>
+              {session.user.firstName} {session.user.lastName}
+            </div>
+            <div>org name</div>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2 p-5">
+          <Link href={"/register"} className="bg-primary rounded-full p-3 text-center">
+            Create an account
+          </Link>
+          <Link
+            href={"/auth/credentials-signin"}
+            className="rounded-full p-3 text-center border-slate-800 border-solid border"
+          >
+            Log in
+          </Link>
+        </div>
+      )}
+    </>
   );
 
   const NavContent = ({ nav }) => (
     <>
-      <Header />
+      <AccountInfo />
       {nav.map((navItem) => (
         <MenuItem label={navItem.label} icon={navItem.icon} link={navItem.link} />
       ))}
@@ -84,9 +107,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="hidden lg:block w-60">
-        <NavContainer />
-      </div>
+      <div className="hidden lg:block w-72">{status !== "loading" && <NavContainer />}</div>
       <div className="drawer hidden md:block lg:hidden">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
@@ -121,7 +142,7 @@ const Navbar = () => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <NavContainer />
+          {status !== "loading" && <NavContainer />}
         </div>
       </div>
     </>
