@@ -5,7 +5,8 @@ import Sorting from "@/components/events/Sorting";
 
 const dummyEvent = {
   _id: "abcd1234",
-  status: "Reported",
+  status: "Sorting",
+  multiEventShipment: true,
   lat: "151",
   long: "21",
   detectedLocation: "Oahu",

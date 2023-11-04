@@ -6,6 +6,8 @@ const RemovalAndStorage = ({ event }) => {
       <div>
         <section className="flex md:mb-6">
           <button className="btn btn-secondary justify-self-end">Edit</button>
+          {/* When edit is clicked, change elements into inputs */}
+          {/* <input className="" value={event.debrisSize} /> */}
         </section>
         <div className="flex flex-col md:flex-row justify-evenly gap-3 my-3 py-6 px-3 bg-base-100 rounded-xl">
           <div className="flex flex-col gap-2">
@@ -42,11 +44,17 @@ const RemovalAndStorage = ({ event }) => {
               </p>
             </div>
           </div>
-          {/* When edit is clicked, change elements into inputs */}
-          {/* <input className="" value={event.debrisSize} /> */}
         </div>
+        {event.multiEventShipment && (
+          <>
+            <div className="divider" />
+            <div>
+              Multievent shipment
+            </div>
+          </>
+        )}
         <section className="flex justify-end gap-3 py-3">
-          {/* <button className="btn btn-outline">Dismiss</button> */}
+          <button className="btn btn-outline">Undo Step</button>
           <button className="btn btn-primary">Mark as Removed</button>
         </section>
       </div>
