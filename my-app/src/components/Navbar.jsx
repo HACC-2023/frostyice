@@ -41,7 +41,7 @@ const Navbar = () => {
   ];
 
   const NavContainer = () => (
-    <ul className="menu p-5 w-80 min-h-full bg-base-200 pt-14 font-medium">
+    <ul className="menu p-5 w-72 min-h-full bg-base-200 pt-14 font-medium">
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
@@ -107,7 +107,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="hidden lg:block w-72">{status !== "loading" && <NavContainer />}</div>
+      <div className="hidden lg:block w-min">{status !== "loading" && <NavContainer />}</div>
       <div className="drawer hidden md:block lg:hidden">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
