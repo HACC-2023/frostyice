@@ -1,4 +1,3 @@
-import { Fragment, useState } from "react";
 import { useSession } from "next-auth/react";
 import {
   HomeIcon,
@@ -9,7 +8,7 @@ import {
   RectangleStackIcon,
   BuildingOfficeIcon,
   BuildingOffice2Icon,
-  ArrowLeftOnRectangleIcon,
+  ArrowLeftCircleIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
@@ -46,8 +45,8 @@ const Navbar = () => {
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
       {session && session.user.role === "admin" && <NavContent nav={adminNav} />}
-      <div className="divider"></div> 
-      {session && (<MenuItem label="Sign out" icon={ArrowLeftOnRectangleIcon} link="/api/auth/signout" />)}
+      <div className="divider m-0" />
+      {session && <MenuItem label="Sign out" icon={ArrowLeftCircleIcon} link="/api/auth/signout" />}
     </ul>
   );
 
