@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const SortingRow = ({ sortedMaterial }) => {
   return (
     <tr>
@@ -10,5 +12,9 @@ const SortingRow = ({ sortedMaterial }) => {
     </tr>
   )
 }
+
+SortingRow.propTypes = {
+  sortedMaterial: PropTypes.object.isRequired
+};
 
 export default SortingRow;

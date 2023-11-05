@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const DisposalRow = ({ sortedMaterial }) => {
   return (
     <tr>
@@ -11,6 +13,15 @@ const DisposalRow = ({ sortedMaterial }) => {
       </td>
     </tr>
   );
+};
+
+DisposalRow.propTypes = {
+  sortedMaterial: PropTypes.shape({
+    material: PropTypes.string.isRequired,
+    mass: PropTypes.number.isRequired,
+    polymers: PropTypes.string.isRequired,
+    disposalMechanism: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default DisposalRow;
