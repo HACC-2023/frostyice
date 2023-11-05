@@ -1,21 +1,33 @@
-import { Fragment, useState } from "react";
 import { useSession } from "next-auth/react";
 import {
   HomeIcon,
   PlusCircleIcon,
   ChartPieIcon,
-  UserCircleIcon,
   RectangleGroupIcon,
   InboxIcon,
   RectangleStackIcon,
   BuildingOfficeIcon,
   BuildingOffice2Icon,
+  ArrowLeftCircleIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// TODO: add sign out button if logged in
 const Navbar = () => {
   const { data: session, status } = useSession();
+  const [orgName, setOrgName] = useState("");
+
+  useEffect(() => {
+    const fetchOrgName = async () => {
+      const res = await fetch("/api/mongo/organization/id/" + session.user.orgId);
+      const data = await res.json();
+      setOrgName(data.name);
+    };
+
+    if (session) {
+      fetchOrgName();
+    }
+  }, [session]);
 
   const publicNav = [
     { label: "Home", icon: HomeIcon, link: "/home" },
@@ -41,18 +53,20 @@ const Navbar = () => {
   ];
 
   const NavContainer = () => (
-    <ul className="menu p-5 w-72 min-h-full bg-base-200 pt-14 font-medium">
+    <ul className="menu p-5 w-72 h-screen sticky top-0 bg-base-200 pt-10 font-medium">
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
       {session && session.user.role === "admin" && <NavContent nav={adminNav} />}
+      {session && <div className="divider m-0" />}
+      {session && <MenuItem label="Sign out" icon={ArrowLeftCircleIcon} link="/api/auth/signout" />}
     </ul>
   );
 
   const AccountInfo = () => (
     <>
       {session ? (
-        <div className="flex gap-4 m-2">
+        <div className="flex gap-4 m-4">
           <div className="avatar placeholder">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-14">
               <span className="text-2xl">{session.user.firstName.charAt(0)}</span>
@@ -63,7 +77,7 @@ const Navbar = () => {
             <div>
               {session.user.firstName} {session.user.lastName}
             </div>
-            <div>org name</div>
+            <div>{orgName}</div>
           </div>
         </div>
       ) : (
@@ -85,8 +99,8 @@ const Navbar = () => {
   const NavContent = ({ nav }) => (
     <>
       <AccountInfo />
-      {nav.map((navItem) => (
-        <MenuItem label={navItem.label} icon={navItem.icon} link={navItem.link} />
+      {nav.map((navItem, index) => (
+        <MenuItem key={index} label={navItem.label} icon={navItem.icon} link={navItem.link} />
       ))}
     </>
   );
