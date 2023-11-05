@@ -11,10 +11,23 @@ import {
   ArrowLeftCircleIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// TODO: add sign out button if logged in
 const Navbar = () => {
   const { data: session, status } = useSession();
+  const [orgName, setOrgName] = useState("");
+
+  useEffect(() => {
+    const fetchOrgName = async () => {
+      const res = await fetch("/api/mongo/organization/id/" + session.user.orgId);
+      const data = await res.json();
+      setOrgName(data.name);
+    };
+
+    if (session) {
+      fetchOrgName();
+    }
+  }, [session]);
 
   const publicNav = [
     { label: "Home", icon: HomeIcon, link: "/home" },
@@ -64,7 +77,7 @@ const Navbar = () => {
             <div>
               {session.user.firstName} {session.user.lastName}
             </div>
-            <div>org name</div>
+            <div>{orgName}</div>
           </div>
         </div>
       ) : (
@@ -86,8 +99,8 @@ const Navbar = () => {
   const NavContent = ({ nav }) => (
     <>
       <AccountInfo />
-      {nav.map((navItem) => (
-        <MenuItem label={navItem.label} icon={navItem.icon} link={navItem.link} />
+      {nav.map((navItem, index) => (
+        <MenuItem key={index} label={navItem.label} icon={navItem.icon} link={navItem.link} />
       ))}
     </>
   );
