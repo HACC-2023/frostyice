@@ -36,16 +36,15 @@ const Dashboard = () => {
             className="fixed inset-0 bg-gray-500 bg-opacity-75"
             onClick={closeModal}
           ></div>
-          <div className="relative p-8 bg-white w-full max-w-xl rounded-lg shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <div className="relative p-8 bg-white w-full max-w-lg rounded-lg shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-700">
               Multievent Shipment
             </h3>
             <br />
-            <p className="text-gray-600 mt-4 mb-2">
-              <b>
-                Which events are you shipping together? (Select all that apply)
-              </b>
+            <p className="text-gray-600">
+              <b>Which events are you shipping together?</b>
             </p>
+            <p className="text-gray-600 mb-2">Select all that apply</p>
             <select
               className="select select-bordered w-full bg-white text-gray-600 p-2"
               multiple

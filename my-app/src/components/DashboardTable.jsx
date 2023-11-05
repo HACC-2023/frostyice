@@ -28,9 +28,9 @@ const dashboardDummyData = [
 const DashboardTable = () => {
   return (
     <div className="overflow-x-auto bg-white">
-      <table className="table table-pin-rows table-pin-cols bg-white text-gray-500">
+      <table className="table bg-white text-gray-500">
         <thead>
-          <tr className="text-gray-200">
+          <tr className="text-gray-600">
             <th>_ID</th>
             <td>Status</td>
             <td>Debris Type</td>
@@ -42,7 +42,7 @@ const DashboardTable = () => {
         <tbody>
           {dashboardDummyData.map((data) => (
             <tr key={data._id}>
-              <th className="text-gray-200">{data._id}</th>
+              <th className="text-gray-500">{data._id}</th>
               <td>{data.status}</td>
               <td>{data.debrisType}</td>
               <td>{data.debrisDescription}</td>

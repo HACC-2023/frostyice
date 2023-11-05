@@ -10,6 +10,7 @@ const data = {
 
 const CityMapBox = () => {
   const [selectedCity, setSelectedCity] = useState(null);
+  const [graphReady, setGraphReady] = useState(false);
 
   useEffect(() => {
     import("plotly.js-dist").then((Plotly) => {
@@ -55,10 +56,10 @@ const CityMapBox = () => {
           style: "open-street-map",
           center: { lat: 21.307264, lon: -157.79729 },
           zoom: 9,
-
         },
         margin: { r: 12, t: 10, b: 10, l: 0 },
-        height: 600,
+        height: 500,
+        width: 450,
       };
 
       const config = {
@@ -83,7 +84,9 @@ const CityMapBox = () => {
         ],
       };
 
-      Plotly.newPlot("CityMapBox", [trace], layout, config);
+      Plotly.newPlot("CityMapBox", [trace], layout, config, (config) => {
+        setGraphReady(true);
+      });
 
       document.getElementById("CityMapBox").on("plotly_click", (eventData) => {
         if (eventData && eventData.points && eventData.points.length > 0) {
@@ -105,19 +108,39 @@ const CityMapBox = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const checkGraphReady = setInterval(() => {
+      if (document.querySelector(".main-svg")) {
+        clearInterval(checkGraphReady);
+        setGraphReady(true);
+      }
+    }, 100);
+  }, []);
+
   return (
-    <div id="CityMapBox">
-      {selectedCity && (
-        <div>
-          <h2>{selectedCity.name}</h2>
-          <p>Coordinates:</p>
-          <ul>
-            {selectedCity.latitudes.map((lat, index) => (
-              <li key={index}>
-                Latitude: {lat}, Longitude: {selectedCity.longitudes[index]}
-              </li>
-            ))}
-          </ul>
+    <div>
+      <div id="CityMapBox" />
+
+      {graphReady ? (
+        <>
+          {" "}
+          {selectedCity && (
+            <div>
+              <h2>{selectedCity.name}</h2>
+              <p>Coordinates:</p>
+              <ul>
+                {selectedCity.latitudes.map((lat, index) => (
+                  <li key={index}>
+                    Latitude: {lat}, Longitude: {selectedCity.longitudes[index]}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="flex justify-center pt-8 h-50">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
     </div>
