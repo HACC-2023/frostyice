@@ -7,6 +7,7 @@ const DisposalRow = ({ sortedMaterial }) => {
       <td>{sortedMaterial.mass}</td>
       <td>{sortedMaterial.polymers}</td>
       <td>{sortedMaterial.disposalMechanism}</td>
+      <td>{sortedMaterial.disposalDate.toLocaleString("en-US")}</td>
       <td>
         <button className="btn btn-ghost">Edit</button>
         <button className="btn btn-ghost">Delete</button>
@@ -20,6 +21,7 @@ DisposalRow.propTypes = {
     material: PropTypes.string.isRequired,
     mass: PropTypes.number.isRequired,
     polymers: PropTypes.string.isRequired,
+    disposalDate: PropTypes.instanceOf(Date).isRequired,
     disposalMechanism: PropTypes.string.isRequired,
   }).isRequired,
 };
