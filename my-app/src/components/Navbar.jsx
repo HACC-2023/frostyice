@@ -67,7 +67,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const isLinkActive = (href) => {
-    return router.pathname === href ? "active" : "";
+    return router.pathname === href;
   };
 
   const AccountInfo = () => (
@@ -118,9 +118,9 @@ const Navbar = () => {
 
     return (
       <li className="m-1">
-        <Link href={link} className={isLinkActive(link)}>
+        <Link href={link} className={`hover:text-neutral-300 ${isLinkActive(link) ? "bg-neutral text-neutral-300" : ""}`}>
           {icon && <IconElement height={ICON_HEIGHT} />}
-          <a>{label}</a>
+          <span>{label}</span>
         </Link>
       </li>
     );
