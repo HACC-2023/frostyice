@@ -31,6 +31,7 @@ const DialogflowChatWidget = () => {
   }, []);
 
   const dfMessengerColors = {
+    textColor:'#fff',
     primaryColor: '#203444',
     backgroundColor: '#282b31',
     botBubbleBackground: '#428fd9',
@@ -49,7 +50,7 @@ const DialogflowChatWidget = () => {
           --df-messenger-font-family: Helvetica Neue, Helvetica, sans-serif;
           --df-messenger-primary-color: ${dfMessengerColors.primaryColor};
           --df-messenger-focus-color: ${dfMessengerColors.botBubbleBackground}50;
-          --df-messenger-link-font-color: #fff;
+          --df-messenger-link-font-color: ${dfMessengerColors.textColor};
           --df-messenger-link-hover-font-color: #eee;
           --df-messenger-chat-border-radius: 4px;
           --df-messenger-chat-window-offset: 8px;
@@ -60,9 +61,9 @@ const DialogflowChatWidget = () => {
           --df-messenger-titlebar-title-font-weight: 500;
           --df-messenger-chat-background-color: ${dfMessengerColors.backgroundColor};
           --df-messenger-message-bot-background: ${dfMessengerColors.botBubbleBackground};
-          --df-messenger-message-bot-font-color: #fff;
+          --df-messenger-message-bot-font-color: ${dfMessengerColors.textColor};
           --df-messenger-message-user-background: ${dfMessengerColors.userBubbleBackground};
-          --df-messenger-message-user-font-color: #fff;
+          --df-messenger-message-user-font-color: ${dfMessengerColors.textColor};
           --df-messenger-message-bot-border-bottom-left-radius: 2px;
           --df-messenger-message-user-border-bottom-right-radius: 2px;
           --df-messenger-message-bot-stack-border-bottom-left-radius: 8px;
@@ -73,17 +74,17 @@ const DialogflowChatWidget = () => {
           --df-messenger-input-inner-padding: 8px 10px;
           --df-messenger-send-icon-color: ${dfMessengerColors.sendIcon};
           --df-messenger-send-icon-color-hover: ${dfMessengerColors.sendIconHover};
-          --df-messenger-input-font-color: #fff;
+          --df-messenger-input-font-color: ${dfMessengerColors.textColor};
           --df-messenger-chips-background: ${dfMessengerColors.chipColor};
           --df-messenger-chips-background-hover: ${dfMessengerColors.chipColorHover};
           --df-messenger-chips-border-color: ${dfMessengerColors.chipColor};
           --df-messenger-chips-border-color-hover: ${dfMessengerColors.chipColorHover};
-          --df-messenger-chips-font-color: #fff;
+          --df-messenger-chips-font-color: ${dfMessengerColors.textColor};
           --df-messenger-card-background: ${dfMessengerColors.chipColor};
           --df-messenger-card-padding: 8px 12px 8px 8px;
           --df-messenger-button-icon-spacing: 8px;
           --df-messenger-card-border: 1px solid ${dfMessengerColors.chipColor};
-          --df-messenger-button-font-color: #fff;
+          --df-messenger-button-font-color: ${dfMessengerColors.textColor};
         }
         df-messenger {
           z-index: 999;
