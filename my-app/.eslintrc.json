@@ -32,6 +32,7 @@
     ],
     "react/jsx-one-expression-per-line": "off",
     "react/no-array-index-key": "off",
+    "react/prop-types": "warn",
     "unused-imports/no-unused-imports": "error"
   }
 }
