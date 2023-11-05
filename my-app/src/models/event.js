@@ -4,7 +4,13 @@ const eventSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ['Reported', 'Removed & Stored', 'Multievent Transport', 'Sorted', 'Disposed'],
+    enum: [
+      "Reported",
+      "Removed & Stored",
+      "Multievent Transport",
+      "Sorted",
+      "Disposed",
+    ],
   },
   lat: {
     type: Number,
@@ -17,12 +23,20 @@ const eventSchema = new mongoose.Schema({
   detectedLocation: {
     type: String,
     required: true,
-    enum: ['Oahu', 'Maui', 'Big Island', 'NWHI', 'At-sea Offshore'],
+    enum: ["Oahu", "Maui", "Big Island", "NWHI", "At-sea Offshore"],
   },
   publicDesc: {
     type: String,
     required: true,
-    trim: true,
+    enum: [
+      "A mass of netting and/or fishing gear",
+      "An abandoned/derelict vessel",
+      "A container/drum/cylinder",
+      "A large concentration of plastics",
+      "Potential Japan tsunami marine debris",
+      "A large concentration of miscellaneous trash",
+      "Other",
+    ],
   },
   publicEnvDamage: {
     type: String,
@@ -35,7 +49,7 @@ const eventSchema = new mongoose.Schema({
     trim: true,
   },
   approxSize: {
-    type: String,
+    type: Number,
     required: true,
   },
   imageUrl: {
@@ -57,11 +71,11 @@ const eventSchema = new mongoose.Schema({
     type: Date,
   },
   debrisSize: {
-    type: String,
+    type: Number,
     trim: true,
   },
   debrisMass: {
-    type: String,
+    type: Number,
     trim: true,
   },
   tempStorage: {
