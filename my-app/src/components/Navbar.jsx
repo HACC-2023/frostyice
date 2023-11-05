@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -63,6 +64,12 @@ const Navbar = () => {
     </ul>
   );
 
+  const router = useRouter();
+
+  const isLinkActive = (href) => {
+    return router.pathname === href ? "active" : "";
+  };
+
   const AccountInfo = () => (
     <>
       {session ? (
@@ -111,9 +118,9 @@ const Navbar = () => {
 
     return (
       <li className="m-1">
-        <Link href={link}>
+        <Link href={link} className={isLinkActive(link)}>
           {icon && <IconElement height={ICON_HEIGHT} />}
-          <span>{label}</span>
+          <a>{label}</a>
         </Link>
       </li>
     );
