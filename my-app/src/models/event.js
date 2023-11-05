@@ -1,5 +1,29 @@
 import mongoose from "mongoose";
 
+// subdocument schema
+const publicContactSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+});
+
 const eventSchema = new mongoose.Schema({
   status: {
     type: String,
@@ -25,7 +49,7 @@ const eventSchema = new mongoose.Schema({
     required: true,
     enum: ["Oahu", "Maui", "Big Island", "NWHI", "At-sea Offshore"],
   },
-  publicDesc: {
+  publicType: {
     type: String,
     required: true,
     enum: [
@@ -38,20 +62,63 @@ const eventSchema = new mongoose.Schema({
       "Other",
     ],
   },
-  publicEnvDamage: {
+  publicContainerFullness: {
     type: String,
     required: true,
-    trim: true,
+    enum: [
+      "Did not find a container/drum/cylinder",
+      "Full",
+      "Partially Emptied",
+      "Empty",
+    ],
   },
-  type: {
+  publicClaimBoat: {
     type: String,
     required: true,
-    trim: true,
+    enum: ["Yes", "No"],
   },
-  approxSize: {
-    type: Number,
+  publicLocationDesc: {
+    type: String,
     required: true,
+    enum: [
+      "At sea, BEYOND three miles from nearest land",
+      "At sea, WITHIN three miles of nearest land",
+      "In the shore break",
+      "On the beach BELOW the high wash of the waves",
+      "On the beach ABOVE the high wash of the waves",
+      "None of the above, a description follows below",
+    ],
   },
+  publicDesbrisDesc: {
+    type: String,
+    required: true,
+    enum: [
+      "Caught on the reef or is partially buried in sand",
+      "Loose in the shore break or on the shoreline and could go back out to sea",
+      "Trapped in a tide pool and cannot escape",
+      "Loose on the shore but caught in the vegetation line",
+      "Tied to a fixed object so it cannot be swept away",
+      "Pushed inland above the high wash of the waves so it cannot be swept away",
+      "Other - please explain how urgent recovery/removal is",
+    ],
+  },
+  publicBiofoulingRating: {
+    type: String,
+    required: true,
+    enum: [
+      "1 - No algae or marine life at all",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6 - Patches ofdense algae and presence of barnacle colonies",
+      "7",
+      "8",
+      "9",
+      "10 - Abundant, healthy growth of algae and barnacles covering submerged areas",
+    ],
+  },
+  publicContact: publicContactSchema,
   imageUrl: {
     type: String,
     required: true,
@@ -79,7 +146,7 @@ const eventSchema = new mongoose.Schema({
     trim: true,
   },
   tempStorage: {
-    type: String,
+    type: Number,
     trim: true,
   },
   assessedEnvDamage: {

@@ -7,12 +7,12 @@ const sortedEventSchema = new mongoose.Schema({
   },
   material: {
     type: String,
-    enum: ['Nets', 'Foam', 'Cylinders'],
+    enum: ["Nets", "Foam", "Cylinders"],
     required: true,
   },
   island: {
     type: String,
-    enum: ['Oahu', 'Maui', 'Big Island', 'NWHI', 'At-sea Offshore'],
+    enum: ["Oahu", "Maui", "Big Island", "NWHI", "At-sea Offshore"],
     required: true,
   },
   mass: {
@@ -21,12 +21,12 @@ const sortedEventSchema = new mongoose.Schema({
   },
   polymers: {
     type: String,
-    enum: ['EVA', 'NYLON', 'HDPE', 'OTHER'],
+    enum: ["EVA", "NYLON", "HDPE", "OTHER"],
     required: true,
   },
   eventId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Event',
+    ref: "Event",
     required: true,
   },
   disposalDate: {
@@ -34,10 +34,21 @@ const sortedEventSchema = new mongoose.Schema({
   },
   disposalMechanism: {
     type: String,
-    trim: true,
+    enum: [
+      "Repurposed for Infrastructure",
+      "Repurposed for research",
+      "Repurposed for academia",
+      "Stored for future reuse",
+      "Burned for power",
+      "Landfill",
+      "Burned",
+      "Left in environment",
+    ],
   },
 });
 
-const SortedEvent = mongoose.models.SortedEvent || mongoose.model("SortedEvent", sortedEventSchema);
+const SortedEvent =
+  mongoose.models.SortedEvent ||
+  mongoose.model("SortedEvent", sortedEventSchema);
 
 export default SortedEvent;
