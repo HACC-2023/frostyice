@@ -1,10 +1,9 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useSession } from "next-auth/react";
 import {
   HomeIcon,
   PlusCircleIcon,
   ChartPieIcon,
-  UserCircleIcon,
   RectangleGroupIcon,
   InboxIcon,
   RectangleStackIcon,
@@ -86,7 +85,7 @@ const Navbar = () => {
     <>
       <AccountInfo />
       {nav.map((navItem) => (
-        <MenuItem label={navItem.label} icon={navItem.icon} link={navItem.link} />
+        <MenuItem key={navItem.label} label={navItem.label} icon={navItem.icon} link={navItem.link} />
       ))}
     </>
   );
