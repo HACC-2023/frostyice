@@ -65,34 +65,34 @@ const ComponentsPieChart = () => {
         annotations: [
           {
             font: {
-              size: 20,
+              size: 18,
             },
             showarrow: false,
-            text: "Type               +",
-            x: 0.128,
+            text: "Type          +",
+            x: 0.11,
             y: 0.5,
           },
           {
             font: {
-              size: 20,
+              size: 18,
             },
             showarrow: false,
-            text: "Polymer             =",
-            x: 0.57,
+            text: "Polymer       =",
+            x: 0.56,
             y: 0.5,
           },
           {
             font: {
-              size: 20,
+              size: 18,
             },
             showarrow: false,
             text: "Fishery",
-            x: 0.9,
+            x: 0.91,
             y: 0.5,
           },
         ],
         height: 250,
-        width: 900,
+        width: 620,
         showlegend: false,
         grid: { rows: 1, columns: 3 },
         margin: { r: 100, t: 10, b: 20, l: 0 },

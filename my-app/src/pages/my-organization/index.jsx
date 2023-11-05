@@ -43,6 +43,7 @@ const MyOrganization = () => {
             onClick={closeModal}
           ></div>
           <div className="relative p-8 bg-white w-full max-w-lg rounded-lg shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-600">Add Member</h3>
             <div className="flex w-full flex-row mt-6">
               <div className="w-1/2">
                 {" "}
@@ -63,7 +64,7 @@ const MyOrganization = () => {
               <span className="text-gray-600 font-semibold ">Email</span>
               <input className="input input-bordered bg-white text-gray-600 mb-2" />
             </div>
-            <span className="text-gray-600 font-semibold mt-4 mb-2">Role</span>
+            <span className="text-gray-600 font-semibold mb-4">Role</span>
             <select className="select select-bordered w-full bg-white text-gray-600 p-2">
               <option>org_admin</option>
               <option>org_member</option>
