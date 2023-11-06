@@ -7,3 +7,11 @@ export const DISPOSAL_MECHANISMS = [
   "Burned",
   "Left in Environment",
 ]
+
+export const STATUS = [
+  "Event Reported",
+  "Removal and Storage",
+  "Sorting",
+  "Disposal",
+  "Complete"
+]

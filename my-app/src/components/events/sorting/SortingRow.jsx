@@ -7,7 +7,7 @@ const SortingRow = ({ sortedMaterial, event }) => {
       <td>{sortedMaterial.material}</td>
       <td>{sortedMaterial.mass}</td>
       <td>{sortedMaterial.polymers}</td>
-      <td>
+      <td className="flex gap-2">
         <button
           className="btn btn-outline btn-sm"
           onClick={() =>
@@ -17,6 +17,7 @@ const SortingRow = ({ sortedMaterial, event }) => {
           Edit
         </button>
         <EditComponentModal id="edit_component_modal" event={event} sortedMaterial={sortedMaterial}/>
+        <button className="btn btn-outline btn-sm">Delete</button>
       </td>
     </tr>
   );

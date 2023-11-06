@@ -8,7 +8,7 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       disposalMechanism: sortedMaterial.disposalMechanism,
-      disposalDate: convertDateToLocalFormat(sortedMaterial.disposalDate),
+      disposalDate: convertDateToLocalFormat(sortedMaterial.disposalDate ?? new Date(Date.now())),
     },
   });
   const [status, setStatus] = useState(null);
@@ -76,7 +76,7 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
               <span className="label-text">Disposal Mechanism</span>
             </label>
             <select
-              {...register("disposalMechanism", { required: true })}
+              {...register("disposalMechanism")}
               className="select select-bordered"
             >
               <option disabled>Choose disposal mechanism</option>
@@ -90,7 +90,7 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
               <span className="label-text">Disposal Date</span>
             </label>
             <input
-              {...register("disposalDate", { required: true, valueAsDate: true })}
+              {...register("disposalDate", { valueAsDate: true })}
               type="date"
               placeholder="Enter disposal date"
               className="input input-bordered w-full"
