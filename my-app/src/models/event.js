@@ -58,10 +58,16 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  publicLatLongOrPositionDescription: {
+  publicLatLongOrPositionDesc: {
     type: String,
   },
-  nearestIsland: {
+  mapLat: {
+    type: Number,
+  },
+  mapLong: {
+    type: Number,
+  },
+  closestIsland: {
     type: String,
     required: true,
     enum: [
@@ -77,7 +83,7 @@ const eventSchema = new mongoose.Schema({
       "At-sea Offshore"
     ],
   },
-  nearestLandmark: {
+  closestLandmark: {
     type: String,
   },
   debrisLandmarkRelativeLocation: {

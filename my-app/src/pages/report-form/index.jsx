@@ -1,38 +1,99 @@
 import { useState } from "react";
 import Dropzone from "react-dropzone";
+import { toast } from 'react-toastify';
 import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
 
 const ReportForm = () => {
   // debris description
   const [debrisType, setDebrisType] = useState('"A mass of netting and/or fishing gear"');
-  const [debrisTypeOther, setDebrisTypeOther] = useState(null);
+  const [debrisTypeOther, setDebrisTypeOther] = useState('');
   const [containerFullness, setContainerFullness] = useState('Full');
   const [claimBoat, setClaimBoat] = useState('No');
   const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
 
   // debris location
-  const [debrisLocation, setDebrisLocation] = useState('At sea, BEYOND three miles from nearest land');
-  const [debrisLocationDetails, setDebrisLocationDetails] = useState(null);
+  const [debrisRelativeLocation, setDebrisRelativeLocation] = useState('At sea, BEYOND three miles from nearest land');
+  const [debrisLocationDetails, setDebrisLocationDetails] = useState('');
   const [closestIsland, setClosestIsland] = useState('Big Island');
-  const [closestLandmark, setClosestLandmark] = useState(null);
-  const [closestLandmarkRelativeLocation, setClosestLandmarkRelativeLocation] = useState(null);
-  const [coordinates, setCoordinates] = useState(null);
+  const [closestLandmark, setClosestLandmark] = useState('');
+  const [closestLandmarkRelativeLocation, setClosestLandmarkRelativeLocation] = useState('');
+  const [coordinates, setCoordinates] = useState('');
 
   // debris detailed description
   const [debrisTrappedDesc, setDebrisTrappedDesc] = useState('Caught on the reef or is partially buried in sand');
-  const [debrisTrappedOther, setDebrisTrappedOther] = useState(null);
+  const [debrisTrappedOther, setDebrisTrappedOther] = useState('');
   const [imageURLArray, setImageURLArray] = useState([]);
   const [files, setFiles] = useState([]);
 
   // reporter contact info
+  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [confirmEmail, setConfirmEmail] = useState(''); // TODO validation
 
-  console.log(debrisTrappedDesc);
+  async function submitForm() {
+    const data = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      publicType: debrisType,
+      publicTypeOther: debrisTypeOther,
+      publicBiofoulingRating: biofoulingRating,
+      publicLocationDesc: debrisRelativeLocation,
+      publicLatLongOrPositionDesc: debrisLocationDetails,
+      closestIsland,
+      closestLandmark,
+      mapLat: coordinates?.latitude,
+      mapLong: coordinates?.longitude,
+      debrisLandmarkRelativeLocation: closestLandmarkRelativeLocation,
+      publicDebrisDesc: debrisTrappedDesc,
+      publicDebrisAdditionalDesc: debrisTrappedOther,
+    };
+    if (debrisType.includes('container')) {
+      data.publicContainerFullness = containerFullness;
+    } else if (debrisType.includes('boat')) {
+      data.publicClaimBoat = claimBoat;
+    }
+    const res = await fetch('/api/mongo/event/add-event-form', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (res.status === 200) {
+      toast.success('Form submitted. Mahalo!');
+    } else {
+      toast.error('Error submitting form. Please try again later.');
+    }
+  }
+
   return (
     <div className="justify-center items-center">
       <div className="mt-2 bg-white p-14">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           Report Marine Debris
         </h3>
+        <hr />
+        <p className="text-gray-600 my-2">
+          <b>
+            TO REPORT MARINE ANIMALS THAT ARE ENTANGLED IN DEBRIS, CALL NOAA
+            IMMEDIATELY AT <br/>
+            <a className="text-blue-500 hover:underline" href="tel:18882569840">1-888-256-9840</a>
+            &nbsp;(round-the-clock hotline)
+          </b>
+        </p>
+        <a
+          href="https://dlnr.hawaii.gov/dobor/boating-in-hawaii/dobor-emergency-contacts/"
+          target="_blank"
+          className="text-blue-500 hover:underline"
+        >
+          <p className="mb-2">
+            <b>GO TO DOBOR’S “WHO TO CALL” EMERGENCY CONTACT LIST</b>
+          </p>
+        </a>
         <hr />
         <p className="text-gray-600 mt-4 mb-4">
           Use this form if you found marine debris you cannot remove by yourself
@@ -66,7 +127,7 @@ const ReportForm = () => {
         </p>
 
         {/* 1st section */}
-        <div className="p-8 mt-8 mb-4 shadow">
+        <div className="p-8 mt-4 mb-4 shadow">
           <p className="text-gray-600 mb-2">
             <b>1) I FOUND/LOCATED THE FOLLOWING*</b>
           </p>
@@ -265,7 +326,7 @@ const ReportForm = () => {
             <b>THIS DEBRIS IS LOCATED*</b>
           </p>
 
-          <div className="form-control" onChange={event => setDebrisLocation(event.target.value)}>
+          <div className="form-control" onChange={event => setDebrisRelativeLocation(event.target.value)}>
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
@@ -625,14 +686,20 @@ const ReportForm = () => {
               <p className="text-gray-600">
                 <b>Last Name</b>
               </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-1" />
+              <input
+                className="input input-bordered bg-white text-gray-600 mb-1"
+                onChange={event => setLastName(event.target.value)}
+              />
               <p className="text-gray-400 mb-2 italic">40 max characters</p>
             </div>
             <div className="flex-row mt-4 ml-4">
               <p className="text-gray-600">
                 <b>First Name</b>
               </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-1" />
+              <input
+                className="input input-bordered bg-white text-gray-600 mb-1"
+                onChange={event => setFirstName(event.target.value)}
+              />
               <p className="text-gray-400 mb-4 italic">30 max characters</p>
             </div>
 
@@ -643,6 +710,7 @@ const ReportForm = () => {
               <input
                 placeholder="Ex: (808)395-9511"
                 className="input input-bordered bg-white text-gray-600 mb-1"
+                onChange={event => setPhoneNumber(event.target.value)}
               />
             </div>
           </div>
@@ -652,65 +720,23 @@ const ReportForm = () => {
               <p className="text-gray-600">
                 <b>E-mail Address</b>
               </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-1" />
+              <input
+                className="input input-bordered bg-white text-gray-600 mb-1"
+                onChange={event => setEmail(event.target.value)}
+              />
             </div>
             <div className="flex-row mt-1 ml-4">
               <p className="text-gray-600">
                 <b>Confirm E-mail Address</b>
               </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-1" />
-            </div>
-          </div>
-
-          <div className="flex flex-col lg:flex-row">
-            <div className="flex-row mt-4">
-              <p className="text-gray-600">
-                <b>Mailing Address</b>
-              </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-1" />
-              <p className="text-gray-400 mb-2 italic">40 max characters</p>
-            </div>
-            <div className="flex-row mt-4 ml-4">
-              <p className="text-gray-600">
-                <b>City</b>
-              </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-1" />
-              <p className="text-gray-400 mb-4 italic">30 max characters</p>
-            </div>
-            <div className="flex-row mt-4 ml-4">
-              <p className="text-gray-600">
-                <b>State</b>
-              </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-1" />
-              <p className="text-gray-400 mb-4 italic">10 max characters</p>
-            </div>
-            <div className="flex-row mt-4 ml-4">
-              <p className="text-gray-600">
-                <b>Zipcode</b>
-              </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-1" />
-              <p className="text-gray-400 mb-4 italic">12 max characters</p>
+              <input
+                className="input input-bordered bg-white text-gray-600 mb-1"
+                onChange={event => setConfirmEmail(event.target.value)}
+              />
             </div>
           </div>
         </div>
-        <button className="btn btn-primary">Submit</button>
-        <p className="text-gray-600 mt-8 mb-4">
-          <b>MAHALO!</b>
-        </p>
-        <p className="text-gray-600">
-          <b>
-            TO REPORT MARINE ANIMALS THAT ARE ENTANGLED IN DEBRIS – CALL NOAA
-            IMMEDIATELY AT 1-888-256-9840 (round the clock hotline).
-          </b>
-        </p>
-        <a
-          href="https://dlnr.hawaii.gov/dobor/boating-in-hawaii/dobor-emergency-contacts/"
-          className="text-blue-500 hover:underline"
-        >
-          <p>
-            <b>GO TO DOBOR’S “WHO TO CALL” EMERGENCY CONTACT LIST</b>
-          </p>
-        </a>
+        <button className="btn btn-primary" onClick={submitForm}>Submit</button>
       </div>
     </div>
   );

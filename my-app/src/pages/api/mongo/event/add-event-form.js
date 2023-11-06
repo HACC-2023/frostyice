@@ -12,9 +12,11 @@ export default async function handler(req, res) {
         publicClaimBoat,
         publicBiofoulingRating,
         publicLocationDesc,
-        publicLatLongOrPositionDescription,
-        nearestIsland,
-        nearestLandmark,
+        publicLatLongOrPositionDesc,
+        mapLat,
+        mapLong,
+        closestIsland,
+        closestLandmark,
         debrisLandmarkRelativeLocation,
         publicDebrisDesc,
         publicDebrisAdditionalDesc,
@@ -24,6 +26,8 @@ export default async function handler(req, res) {
         email,
         phoneNumber,
       } = await req.body;
+
+      console.log(req.body);
 
       await connectDB();
 
@@ -35,9 +39,11 @@ export default async function handler(req, res) {
         publicClaimBoat,
         publicBiofoulingRating,
         publicLocationDesc,
-        publicLatLongOrPositionDescription,
-        nearestIsland,
-        nearestLandmark,
+        publicLatLongOrPositionDesc,
+        mapLat,
+        mapLong,
+        closestIsland,
+        closestLandmark,
         debrisLandmarkRelativeLocation,
         publicDebrisDesc,
         publicDebrisAdditionalDesc,
@@ -52,7 +58,8 @@ export default async function handler(req, res) {
 
       const containerFullness = publicContainerFullness ? `<b>Container Fullness:</b> ${publicContainerFullness}<br/>` : '';
       const claimBoat = publicClaimBoat ? `<b>Intend to Claim Boat:</b> ${publicClaimBoat}<br/>` : '';
-      const latLongOrPositionDescription = publicLatLongOrPositionDescription ? `<b>Position Description:</b> ${publicLatLongOrPositionDescription}<br/>` : '';
+      const latLongOrPositionDescription = publicLatLongOrPositionDesc ? `<b>Position Description:</b> ${publicLatLongOrPositionDesc}<br/>` : '';
+      const mapLatLong = mapLat && mapLong ? `<b>Lat:</b> ${mapLat}<br/><b>Long:</b> ${mapLong}<br/>` : '';
       const additionalDesc = publicDebrisAdditionalDesc ? `<b>Additional Description:</b> ${publicDebrisAdditionalDesc}<br/>` : '';
 
       // TODO update link at bottom of email
@@ -64,10 +71,11 @@ export default async function handler(req, res) {
         <b>Type:</b> ${publicType !== 'Other' ? publicType : `Other - ${publicTypeOther}`}<br/>
         ${containerFullness}
         ${claimBoat}
-        <b>Nearest Island:</b> ${nearestIsland}<br/>
-        <b>Nearest Landmark:</b> ${nearestLandmark}<br/>
+        <b>Nearest Island:</b> ${closestIsland}<br/>
+        <b>Nearest Landmark:</b> ${closestLandmark}<br/>
         <b>Landmark Relative Location:</b> ${debrisLandmarkRelativeLocation}<br/>
         ${latLongOrPositionDescription}
+        ${mapLatLong}
         <b>Location Description:</b> ${publicLocationDesc}<br/>
         <b>Debris Description:</b> ${publicDebrisDesc}<br/>
         ${additionalDesc}

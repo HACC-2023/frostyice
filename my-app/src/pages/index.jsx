@@ -1,5 +1,6 @@
 import DialogflowChatWidget from "@/components/chatbot/DialogflowChatWidget";
 import MobileNavbar from '@/components/navbar/MobileNavbar';
+
 const Home = () => {
   return (
     <div className='min-h-screen'>
