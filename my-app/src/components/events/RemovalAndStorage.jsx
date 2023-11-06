@@ -1,4 +1,5 @@
 import EventCollapse from "./common/EventCollapse";
+import EditRemovalModal from "./removal-and-storage/EditRemovalModal";
 import RemovalStorageRow from "./removal-and-storage/RemovalStorageRow";
 
 const RemovalAndStorage = ({ event }) => {
@@ -6,7 +7,10 @@ const RemovalAndStorage = ({ event }) => {
     <EventCollapse title="Removal and Storage">
       <div>
         <section className="flex md:mb-6">
-          <button className="btn btn-secondary justify-self-end">Edit</button>
+          <button className="btn btn-secondary justify-self-end" onClick={() => {
+            document.getElementById("edit_removal_modal_1").showModal();
+          }}>Edit</button>
+          <EditRemovalModal id="edit_removal_modal_1" event={event} />
           {/* When edit is clicked, change elements into inputs */}
           {/* <input className="" value={event.debrisSize} /> */}
         </section>
@@ -41,7 +45,7 @@ const RemovalAndStorage = ({ event }) => {
             <div>
               <h1 className="md:text-xl font-bold">Removal Date/s</h1>
               <p>
-                {event.removalStartDate}-{event.removalEndDate}
+                {event.removalStartDate.toLocaleDateString()}-{event.removalEndDate.toLocaleDateString()}
               </p>
             </div>
           </div>
