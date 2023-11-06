@@ -1,15 +1,13 @@
+import AddComponentModal from "./sorting/AddComponentModal";
 import SortingRow from "./sorting/SortingRow";
-
-const { default: EventCollapse } = require("./common/EventCollapse");
+import EventCollapse from "./common/EventCollapse";
 
 const Sorting = ({ event }) => {
   // need to send a get request here to get all of the materials from the event
-
   const sortedMaterial = {
-    sortedDate: new Date(1699143329284),
     material: "Nets",
     island: "Oahu",
-    mass: "32 kg",
+    mass: 32,
     polymers: "Nylon",
     eventId: "abcd1234",
     disposalDate: new Date(1709143329284),
@@ -19,8 +17,18 @@ const Sorting = ({ event }) => {
   return (
     <EventCollapse title="Sorting">
       <section className="flex justify-between md:mt-10">
-        <h1>Sorting Date: {sortedMaterial.sortedDate.toLocaleString("en-US")}</h1>
-        <button className="btn btn-secondary">Add Component</button>
+        {/* <h1>
+          Sorting Date: {sortedMaterial.sortedDate.toLocaleString("en-US")}
+        </h1> */}
+        <button
+          className="btn btn-secondary"
+          onClick={() =>
+            document.getElementById("add_component_modal").showModal()
+          }
+        >
+          Add Component
+        </button>
+        <AddComponentModal id="add_component_modal" event={event} />
       </section>
       <div className="flex flex-col gap-3 my-3 py-6 px-3 bg-base-100 rounded-xl">
         <div className="overflow-x-auto w-full flex items-start rounded-xl p-3 h-96 border border-neutral">
@@ -28,14 +36,14 @@ const Sorting = ({ event }) => {
             <thead>
               <tr>
                 <th>Material</th>
-                <th>Mass</th>
+                <th>Mass (kg)</th>
                 <th>Polymers</th>
                 <th />
               </tr>
             </thead>
             <tbody>
               {/* Later on use all items */}
-              <SortingRow sortedMaterial={sortedMaterial} />
+              <SortingRow sortedMaterial={sortedMaterial} event={event}/>
             </tbody>
           </table>
         </div>

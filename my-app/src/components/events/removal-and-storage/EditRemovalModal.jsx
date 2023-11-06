@@ -1,22 +1,9 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { convertDateToLocalFormat, convertLocalDateToUTC } from "@/utils/dateConverter";
 
 const EditRemovalModal = ({ id, event }) => {
-  /* Converts date to local format */
-  function convertDateToLocalFormat(yourDate) {
-    let offset = yourDate.getTimezoneOffset() * 60 * 1000;
-    let adjustedDate = new Date(yourDate.getTime() - offset);
-    let formattedDate = adjustedDate.toISOString().split("T")[0];
-    return formattedDate;
-  }
-  /* Converts local date to UTC */
-  function convertLocalDateToUTC(date) {
-    let offset = date.getTimezoneOffset() * 60 * 1000;
-    let adjustedDate = new Date(date.getTime() + offset);
-    return adjustedDate;
-  }
-
   // console.log(event.removalStartDate);
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
