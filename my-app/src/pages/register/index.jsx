@@ -2,10 +2,14 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import Error from "@/components/Error";
 import Link from "next/link";
 
 const Register = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
+  const [exists, setExists] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+  const [errShow, setErrShow] = useState(false);
   const [success, setSuccess] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -221,7 +225,7 @@ const Register = () => {
             </button>
           </div>
         </form>
-
+        {errShow ? <Error errMsg={errMsg} errShow={errShow}/> : <br/>}
         <div
           className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
             error ? "" : "hidden"
