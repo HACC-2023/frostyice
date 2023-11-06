@@ -3,9 +3,19 @@ import Dropzone from "react-dropzone";
 import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
 
 const ReportForm = () => {
+  const [debrisType, setDebrisType] = useState('"A mass of netting and/or fishing gear"');
+  const [debrisTypeOther, setDebrisTypeOther] = useState(null);
+  const [containerFullness, setContainerFullness] = useState('Full');
+  const [claimBoat, setClaimBoat] = useState('No');
+  const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
+
+  const [debrisLocation, setDebrisLocation] = useState('At sea, BEYOND three miles from nearest land');
+  const [debrisLocationDetails, setDebrisLocationDetails] = useState(null);
+
   const [imageURLArray, setImageURLArray] = useState([]);
   const [files, setFiles] = useState([]);
 
+  console.log(debrisLocation);
   return (
     <div className="justify-center items-center">
       <div className="mt-2 bg-white p-14">
@@ -18,21 +28,21 @@ const ReportForm = () => {
           that is:
         </p>
         <p className="text-gray-600 mb-1">
-          1) drifting in State waters or washed up on the shoreline,
+          1) Drifting in State waters or washed up on the shoreline,
         </p>
         <p className="text-gray-600 mb-1">
-          2) removed from the water and is secured on land, or
+          2) Removed from the water and is secured on land, or
         </p>
         <p className="text-gray-600 mb-6">
-          3) so large or heavy that you need DLNR’s help to remove it.
+          3) So large or heavy that you need DLNR’s help to remove it.
         </p>
 
         <p className="text-gray-600 mb-1">
-          Please note: information you submit through this form is shared
+          <b>Note:</b> Information you submit through this form is shared
           between divisions within DLNR, researchers at the University of
           Hawaii, NOAA, Non-Government Organizations and other agencies that
           manage marine debris and Aquatic Invasive Species. Your contact
-          information is kept confidential.{" "}
+          information is kept confidential.
         </p>
 
         <h5 className="text-xl font-semibold text-gray-600 mt-8 mb-2">
@@ -46,15 +56,18 @@ const ReportForm = () => {
 
         {/* 1st section */}
         <div className="p-8 mt-8 mb-4 shadow">
-          <p className="text-gray-600 mt-4 mb-2">
+          <p className="text-gray-600 mb-2">
             <b>1) I FOUND/LOCATED THE FOLLOWING*</b>
           </p>
-          <div className="form-control">
+          <div className="form-control" onChange={event => setDebrisType(event.target.value)}>
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
-                  type="checkbox"
-                  className="checkbox checkbox-xs checkbox-info"
+                  type="radio"
+                  className="radio radio-xs radio-info"
+                  name="debrisTypeRadio"
+                  value="A mass of netting and/or fishing gear"
+                  defaultChecked
                 />
                 <span className="label-text ml-2 text-gray-600">
                   A mass of netting and/or fishing gear
@@ -64,8 +77,10 @@ const ReportForm = () => {
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
-                  type="checkbox"
-                  className="checkbox checkbox-xs checkbox-info"
+                  type="radio"
+                  className="radio radio-xs radio-info"
+                  value="An abandoned/derelict boat"
+                  name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   An abandoned/derelict boat
@@ -75,8 +90,10 @@ const ReportForm = () => {
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
-                  type="checkbox"
-                  className="checkbox checkbox-xs checkbox-info"
+                  type="radio"
+                  className="radio radio-xs radio-info"
+                  value="A container/drum/cylinder"
+                  name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   A container/drum/cylinder
@@ -86,8 +103,10 @@ const ReportForm = () => {
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
-                  type="checkbox"
-                  className="checkbox checkbox-xs checkbox-info"
+                  type="radio"
+                  className="radio radio-xs radio-info"
+                  value="A large concentration of plastics"
+                  name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   A large concentration of plastics
@@ -97,8 +116,10 @@ const ReportForm = () => {
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
-                  type="checkbox"
-                  className="checkbox checkbox-xs checkbox-info"
+                  type="radio"
+                  className="radio radio-xs radio-info"
+                  value="Potential Japan tsunami marine debris"
+                  name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   Potential Japan tsunami marine debris
@@ -108,8 +129,10 @@ const ReportForm = () => {
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
-                  type="checkbox"
-                  className="checkbox checkbox-xs checkbox-info"
+                  type="radio"
+                  className="radio radio-xs radio-info"
+                  value="A large concentration of miscellaneous trash"
+                  name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   A large concentration of miscellaneous trash
@@ -119,10 +142,12 @@ const ReportForm = () => {
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
-                  type="checkbox"
-                  className="checkbox checkbox-xs checkbox-info"
+                  type="radio"
+                  className="radio radio-xs radio-info"
+                  value="Other"
+                  name="debrisTypeRadio"
                 />
-                <span className="label-text ml-2 text-gray-600">
+                <span className="label-text ml-3 text-gray-600">
                   Other - describe below
                 </span>
               </div>
@@ -131,7 +156,7 @@ const ReportForm = () => {
 
           <p className="text-gray-600 mt-4 mb-4">
             <b>
-              ENTER MY OWN DESCRIPTION OF THE TYPE OF DEBRIS FOUND AND WHAT IT
+              ENTER DESCRIPTION OF THE TYPE OF DEBRIS FOUND AND WHAT IT
               WOULD TAKE TO REMOVE IT (for example, a large section of a dock or
               a shipping container requiring a crane to remove, a wooden beam
               10&rsquo; long that would require 3-4 people to lift, etc.)
@@ -139,53 +164,57 @@ const ReportForm = () => {
           </p>
           <input
             type="text"
-            className="input input-bordered input-lg w-full bg-white text-gray-600 mb-2"
+            className="input input-bordered w-full bg-white text-gray-600 mb-2"
+            onChange={event => setDebrisTypeOther(event.target.value)}
           />
-
-          <p className="text-gray-600 mt-4 mb-4">
-            <b>
-              Did you find a container, a drum, or cylinder? If yes, how full is
-              it?
-            </b>
-          </p>
-          <select
-            className="select select-bordered w-full max-w-xs bg-white text-gray-600"
-            defaultValue="Did not find a container/drum/cylinder"
-          >
-            <option>Did not find a container/drum/cylinder</option>
-            <option>Full</option>
-            <option>Partially Filled</option>
-            <option>Empty</option>
-          </select>
-
-          <p className="text-gray-600 mt-4 mb-4">
-            <b>
-              Did you find a boat? If yes, do you want to claim it for personal
-              use?*
-            </b>
-          </p>
-          <div className="form-control">
-            <label className="label cursor-pointer">
-              <div className="flex items-left">
-                <input
-                  type="radio"
-                  name="radio"
-                  className="radio radio-xs radio-info"
-                />
-                <span className="label-text ml-2 text-gray-600"> No</span>
+          { debrisType === 'A container/drum/cylinder' && (
+            <span>
+              <p className="text-gray-600 mt-4 mb-4">
+                <b>How full is the container/drum/cylinder?</b>
+              </p>
+              <select
+                className="select select-bordered w-full max-w-xs bg-white text-gray-600"
+                defaultValue="Full"
+                onChange={event => setContainerFullness(event.target.value)}
+              >
+                <option>Full</option>
+                <option>Partially Filled</option>
+                <option>Empty</option>
+              </select>
+            </span>
+          )}
+          { debrisType === 'An abandoned/derelict boat' && (
+            <span>
+              <p className="text-gray-600 mt-4 mb-4">
+                <b>Do you want to claim the boat for personal use?*</b>
+              </p>
+              <div className="form-control" onChange={event => setClaimBoat(event.target.value)}>
+                <label className="label cursor-pointer">
+                  <div className="flex items-left">
+                    <input
+                      type="radio"
+                      name="claimBoatRadio"
+                      value="Yes"
+                      className="radio radio-xs radio-info"
+                    />
+                    <span className="label-text ml-2 text-gray-600">Yes</span>
+                  </div>
+                </label>
+                <label className="label cursor-pointer">
+                  <div className="flex items-left">
+                    <input
+                      type="radio"
+                      name="claimBoatRadio"
+                      className="radio radio-xs radio-info"
+                      value="No"
+                      defaultChecked
+                    />
+                    <span className="label-text ml-2 text-gray-600">No</span>
+                  </div>
+                </label>
               </div>
-            </label>
-            <label className="label cursor-pointer">
-              <div className="flex items-left">
-                <input
-                  type="radio"
-                  name="radio"
-                  className="radio radio-xs radio-info"
-                />
-                <span className="label-text ml-2 text-gray-600"> Yes</span>
-              </div>
-            </label>
-          </div>
+            </span>
+          )}
 
           <p className="text-gray-600 mt-4 mb-4">
             <b>
@@ -196,6 +225,7 @@ const ReportForm = () => {
           </p>
 
           <select
+            onChange={event => setBiofoulingRating(event.target.value)}
             defaultValue="1 - No algae or marine life at all"
             className="select select-bordered w-full max-w-xs bg-white text-gray-600"
           >
@@ -219,18 +249,20 @@ const ReportForm = () => {
 
         {/* 2nd section */}
 
-        <div className="p-8 mt-8 mb-4 shadow">
+        <div className="ps-8 pt-2 mb-4 shadow">
           <p className="text-gray-600 mt-4 mb-4">
             <b>THIS DEBRIS IS LOCATED*</b>
           </p>
 
-          <div className="form-control">
+          <div className="form-control" onChange={event => setDebrisLocation(event.target.value)}>
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debristLocationRadio"
                   className="radio radio-xs radio-info"
+                  value="At sea, BEYOND three miles from nearest land"
+                  defaultChecked
                 />
                 <span className="label-text ml-2 text-gray-600">
                   At sea, BEYOND three miles from nearest land
@@ -241,8 +273,9 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debristLocationRadio"
                   className="radio radio-xs radio-info"
+                  value="At sea, WITHIN three miles of nearest land"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   At sea, WITHIN three miles of nearest land
@@ -253,8 +286,9 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debristLocationRadio"
                   className="radio radio-xs radio-info"
+                  value="In the shore break"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   In the shore break
@@ -265,8 +299,9 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debristLocationRadio"
                   className="radio radio-xs radio-info"
+                  value="On the beach BELOW the high wash of the waves"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   On the beach BELOW the high wash of the waves
@@ -277,8 +312,9 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debristLocationRadio"
                   className="radio radio-xs radio-info"
+                  value="On the beach ABOVE the high wash of the waves"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   On the beach ABOVE the high wash of the waves
@@ -290,11 +326,12 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debristLocationRadio"
                   className="radio radio-xs radio-info"
+                  value="None of the above, a description follows below"
                 />
                 <span className="label-text ml-2 text-gray-600">
-                  None of the above, a description follows bellow
+                  None of the above, a description follows below
                 </span>
               </div>
             </label>
@@ -382,7 +419,7 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debrisDescRadio"
                   className="radio radio-info radio-xs"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -395,7 +432,7 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debrisDescRadio"
                   className="radio radio-info radio-xs"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -409,7 +446,7 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debrisDescRadio"
                   className="radio radio-info radio-xs"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -422,7 +459,7 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debrisDescRadio"
                   className="radio radio-info radio-xs"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -435,7 +472,7 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debrisDescRadio"
                   className="radio radio-info radio-xs"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -448,7 +485,7 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debrisDescRadio"
                   className="radio radio-info radio-xs"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -462,7 +499,7 @@ const ReportForm = () => {
               <div className="flex items-left">
                 <input
                   type="radio"
-                  name="radio"
+                  name="debrisDescRadio"
                   className="radio radio-xs radio-info"
                 />
                 <span className="label-text ml-2 text-gray-600">
