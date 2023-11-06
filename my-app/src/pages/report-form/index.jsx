@@ -3,19 +3,30 @@ import Dropzone from "react-dropzone";
 import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
 
 const ReportForm = () => {
+  // debris description
   const [debrisType, setDebrisType] = useState('"A mass of netting and/or fishing gear"');
   const [debrisTypeOther, setDebrisTypeOther] = useState(null);
   const [containerFullness, setContainerFullness] = useState('Full');
   const [claimBoat, setClaimBoat] = useState('No');
   const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
 
+  // debris location
   const [debrisLocation, setDebrisLocation] = useState('At sea, BEYOND three miles from nearest land');
   const [debrisLocationDetails, setDebrisLocationDetails] = useState(null);
+  const [closestIsland, setClosestIsland] = useState('Big Island');
+  const [closestLandmark, setClosestLandmark] = useState(null);
+  const [closestLandmarkRelativeLocation, setClosestLandmarkRelativeLocation] = useState(null);
+  const [coordinates, setCoordinates] = useState(null);
 
+  // debris detailed description
+  const [debrisTrappedDesc, setDebrisTrappedDesc] = useState('Caught on the reef or is partially buried in sand');
+  const [debrisTrappedOther, setDebrisTrappedOther] = useState(null);
   const [imageURLArray, setImageURLArray] = useState([]);
   const [files, setFiles] = useState([]);
 
-  console.log(debrisLocation);
+  // reporter contact info
+
+  console.log(debrisTrappedDesc);
   return (
     <div className="justify-center items-center">
       <div className="mt-2 bg-white p-14">
@@ -350,6 +361,7 @@ const ReportForm = () => {
               <input
                 type="text"
                 className="input input-bordered bg-white text-gray-600 mb-2"
+                onChange={event => setDebrisLocationDetails(event.target.value)}
               />
 
               <p className="text-gray-600 mt-4 mb-4">
@@ -361,6 +373,7 @@ const ReportForm = () => {
               <select
                 defaultValue="Big Island"
                 className="select select-bordered w-full max-w-xs bg-white text-gray-600"
+                onChange={event => setClosestIsland(event.target.value)}
               >
                 <option>Big Island</option>
                 <option>Maui</option>
@@ -376,7 +389,10 @@ const ReportForm = () => {
               <p className="text-gray-600 mt-4">
                 <b>Nearest town, street address, nearby landmarks*</b>
               </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-2" />
+              <input
+                className="input input-bordered bg-white text-gray-600 mb-2"
+                onChange={event => setClosestLandmark(event.target.value)}
+              />
               <span className="text-gray-400">0 of 120 max characters</span>
 
               <p className="text-gray-600 mt-4 max-w-2xl">
@@ -385,7 +401,10 @@ const ReportForm = () => {
                   provided (i.e. 200 feet north, etc.)
                 </b>
               </p>
-              <input className="input input-bordered bg-white text-gray-600 mb-2" />
+              <input
+                className="input input-bordered bg-white text-gray-600 mb-2"
+                onChange={event => setClosestLandmarkRelativeLocation(event.target.value)}
+              />
               <span className="text-gray-400 mb-4">
                 0 of 120 max characters
               </span>
@@ -402,25 +421,27 @@ const ReportForm = () => {
                   Select Location
                 </label>
                 <br/>
-                <ClickableMap />
+                <ClickableMap setCoordinates={setCoordinates} />
               </div>
             </div>
           </div>
         </div>
 
         {/* 3rd section */}
-        <div className="p-8 mt-8 mb-4 shadow">
+        <div className="ps-8 pt-2 mb-4 shadow">
           <p className="text-gray-600 mt-4 mb-4">
             <b>3) THE DEBRIS IS BEST DESCRIBED AS:*</b>
           </p>
 
-          <div className="form-control">
+          <div className="form-control" onChange={event => setDebrisTrappedDesc(event.target.value)}>
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
                   type="radio"
                   name="debrisDescRadio"
                   className="radio radio-info radio-xs"
+                  value="Caught on the reef or is partially buried in sand"
+                  defaultChecked
                 />
                 <span className="label-text ml-2 text-gray-600">
                   Caught on the reef or is partially buried in sand
@@ -434,10 +455,10 @@ const ReportForm = () => {
                   type="radio"
                   name="debrisDescRadio"
                   className="radio radio-info radio-xs"
+                  value="Loose in the shore break or on the shoreline and could go back out to sea"
                 />
                 <span className="label-text ml-2 text-gray-600">
-                  Loose in the shore break or on the shoreline and could go back
-                  out to sea
+                  Loose in the shore break or on the shoreline and could go back out to sea
                 </span>
               </div>
             </label>
@@ -448,6 +469,7 @@ const ReportForm = () => {
                   type="radio"
                   name="debrisDescRadio"
                   className="radio radio-info radio-xs"
+                  value="Trapped in a tide pool and cannot escape"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   Trapped in a tide pool and cannot escape
@@ -461,6 +483,7 @@ const ReportForm = () => {
                   type="radio"
                   name="debrisDescRadio"
                   className="radio radio-info radio-xs"
+                  value="Loose on the shore but caught in the vegetation line"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   Loose on the shore but caught in the vegetation line
@@ -474,6 +497,7 @@ const ReportForm = () => {
                   type="radio"
                   name="debrisDescRadio"
                   className="radio radio-info radio-xs"
+                  value="Tied to a fixed object so it cannot be swept away"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   Tied to a fixed object so it cannot be swept away
@@ -487,10 +511,10 @@ const ReportForm = () => {
                   type="radio"
                   name="debrisDescRadio"
                   className="radio radio-info radio-xs"
+                  value="Pushed inland above the high wash of the waves so it cannot be swept away"
                 />
                 <span className="label-text ml-2 text-gray-600">
-                  Pushed inland above the high wash of the waves so it cannot be
-                  swept away
+                  Pushed inland above the high wash of the waves so it cannot be swept away
                 </span>
               </div>
             </label>
@@ -501,6 +525,7 @@ const ReportForm = () => {
                   type="radio"
                   name="debrisDescRadio"
                   className="radio radio-xs radio-info"
+                  value="Other"
                 />
                 <span className="label-text ml-2 text-gray-600">
                   Other - please explain how urgent recovery/removal is
@@ -512,7 +537,10 @@ const ReportForm = () => {
           <p className="text-gray-600 mt-4 mb-4">
             <b>ENTER MY OWN DESCRIPTION</b>
           </p>
-          <input className="input input-bordered input-lg w-full bg-white text-gray-600 mb-2" />
+          <input
+            className="input input-bordered input-lg w-full bg-white text-gray-600 mb-2"
+            onChange={event => setDebrisTrappedOther(event.target.value)}
+          />
 
           <p className="text-gray-600 mt-4 mb-4">
             <b>
