@@ -3,6 +3,7 @@ import MobileNavbar from "@/components/navbar/MobileNavbar";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
+import DialogflowChatWidget from "@/components/chatbot/DialogflowChatWidget";
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
@@ -15,6 +16,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
           </div>
           <MobileNavbar />
           <ToastContainer />
+          <DialogflowChatWidget/>
         </div>
       </SessionProvider>
     </>
