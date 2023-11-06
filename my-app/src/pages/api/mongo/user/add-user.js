@@ -7,9 +7,6 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const {firstName, lastName, email, role, password, orgId} = await req.body;
     try {
-      console.log(`firstName: ${firstName}`)
-      console.log(`lastName: ${lastName}`)
-      console.log(req.body)
       const hashedPassword = await bcrypt.hash(password, 10);
       await connectDB();
       await User.create({
