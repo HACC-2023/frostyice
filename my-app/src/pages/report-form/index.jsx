@@ -148,8 +148,11 @@ const ReportForm = () => {
               it?
             </b>
           </p>
-          <select className="select select-bordered w-full max-w-xs bg-white text-gray-600">
-            <option selected>Did not find a container/drum/cylinder.</option>
+          <select
+            className="select select-bordered w-full max-w-xs bg-white text-gray-600"
+            defaultValue="Did not find a container/drum/cylinder"
+          >
+            <option>Did not find a container/drum/cylinder</option>
             <option>Full</option>
             <option>Partially Filled</option>
             <option>Empty</option>
@@ -192,8 +195,11 @@ const ReportForm = () => {
             </b>
           </p>
 
-          <select className="select select-bordered w-full max-w-xs bg-white text-gray-600">
-            <option selected>1 - No algae or marine life at all</option>
+          <select
+            defaultValue="1 - No algae or marine life at all"
+            className="select select-bordered w-full max-w-xs bg-white text-gray-600"
+          >
+            <option>1 - No algae or marine life at all</option>
             <option>2</option>
             <option>3</option>
             <option>4</option>
@@ -315,13 +321,19 @@ const ReportForm = () => {
                 </b>
               </p>
 
-              <select className="select select-bordered w-full max-w-xs bg-white text-gray-600">
-                <option selected>Big Island</option>
-                <option>Kauai</option>
-                <option>Lanai</option>
+              <select
+                defaultValue="Big Island"
+                className="select select-bordered w-full max-w-xs bg-white text-gray-600"
+              >
+                <option>Big Island</option>
                 <option>Maui</option>
                 <option>Molokai</option>
+                <option>Lanai</option>
+                <option>Kahoolawe</option>
                 <option>Oahu</option>
+                <option>Kauai</option>
+                <option>Niihau</option>
+                <option>NWHI</option>
               </select>
 
               <p className="text-gray-600 mt-4">
@@ -628,7 +640,7 @@ const ReportForm = () => {
         </p>
         <a
           href="https://dlnr.hawaii.gov/dobor/boating-in-hawaii/dobor-emergency-contacts/"
-          class="text-blue-500 hover:underline"
+          className="text-blue-500 hover:underline"
         >
           <p>
             <b>GO TO DOBOR’S “WHO TO CALL” EMERGENCY CONTACT LIST</b>
