@@ -1,4 +1,6 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import EditDisposalModal from "./EditDisposalModal";
+
 
 const DisposalRow = ({ sortedMaterial }) => {
   return (
@@ -7,9 +9,15 @@ const DisposalRow = ({ sortedMaterial }) => {
       <td>{sortedMaterial.mass}</td>
       <td>{sortedMaterial.polymers}</td>
       <td>{sortedMaterial.disposalMechanism}</td>
-      <td>{sortedMaterial.disposalDate.toLocaleString("en-US")}</td>
+      <td>{sortedMaterial.disposalDate.toLocaleDateString("en-US")}</td>
       <td>
-        <button className="btn btn-ghost">Edit</button>
+        <button
+          className="btn btn-ghost"
+          onClick={() => document.getElementById("edit_disposal_modal").showModal()}
+        >
+          Edit
+        </button>
+        <EditDisposalModal id="edit_disposal_modal" sortedMaterial={sortedMaterial}/>
         <button className="btn btn-ghost">Delete</button>
       </td>
     </tr>

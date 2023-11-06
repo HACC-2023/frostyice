@@ -3,14 +3,13 @@ import DisposalRow from "./disposal/DisposalRow";
 
 const Disposal = ({ event }) => {
   const sortedMaterial = {
-    sortedDate: new Date(1699143329284),
     material: "Nets",
     island: "Oahu",
     mass: "32 kg",
     polymers: "Nylon",
     eventId: "abcd1234",
-    disposalDate: new Date(1709143329284),
-    disposalMechanism: "Recycled",
+    disposalDate: new Date(1699238545839),
+    disposalMechanism: "Burned",
   };
 
   return (
