@@ -36,30 +36,6 @@ const eventSchema = new mongoose.Schema({
       "Disposed",
     ],
   },
-  lat: {
-    type: Number,
-    required: true,
-  },
-  long: {
-    type: Number,
-    required: true,
-  },
-  detectedLocation: {
-    type: String,
-    required: true,
-    enum: [
-      "Big Island",
-      "Maui",
-      "Molokai",
-      "Lanai",
-      "Kahoolawe",
-      "Oahu",
-      "Kauai",
-      "Niihau",
-      "NWHI",
-      "At-sea Offshore"
-    ],
-  },
   publicType: {
     type: String,
     required: true,
@@ -73,9 +49,11 @@ const eventSchema = new mongoose.Schema({
       "Other",
     ],
   },
+  publicTypeOther: {
+    type: String,
+  },
   publicContainerFullness: {
     type: String,
-    required: true,
     enum: [
       "Did not find a container/drum/cylinder",
       "Full",
@@ -85,33 +63,7 @@ const eventSchema = new mongoose.Schema({
   },
   publicClaimBoat: {
     type: String,
-    required: true,
     enum: ["Yes", "No"],
-  },
-  publicLocationDesc: {
-    type: String,
-    required: true,
-    enum: [
-      "At sea, BEYOND three miles from nearest land",
-      "At sea, WITHIN three miles of nearest land",
-      "In the shore break",
-      "On the beach BELOW the high wash of the waves",
-      "On the beach ABOVE the high wash of the waves",
-      "None of the above, a description follows below",
-    ],
-  },
-  publicDesbrisDesc: {
-    type: String,
-    required: true,
-    enum: [
-      "Caught on the reef or is partially buried in sand",
-      "Loose in the shore break or on the shoreline and could go back out to sea",
-      "Trapped in a tide pool and cannot escape",
-      "Loose on the shore but caught in the vegetation line",
-      "Tied to a fixed object so it cannot be swept away",
-      "Pushed inland above the high wash of the waves so it cannot be swept away",
-      "Other - please explain how urgent recovery/removal is",
-    ],
   },
   publicBiofoulingRating: {
     type: String,
@@ -129,10 +81,62 @@ const eventSchema = new mongoose.Schema({
       "10 - Abundant, healthy growth of algae and barnacles covering submerged areas",
     ],
   },
+  publicLocationDesc: {
+    type: String,
+    required: true,
+    enum: [
+      "At sea, BEYOND three miles from nearest land",
+      "At sea, WITHIN three miles of nearest land",
+      "In the shore break",
+      "On the beach BELOW the high wash of the waves",
+      "On the beach ABOVE the high wash of the waves",
+      "None of the above, a description follows below",
+    ],
+  },
+  publicLatLongOrPositionDescription: {
+    type: String,
+  },
+  nearestIsland: {
+    type: String,
+    required: true,
+    enum: [
+      "Big Island",
+      "Maui",
+      "Molokai",
+      "Lanai",
+      "Kahoolawe",
+      "Oahu",
+      "Kauai",
+      "Niihau",
+      "NWHI",
+      "At-sea Offshore"
+    ],
+  },
+  nearestLandmark: {
+    type: String,
+  },
+  debrisLandmarkRelativeLocation: {
+    type: String,
+  },
+  publicDebrisDesc: {
+    type: String,
+    required: true,
+    enum: [
+      "Caught on the reef or is partially buried in sand",
+      "Loose in the shore break or on the shoreline and could go back out to sea",
+      "Trapped in a tide pool and cannot escape",
+      "Loose on the shore but caught in the vegetation line",
+      "Tied to a fixed object so it cannot be swept away",
+      "Pushed inland above the high wash of the waves so it cannot be swept away",
+      "Other - please explain how urgent recovery/removal is",
+    ],
+  },
+  publicDebrisAdditionalDesc: {
+    type: String,
+  },
   publicContact: publicContactSchema,
   imageUrl: {
     type: String,
-    required: true,
   },
   dibsBy: {
     type: String,
