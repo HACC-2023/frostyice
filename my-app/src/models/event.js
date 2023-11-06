@@ -47,7 +47,18 @@ const eventSchema = new mongoose.Schema({
   detectedLocation: {
     type: String,
     required: true,
-    enum: ["Oahu", "Maui", "Big Island", "NWHI", "At-sea Offshore"],
+    enum: [
+      "Big Island",
+      "Maui",
+      "Molokai",
+      "Lanai",
+      "Kahoolawe",
+      "Oahu",
+      "Kauai",
+      "Niihau",
+      "NWHI",
+      "At-sea Offshore"
+    ],
   },
   publicType: {
     type: String,
@@ -111,7 +122,7 @@ const eventSchema = new mongoose.Schema({
       "3",
       "4",
       "5",
-      "6 - Patches ofdense algae and presence of barnacle colonies",
+      "6 - Patches of dense algae and presence of barnacle colonies",
       "7",
       "8",
       "9",
