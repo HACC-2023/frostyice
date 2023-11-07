@@ -29,18 +29,23 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: [
-      "Reported",
-      "Removed & Stored",
-      "Multievent Transport",
-      "Sorted",
-      "Disposed",
+      "Event Reported",
+      "Removal and Storage",
+      "Sorting",
+      "Disposal",
+      "Complete",
     ],
+  },
+  reportedDate: {
+    type: Date,
+    default: new Date(),
   },
   publicType: {
     type: String,
     required: true,
   },
-  publicTypeOther: {
+  publicTypeDesc: {
+    // if the public type is "other" or if the reported wants to add more details
     type: String,
   },
   publicContainerFullness: {
@@ -51,7 +56,7 @@ const eventSchema = new mongoose.Schema({
     enum: ["Yes", "No"],
   },
   publicBiofoulingRating: {
-    type: String,
+    type: Number,
     required: true,
   },
   publicLocationDesc: {
@@ -59,9 +64,11 @@ const eventSchema = new mongoose.Schema({
     required: true,
   },
   publicLatLongOrPositionDesc: {
+    // this is the free text field on DOBOR form where reporter can enter lat/long or position description
     type: String,
   },
   mapLat: {
+    // the lat from the embedded map
     type: Number,
   },
   mapLong: {
@@ -89,11 +96,12 @@ const eventSchema = new mongoose.Schema({
   debrisLandmarkRelativeLocation: {
     type: String,
   },
-  publicDebrisDesc: {
+  publicDebrisEnvDesc: {
+    // caught in reef, loose on shore, etc
     type: String,
     required: true,
   },
-  publicDebrisAdditionalDesc: {
+  publicDebrisEnvAdditionalDesc: {
     type: String,
   },
   publicContact: publicContactSchema,

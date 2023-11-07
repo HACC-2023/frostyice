@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     try {
       const {
         publicType,
-        publicTypeOther,
+        publicTypeDesc,
         publicContainerFullness,
         publicClaimBoat,
         publicBiofoulingRating,
@@ -18,8 +18,8 @@ export default async function handler(req, res) {
         closestIsland,
         closestLandmark,
         debrisLandmarkRelativeLocation,
-        publicDebrisDesc,
-        publicDebrisAdditionalDesc,
+        publicDebrisEnvDesc,
+        publicDebrisEnvAdditionalDesc,
         imageUrl,
         firstName,
         lastName,
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
       const created = await Event.create({
         status: 'Reported',
         publicType,
-        publicTypeOther,
+        publicTypeDesc,
         publicContainerFullness,
         publicClaimBoat,
         publicBiofoulingRating,
@@ -45,8 +45,8 @@ export default async function handler(req, res) {
         closestIsland,
         closestLandmark,
         debrisLandmarkRelativeLocation,
-        publicDebrisDesc,
-        publicDebrisAdditionalDesc,
+        publicDebrisEnvDesc,
+        publicDebrisEnvAdditionalDesc,
         imageUrl,
         publicContact: {
           firstName,
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       const claimBoat = publicClaimBoat ? `<b>Intend to Claim Boat:</b> ${publicClaimBoat}<br/>` : '';
       const latLongOrPositionDescription = publicLatLongOrPositionDesc ? `<b>Position Description:</b> ${publicLatLongOrPositionDesc}<br/>` : '';
       const mapLatLong = mapLat && mapLong ? `<b>Lat:</b> ${mapLat}<br/><b>Long:</b> ${mapLong}<br/>` : '';
-      const additionalDesc = publicDebrisAdditionalDesc ? `<b>Additional Description:</b> ${publicDebrisAdditionalDesc}<br/>` : '';
+      const additionalDesc = publicDebrisEnvAdditionalDesc ? `<b>Additional Description:</b> ${publicDebrisEnvAdditionalDesc}<br/>` : '';
 
       // TODO update link at bottom of email
       const emailMessage = `
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
         <br/><br/>
         We recieved a new debris report! Details:
         <br/><br/>
-        <b>Type:</b> ${publicType !== 'Other' ? publicType : `Other - ${publicTypeOther}`}<br/>
+        <b>Type:</b> ${publicType !== 'Other' ? publicType : `Other - ${publicTypeDesc}`}<br/>
         ${containerFullness}
         ${claimBoat}
         <b>Nearest Island:</b> ${closestIsland}<br/>
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
         ${latLongOrPositionDescription}
         ${mapLatLong}
         <b>Location Description:</b> ${publicLocationDesc}<br/>
-        <b>Debris Description:</b> ${publicDebrisDesc}<br/>
+        <b>Debris Description:</b> ${publicDebrisEnvDesc}<br/>
         ${additionalDesc}
         <b>Biofouling Rating:</b> ${publicBiofoulingRating} / 10<br/>
         <br/>

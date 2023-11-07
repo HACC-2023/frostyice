@@ -8,7 +8,7 @@ const EventRemoval = ({ event }) => {
           <div className="flex flex-col md:flex-row justify-between">
             <h3 className="font-bold md:text-2xl">Event ID: {event._id}</h3>
             <time className="font-bold md:text-2xl">
-              Date Reported: {event.detectedDate.toLocaleString("en-US")}
+              Date Reported: {event.reportedDate.toLocaleString("en-US")}
             </time>
           </div>
         </header>
@@ -22,15 +22,15 @@ const EventRemoval = ({ event }) => {
                 <h2 className="font-bold text-2xl">Location</h2>
                 <div className="flex justify-between">
                   <p>Longitude: </p>
-                  <p>{event.long}</p>
+                  <p>{event.mapLong}</p>
                 </div>
                 <div className="flex justify-between">
                   <p>Latitude: </p>
-                  <p>{event.lat}</p>
+                  <p>{event.mapLat}</p>
                 </div>
                 <div className="flex justify-between">
                   <p>Island: </p>
-                  <p>{event.detectedLocation}</p>
+                  <p>{event.closestIsland}</p>
                 </div>
               </section>
               <section className="w-full md:w-1/2">
@@ -60,7 +60,7 @@ const EventRemoval = ({ event }) => {
             <ul className="list-disc pl-4 overflow-auto">
               <li className="break-words">{event.publicType}</li>
               <li className="break-words">{event.publicLocationDesc}</li>
-              <li className="break-works">{event.publicDebrisDesc}</li>
+              <li className="break-works">{event.publicDebrisEnvDesc}</li>
               <li className="break-words">
                 Biofouling Rating - {event.publicBiofoulingRating}
               </li>

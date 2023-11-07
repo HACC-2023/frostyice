@@ -39,7 +39,7 @@ const ReportForm = () => {
       email,
       phoneNumber,
       publicType: debrisType,
-      publicTypeOther: debrisTypeOther,
+      publicTypeDesc: debrisTypeOther,
       publicBiofoulingRating: biofoulingRating,
       publicLocationDesc: debrisRelativeLocation,
       publicLatLongOrPositionDesc: debrisLocationDetails,
@@ -48,8 +48,8 @@ const ReportForm = () => {
       mapLat: coordinates?.latitude,
       mapLong: coordinates?.longitude,
       debrisLandmarkRelativeLocation: closestLandmarkRelativeLocation,
-      publicDebrisDesc: debrisTrappedDesc,
-      publicDebrisAdditionalDesc: debrisTrappedOther,
+      publicDebrisEnvDesc: debrisTrappedDesc,
+      publicDebrisEnvAdditionalDesc: debrisTrappedOther,
     };
     if (debrisType.includes('container')) {
       data.publicContainerFullness = containerFullness;
