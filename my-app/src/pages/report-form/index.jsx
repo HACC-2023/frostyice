@@ -91,7 +91,7 @@ const ReportForm = () => {
       },
       body: JSON.stringify(data),
     });
-    if (res.status === 200) {
+    if (res.status === 201) {
       toast.success('Form submitted. Mahalo!');
     } else {
       toast.error('Error submitting form. Please try again later.');
