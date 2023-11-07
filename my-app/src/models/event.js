@@ -53,9 +53,7 @@ const eventSchema = new mongoose.Schema({
   },
   publicContainerFullness: {
     type: String,
-    enum: ["Did not find a container/drum/cylinder", "Full", "Partially Filled", "Empty"],
     required: true,
-    default: "Did not find a container/drum/cylinder",
   },
   publicClaimBoat: {
     type: String,
