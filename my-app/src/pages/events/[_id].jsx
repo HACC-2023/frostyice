@@ -55,12 +55,12 @@ const EventPage = () => {
     return (
       <div className="w-full min-h-full flex justify-center">
         <div className="min-h-screen p-5 w-full md:max-w-7xl flex flex-col gap-5">
-          <ProgressBar status={dummyEvent.status} />
+          <ProgressBar status={data.status} />
           <div className="flex flex-col gap-2">
-            <EventRemoval event={dummyEvent} />
-            <RemovalAndStorage event={dummyEvent} />
-            <Sorting event={dummyEvent} />
-            <Disposal event={dummyEvent} />
+            <EventRemoval event={data} />
+            <RemovalAndStorage event={data} />
+            <Sorting event={data} />
+            <Disposal event={data} />
           </div>
         </div>
       </div>

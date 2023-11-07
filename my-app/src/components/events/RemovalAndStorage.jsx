@@ -24,11 +24,11 @@ const RemovalAndStorage = ({ event }) => {
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="md:text-xl font-bold">Debris Size</h1>
-                <p>{event.debrisSize}</p>
+                <p>{event.debrisSize ?? "-"}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Debris Mass</h1>
-                <p>{event.debrisMass}</p>
+                <p>{event.debrisMass ?? "-"}</p>
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -36,23 +36,23 @@ const RemovalAndStorage = ({ event }) => {
                 <h1 className="md:text-xl font-bold">
                   Temporary Storage Location
                 </h1>
-                <p>{event.tempStorage}</p>
+                <p>{event.tempStorage ?? "-"}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Environmental Damage</h1>
-                <p className="break-words">{event.assessedEnvDamage}</p>
+                <p className="break-words">{event.assessedEnvDamage ?? "-"}</p>
               </div>
             </div>
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="md:text-xl font-bold">Removed By</h1>
-                <p>{event.removedBy}</p>
+                <p>{event.removedBy ?? "-"}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Removal Date/s</h1>
                 <p>
-                  {event.removalStartDate.toLocaleDateString()}-
-                  {event.removalEndDate.toLocaleDateString()}
+                  {event.removalStartDate ? new Date(event.removalStartDate).toLocaleDateString() : ""}-
+                  {event.removalStartDate ? new Date(event.removalEndDate).toLocaleDateString() : ""}
                 </p>
               </div>
             </div>
