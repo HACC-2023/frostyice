@@ -13,10 +13,10 @@ export default async function handler(req, res) {
 
     if (req.method === "PUT") {
       const {
-        status, dibsBy, removedBy, removalStartDate, removalEndDate, debrisSize, debrisMass, tempStorage, assessedEnvDamage,
+        status, dibsByOrgId, removedByOrgId, removalStartDate, removalEndDate, debrisSize, debrisMass, tempStorage, assessedEnvDamage,
       } = await req.body;
       await Event.findByIdAndUpdate(_id, {
-        status, dibsBy, removedBy, removalStartDate, removalEndDate, debrisSize, debrisMass, tempStorage, assessedEnvDamage,
+        status, dibsByOrgId, removedByOrgId, removalStartDate, removalEndDate, debrisSize, debrisMass, tempStorage, assessedEnvDamage,
       }, { runValidators: true });
       res.status(200).json(await Event.findById(_id));
     }

@@ -46,7 +46,7 @@ const RemovalAndStorage = ({ event }) => {
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="md:text-xl font-bold">Removed By</h1>
-                <p>{event.removedBy}</p>
+                <p>{event.removedByOrgId}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Removal Date/s</h1>
