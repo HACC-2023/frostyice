@@ -29,7 +29,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: [
-      "Event Reported",
+      "Reported",
       "Removal and Storage",
       "Sorting",
       "Disposal",
@@ -76,7 +76,6 @@ const eventSchema = new mongoose.Schema({
   },
   closestIsland: {
     type: String,
-    required: true,
     enum: [
       "Big Island",
       "Maui",

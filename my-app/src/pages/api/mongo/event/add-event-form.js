@@ -59,7 +59,9 @@ export default async function handler(req, res) {
       const containerFullness = publicContainerFullness ? `<b>Container Fullness:</b> ${publicContainerFullness}<br/>` : '';
       const claimBoat = publicClaimBoat ? `<b>Intend to Claim Boat:</b> ${publicClaimBoat}<br/>` : '';
       const latLongOrPositionDescription = publicLatLongOrPositionDesc ? `<b>Position Description:</b> ${publicLatLongOrPositionDesc}<br/>` : '';
-      const mapLatLong = mapLat && mapLong ? `<b>Lat:</b> ${mapLat}<br/><b>Long:</b> ${mapLong}<br/>` : '';
+      const location = mapLat && mapLong
+        ? `<b>Lat:</b> ${mapLat}<br/><b>Long:</b> ${mapLong}<br/>`
+        : `<b>Nearest Island:</b> ${closestIsland}<br/><b>Nearest Landmark:</b> ${closestLandmark}<br/><b>Landmark Relative Location:</b> ${debrisLandmarkRelativeLocation}<br/>`;
       const additionalDesc = publicDebrisEnvAdditionalDesc ? `<b>Additional Description:</b> ${publicDebrisEnvAdditionalDesc}<br/>` : '';
 
       // TODO update link at bottom of email
@@ -71,11 +73,8 @@ export default async function handler(req, res) {
         <b>Type:</b> ${publicType !== 'Other' ? publicType : `Other - ${publicTypeDesc}`}<br/>
         ${containerFullness}
         ${claimBoat}
-        <b>Nearest Island:</b> ${closestIsland}<br/>
-        <b>Nearest Landmark:</b> ${closestLandmark}<br/>
-        <b>Landmark Relative Location:</b> ${debrisLandmarkRelativeLocation}<br/>
+        ${location}
         ${latLongOrPositionDescription}
-        ${mapLatLong}
         <b>Location Description:</b> ${publicLocationDesc}<br/>
         <b>Debris Description:</b> ${publicDebrisEnvDesc}<br/>
         ${additionalDesc}

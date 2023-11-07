@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dropzone from "react-dropzone";
 import { toast } from 'react-toastify';
 import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
+import {useSession} from "next-auth/react";
 
 const ReportForm = () => {
+  const { data: session, status } = useSession();
+
   // debris description
   const [debrisType, setDebrisType] = useState('"A mass of netting and/or fishing gear"');
   const [debrisTypeOther, setDebrisTypeOther] = useState('');
@@ -12,6 +15,7 @@ const ReportForm = () => {
   const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
 
   // debris location
+  const [useMap, setUseMap] = useState(true);
   const [debrisRelativeLocation, setDebrisRelativeLocation] = useState('At sea, BEYOND three miles from nearest land');
   const [debrisLocationDetails, setDebrisLocationDetails] = useState('');
   const [closestIsland, setClosestIsland] = useState('Big Island');
@@ -32,6 +36,24 @@ const ReportForm = () => {
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState(''); // TODO validation
 
+  const selectedBtnStyle = {
+    background: '#3aa2e7',
+    border: '1px solid #56A9E0',
+    color: 'white',
+  };
+
+  const regularBtnStyle = {
+    background: '#b2b6b6',
+    color: '#555555',
+    border: 'none',
+  };
+
+  useEffect(() => {
+    setLastName(session?.user?.lastName);
+    setFirstName(session?.user?.firstName);
+    setEmail(session?.user?.email);
+  }, [session]);
+
   async function submitForm() {
     const data = {
       firstName,
@@ -40,14 +62,9 @@ const ReportForm = () => {
       phoneNumber,
       publicType: debrisType,
       publicTypeDesc: debrisTypeOther,
-      publicBiofoulingRating: biofoulingRating,
+      publicBiofoulingRating: parseInt(biofoulingRating.slice(0, 1)),
       publicLocationDesc: debrisRelativeLocation,
       publicLatLongOrPositionDesc: debrisLocationDetails,
-      closestIsland,
-      closestLandmark,
-      mapLat: coordinates?.latitude,
-      mapLong: coordinates?.longitude,
-      debrisLandmarkRelativeLocation: closestLandmarkRelativeLocation,
       publicDebrisEnvDesc: debrisTrappedDesc,
       publicDebrisEnvAdditionalDesc: debrisTrappedOther,
     };
@@ -55,6 +72,14 @@ const ReportForm = () => {
       data.publicContainerFullness = containerFullness;
     } else if (debrisType.includes('boat')) {
       data.publicClaimBoat = claimBoat;
+    }
+    if (useMap) {
+      data.mapLat = coordinates?.latitude;
+      data.mapLong = coordinates?.longitude;
+    } else {
+      data.closestIsland = closestIsland;
+      data.closestLandmark = closestLandmark;
+      data.debrisLandmarkRelativeLocation = closestLandmarkRelativeLocation;
     }
     const res = await fetch('/api/mongo/event/add-event-form', {
       method: 'POST',
@@ -238,6 +263,7 @@ const ReportForm = () => {
             type="text"
             className="input input-bordered w-full bg-white text-gray-600 mb-2"
             onChange={event => setDebrisTypeOther(event.target.value)}
+            value={debrisTypeOther}
           />
           { debrisType === 'A container/drum/cylinder' && (
             <span>
@@ -321,7 +347,7 @@ const ReportForm = () => {
 
         {/* 2nd section */}
 
-        <div className="ps-8 pt-2 mb-4 shadow">
+        <div className="px-8 pt-2 mb-4 shadow">
           <p className="text-gray-600 mt-4 mb-4">
             <b>THIS DEBRIS IS LOCATED*</b>
           </p>
@@ -407,24 +433,48 @@ const ReportForm = () => {
                 </span>
               </div>
             </label>
+            {(debrisRelativeLocation.includes('sea') || debrisRelativeLocation.includes('None')) && (
+              <span>
+                <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
+                  <b>
+                    Please enter latitude and longitude (e.g. 21.3161 -157.8906) here, or select a location
+                    on the map. Please also provide a position description and any information on currents
+                    and winds that could help in relocating the debris.
+                  </b>
+                </p>
+                <input
+                  type="text"
+                  className="input input-bordered bg-white text-gray-600 mb-2 w-full"
+                  onChange={event => setDebrisLocationDetails(event.target.value)}
+                  value={debrisLocationDetails}
+                />
+              </span>
+            )}
           </div>
-
-          <div className="flex flex-col w-full lg:flex-row">
-            <div className="grid w-40 flex-grow card rounded-box">
-              <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
-                <b>
-                  If located offshore, enter latitude and longitude (i.e.
-                  21.3161 -157.8906) or provide a position description and any
-                  information on currents and winds that could help in
-                  relocating the debris.
-                </b>
-              </p>
-              <input
-                type="text"
-                className="input input-bordered bg-white text-gray-600 mb-2"
-                onChange={event => setDebrisLocationDetails(event.target.value)}
-              />
-
+          <div className="mt-4 mb-2 text-center">
+            <button
+              className="btn me-2 px-8"
+              style={useMap ? selectedBtnStyle : regularBtnStyle}
+              onClick={() => setUseMap(true)}
+            >
+              Select on Map
+            </button>
+            <span className="text-sm">OR</span>
+            <button
+              className="btn ms-2"
+              style={useMap ? regularBtnStyle : selectedBtnStyle}
+              onClick={() => setUseMap(false)}
+            >
+              Enter Description
+            </button>
+          </div>
+          {useMap
+            ?  <div className="grid flex-grow card rounded-box pb-4">
+              <div className="mt-4 mb-4">
+                <ClickableMap setCoordinates={setCoordinates} />
+              </div>
+            </div>
+            : <div className="grid flex-grow card rounded-box pb-4">
               <p className="text-gray-600 mt-4 mb-4">
                 <b>
                   If on land or in the nearshore waters - indicate which island*
@@ -453,6 +503,7 @@ const ReportForm = () => {
               <input
                 className="input input-bordered bg-white text-gray-600 mb-2"
                 onChange={event => setClosestLandmark(event.target.value)}
+                value={closestLandmark}
               />
               <span className="text-gray-400">0 of 120 max characters</span>
 
@@ -465,31 +516,17 @@ const ReportForm = () => {
               <input
                 className="input input-bordered bg-white text-gray-600 mb-2"
                 onChange={event => setClosestLandmarkRelativeLocation(event.target.value)}
+                value={closestLandmarkRelativeLocation}
               />
               <span className="text-gray-400 mb-4">
                 0 of 120 max characters
               </span>
             </div>
-
-            <div className="divider lg:divider-horizontal">OR</div>
-
-            <div className="grid flex-grow card rounded-box">
-              <div className="mt-4 mb-4">
-                <label
-                  htmlFor="description"
-                  className="block text-gray-600 font-semibold mb-2"
-                >
-                  Select Location
-                </label>
-                <br/>
-                <ClickableMap setCoordinates={setCoordinates} />
-              </div>
-            </div>
-          </div>
+          }
         </div>
 
         {/* 3rd section */}
-        <div className="ps-8 pt-2 mb-4 shadow">
+        <div className="px-8 pt-2 mb-4 shadow">
           <p className="text-gray-600 mt-4 mb-4">
             <b>3) THE DEBRIS IS BEST DESCRIBED AS:*</b>
           </p>
@@ -599,8 +636,9 @@ const ReportForm = () => {
             <b>ENTER MY OWN DESCRIPTION</b>
           </p>
           <input
-            className="input input-bordered input-lg w-full bg-white text-gray-600 mb-2"
+            className="input input-bordered w-full bg-white text-gray-600 mb-2"
             onChange={event => setDebrisTrappedOther(event.target.value)}
+            value={debrisTrappedOther}
           />
 
           <p className="text-gray-600 mt-4 mb-4">
@@ -684,33 +722,36 @@ const ReportForm = () => {
           <div className="flex flex-col lg:flex-row">
             <div className="flex-row mt-4">
               <p className="text-gray-600">
-                <b>Last Name</b>
+                <b>Last Name*</b>
               </p>
               <input
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setLastName(event.target.value)}
+                value={lastName}
               />
               <p className="text-gray-400 mb-2 italic">40 max characters</p>
             </div>
             <div className="flex-row mt-4 ml-4">
               <p className="text-gray-600">
-                <b>First Name</b>
+                <b>First Name*</b>
               </p>
               <input
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setFirstName(event.target.value)}
+                value={firstName}
               />
               <p className="text-gray-400 mb-4 italic">30 max characters</p>
             </div>
 
             <div className="flex-row mt-4 ml-4">
               <p className="text-gray-600">
-                <b>Phone Number</b>
+                <b>Phone Number*</b>
               </p>
               <input
                 placeholder="Ex: (808)395-9511"
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setPhoneNumber(event.target.value)}
+                value={phoneNumber}
               />
             </div>
           </div>
@@ -718,20 +759,22 @@ const ReportForm = () => {
           <div className="flex flex-col lg:flex-row">
             <div className="flex-row mt-1">
               <p className="text-gray-600">
-                <b>E-mail Address</b>
+                <b>E-mail Address*</b>
               </p>
               <input
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setEmail(event.target.value)}
+                value={email}
               />
             </div>
             <div className="flex-row mt-1 ml-4">
               <p className="text-gray-600">
-                <b>Confirm E-mail Address</b>
+                <b>Confirm E-mail Address*</b>
               </p>
               <input
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setConfirmEmail(event.target.value)}
+                value={confirmEmail}
               />
             </div>
           </div>
