@@ -38,6 +38,7 @@ const eventSchema = new mongoose.Schema({
   },
   reportedDate: {
     type: Date,
+    required: true,
     default: new Date(),
   },
   publicType: {
@@ -47,21 +48,30 @@ const eventSchema = new mongoose.Schema({
   publicTypeDesc: {
     // if the public type is "other" or if the reported wants to add more details
     type: String,
+    required: true,
+    default: "No additional description provided"
   },
   publicContainerFullness: {
     type: String,
+    enum: ["Did not find a container/drum/cylinder", "Full", "Partially Filled", "Empty"],
+    required: true,
+    default: "Did not find a container/drum/cylinder",
   },
   publicClaimBoat: {
     type: String,
     enum: ["Yes", "No"],
+    required: true,
+    default: "No",
   },
   publicBiofoulingRating: {
     type: Number,
     required: true,
+    max: 10
   },
   publicLocationDesc: {
     type: String,
     required: true,
+    default: "No additional description provided"
   },
   publicLatLongOrPositionDesc: {
     // this is the free text field on DOBOR form where reporter can enter lat/long or position description
