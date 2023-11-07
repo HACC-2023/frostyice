@@ -30,23 +30,52 @@ const eventSchema = new mongoose.Schema({
     required: true,
     enum: [
       "Reported",
-      "Removed & Stored",
-      "Multievent Transport",
-      "Sorted",
-      "Disposed",
+      "Removal and Storage",
+      "Sorting",
+      "Disposal",
+      "Complete",
     ],
   },
-  lat: {
-    type: Number,
-    required: true,
+  reportedDate: {
+    type: Date,
+    default: new Date(),
   },
-  long: {
-    type: Number,
-    required: true,
-  },
-  detectedLocation: {
+  publicType: {
     type: String,
     required: true,
+  },
+  publicTypeDesc: {
+    // if the public type is "other" or if the reported wants to add more details
+    type: String,
+  },
+  publicContainerFullness: {
+    type: String,
+  },
+  publicClaimBoat: {
+    type: String,
+    enum: ["Yes", "No"],
+  },
+  publicBiofoulingRating: {
+    type: Number,
+    required: true,
+  },
+  publicLocationDesc: {
+    type: String,
+    required: true,
+  },
+  publicLatLongOrPositionDesc: {
+    // this is the free text field on DOBOR form where reporter can enter lat/long or position description
+    type: String,
+  },
+  mapLat: {
+    // the lat from the embedded map
+    type: Number,
+  },
+  mapLong: {
+    type: Number,
+  },
+  closestIsland: {
+    type: String,
     enum: [
       "Big Island",
       "Maui",
@@ -60,79 +89,23 @@ const eventSchema = new mongoose.Schema({
       "At-sea Offshore"
     ],
   },
-  publicType: {
+  closestLandmark: {
     type: String,
-    required: true,
-    enum: [
-      "A mass of netting and/or fishing gear",
-      "An abandoned/derelict vessel",
-      "A container/drum/cylinder",
-      "A large concentration of plastics",
-      "Potential Japan tsunami marine debris",
-      "A large concentration of miscellaneous trash",
-      "Other",
-    ],
   },
-  publicContainerFullness: {
+  debrisLandmarkRelativeLocation: {
     type: String,
-    required: true,
-    enum: [
-      "Did not find a container/drum/cylinder",
-      "Full",
-      "Partially Emptied",
-      "Empty",
-    ],
   },
-  publicClaimBoat: {
+  publicDebrisEnvDesc: {
+    // caught in reef, loose on shore, etc
     type: String,
     required: true,
-    enum: ["Yes", "No"],
   },
-  publicLocationDesc: {
+  publicDebrisEnvAdditionalDesc: {
     type: String,
-    required: true,
-    enum: [
-      "At sea, BEYOND three miles from nearest land",
-      "At sea, WITHIN three miles of nearest land",
-      "In the shore break",
-      "On the beach BELOW the high wash of the waves",
-      "On the beach ABOVE the high wash of the waves",
-      "None of the above, a description follows below",
-    ],
-  },
-  publicDesbrisDesc: {
-    type: String,
-    required: true,
-    enum: [
-      "Caught on the reef or is partially buried in sand",
-      "Loose in the shore break or on the shoreline and could go back out to sea",
-      "Trapped in a tide pool and cannot escape",
-      "Loose on the shore but caught in the vegetation line",
-      "Tied to a fixed object so it cannot be swept away",
-      "Pushed inland above the high wash of the waves so it cannot be swept away",
-      "Other - please explain how urgent recovery/removal is",
-    ],
-  },
-  publicBiofoulingRating: {
-    type: String,
-    required: true,
-    enum: [
-      "1 - No algae or marine life at all",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6 - Patches of dense algae and presence of barnacle colonies",
-      "7",
-      "8",
-      "9",
-      "10 - Abundant, healthy growth of algae and barnacles covering submerged areas",
-    ],
   },
   publicContact: publicContactSchema,
   imageUrl: {
     type: String,
-    required: true,
   },
   dibsBy: {
     type: String,

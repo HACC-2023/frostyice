@@ -9,7 +9,7 @@ export const DISPOSAL_MECHANISMS = [
 ]
 
 export const STATUS = [
-  "Event Reported",
+  "Reported",
   "Removal and Storage",
   "Sorting",
   "Disposal",

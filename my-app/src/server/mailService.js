@@ -11,8 +11,8 @@ export async function sendEmail(subject, toEmail, emailText) {
 
   var mailOptions = {
     from: process.env.NODEMAILER_EMAIL,
-    to: toEmail,
-    cc: process.env.NODEMAILER_EMAIL,
+    to: toEmail ? toEmail : process.env.NODEMAILER_EMAIL,
+    cc: toEmail ? process.env.NODEMAILER_EMAIL : null,
     subject: subject,
     html: emailText,
   };
