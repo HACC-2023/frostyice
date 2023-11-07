@@ -3,9 +3,11 @@ import Dropzone from "react-dropzone";
 import { toast } from 'react-toastify';
 import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
 import {useSession} from "next-auth/react";
+import Loading from "@/components/Loading";
 
 const ReportForm = () => {
   const { data: session, status } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
 
   // debris description
   const [debrisType, setDebrisType] = useState('"A mass of netting and/or fishing gear"');
@@ -55,6 +57,7 @@ const ReportForm = () => {
   }, [session]);
 
   async function submitForm() {
+    setIsLoading(true);
     const data = {
       firstName,
       lastName,
@@ -93,10 +96,12 @@ const ReportForm = () => {
     } else {
       toast.error('Error submitting form. Please try again later.');
     }
+    setIsLoading(false);
   }
 
   return (
     <div className="justify-center items-center">
+      {isLoading && <Loading />}
       <div className="mt-2 bg-white p-14">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           Report Marine Debris
