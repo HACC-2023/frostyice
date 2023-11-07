@@ -36,10 +36,10 @@ const DeleteOrgModal = ({ id, org }) => {
   return (
     <dialog id={id} className="modal modal-bottom sm:modal-middle">
       <div className="modal-box">
-        <h3 className="pb-5 font-bold">ADD ORGANIZATION</h3>
+        <h3 className="pb-5 font-bold">DELETE ORGANIZATION</h3>
         <form onSubmit={onSubmit}>
           <div className="w-full">
-            Are you sure you want to delete &quot;{org.name}&quot;
+            Are you sure you want to delete &quot;{org.name}&quot; and its members?
           </div>
           <div className="modal-action">
             <button
