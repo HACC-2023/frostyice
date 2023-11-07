@@ -26,12 +26,11 @@ export default async function handler(req, res) {
           <li>Name: <b>${lastName}, ${firstName}</b></li>
           <li>Email: <b>${email}</b></li>
         </ul>
-        <br/>
         Mahalo!<br/><br/>
-        <i>Center for Marine Debris Research</i>
+        Center for Marine Debris Research
         <br/><br/>
         <hr/>
-        <i>Please do not reply to this email.</i>`;
+        <i>This is an automated message. Please do not reply to this email.</i>`;
       await sendEmail('Account Created', email, emailMessage);
       res.status(200).json({msg: 'User added successfully!'});
     } catch (error) {

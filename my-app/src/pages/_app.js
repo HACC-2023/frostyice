@@ -1,9 +1,10 @@
 import Navbar from "@/components/Navbar";
 import MobileNavbar from "@/components/navbar/MobileNavbar";
-import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import DialogflowChatWidget from "@/components/chatbot/DialogflowChatWidget";
+import "@/styles/globals.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
