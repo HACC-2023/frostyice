@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="p-5 flex flex-col gap-3">
       <header className="mb-12">
-        <h1 className="text-2xl md:text-5xl font-bold mb-2">
+        <h1 className="text-3xl md:text-5xl font-bold mb-2">
           Welcome to the Marine Debris Reporting Portal
         </h1>
         <p>
@@ -20,7 +20,7 @@ const Home = () => {
         <section className="flex flex-col gap-3 py-4 px-3 border border-neutral rounded-xl bg-base-200 overflow-y-auto min-h-[400px] max-h-[600px]">
           <div className="card card-bordered border-neutral bg-base-100">
             <div className="card-body">
-              <div className="flex flex-col md:flex-row justify-between">
+              <div className="flex justify-between">
                 <time>10/09/2023 9:00AM</time>
                 <div>Oahu</div>
               </div>
