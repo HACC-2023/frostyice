@@ -27,8 +27,6 @@ export default async function handler(req, res) {
         phoneNumber,
       } = await req.body;
 
-      console.log(req.body);
-
       await connectDB();
 
       const created = await Event.create({
@@ -83,6 +81,7 @@ export default async function handler(req, res) {
         <b>Reporter Name:</b> ${lastName}, ${firstName}<br/>
         <b>Reporter Email:</b> ${email}<br/>
         <b>Reporter Phone:</b> ${phoneNumber}<br/>
+        <b>Report Method:</b> Online Form<br/>
         <br/>
         <a href="http://localhost:3000/event/${created._id}">See more details</a>
         <br/><br/>
@@ -92,7 +91,7 @@ export default async function handler(req, res) {
         <i>This is an automated message. Please do not reply to this email.</i>
       `;
       await sendEmail('New Debris Report', null, emailMessage);
-      res.status(200).json({msg: 'Event reported'});
+      res.status(201).json({msg: 'Event reported'});
     } catch (error) {
       console.log(error);
       res.status(500).json({error: 'Unable to report event'});
