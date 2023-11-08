@@ -1,13 +1,35 @@
-/* Converts date to local format */
-export function convertDateToLocalFormat(yourDate) {
-  let offset = yourDate.getTimezoneOffset() * 60 * 1000;
-  let adjustedDate = new Date(yourDate.getTime() - offset);
+/**
+ * Converts date to local format
+ * 
+ * @param {Date || String} date
+ * @returns {String} formattedDate
+ */
+export function convertDateToLocalFormat(date) {
+  const convertedDate = new Date(date);
+  let offset = convertedDate.getTimezoneOffset() * 60 * 1000;
+  let adjustedDate = new Date(convertedDate.getTime() - offset);
   let formattedDate = adjustedDate.toISOString().split("T")[0];
   return formattedDate;
 }
-/* Converts local date to UTC */
+/**
+ * Converts date from HST to UTC.
+ *
+ * @param   {Date || String} date   Date to convert.
+ * @returns {Date}                  UTC date.
+ */
 export function convertLocalDateToUTC(date) {
-  let offset = date.getTimezoneOffset() * 60 * 1000;
-  let adjustedDate = new Date(date.getTime() + offset);
-  return adjustedDate;
+  if (typeof date === 'string') date = new Date(date);
+  return new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+}
+
+/**
+ * Converts a Date object or String into a readable date String.
+ *
+ * @param   {Date || String} date   Date to convert.
+ * @returns {String}                Date in format "MON DD, YYYY HH:MM AM/PM".
+ */
+export function prettyHstDate(date) {
+  if (typeof date === 'string') date = new Date(date);
+  const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }
+  return date.toLocaleString("en-US", options);
 }

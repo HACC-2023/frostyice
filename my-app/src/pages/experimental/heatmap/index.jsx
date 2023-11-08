@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import Locations from "../../../../dummy-data/locations.json";
 
 // prevents SSR issues with certain mapbox components
 const LocationAggregatorMap = dynamic(
@@ -12,23 +11,19 @@ const HomePage = () => {
   const [details, setDetails] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
 
+  const locations = [];
+
   useEffect(() => {
-    // const getData = async () => {
-    //   const response = await fetch(
-    //     "https://api-shipx-pl.easypack24.net/v1/points?per_page=28000"
-    //   );
-
-    //   const data = await response.json();
-    //   setDetails(data.items);
-
-    // Create an array of geo coordinates pairs
-    const coords = Locations.map((item) => [item.longitude, item.latitude]);
-    setCoordinates(coords);
-    // };
-    // getData();
+    const getData = async () => {
+      const res = await fetch('/api/mongo/event/get-all-events');
+      const data = await res.json();
+      const coords = data.map((item) => {
+        return { COORDINATES: [item.mapLong, item.mapLat] };
+      });
+      setCoordinates(coords);
+    };
+    getData().then(r => console.log('Fetched locations'));
   }, []);
-  // console.log(coordinates);
-  console.log("location", Locations);
 
   return (
     <div className="relative min-h-screen">

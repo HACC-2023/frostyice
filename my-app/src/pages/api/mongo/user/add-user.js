@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         lastName,
         email,
         password: hashedPassword,
-        orgId: '6541e36d04b6d9f3ddc81ef6', // TODO - remove hard-coded value
+        orgId: orgId,
         role: 'org_member', // TODO - remove hard-coded value (?)
       });
       const emailMessage =
@@ -26,12 +26,11 @@ export default async function handler(req, res) {
           <li>Name: <b>${lastName}, ${firstName}</b></li>
           <li>Email: <b>${email}</b></li>
         </ul>
-        <br/>
         Mahalo!<br/><br/>
-        <i>Center for Marine Debris Research</i>
+        Center for Marine Debris Research
         <br/><br/>
         <hr/>
-        <i>Please do not reply to this email.</i>`;
+        <i>This is an automated message. Please do not reply to this email.</i>`;
       await sendEmail('Account Created', email, emailMessage);
       res.status(200).json({msg: 'User added successfully!'});
     } catch (error) {

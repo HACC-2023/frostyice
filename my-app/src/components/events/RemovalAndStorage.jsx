@@ -3,6 +3,8 @@ import EventCollapse from "./common/EventCollapse";
 import EditRemovalModal from "./removal-and-storage/EditRemovalModal";
 import MultiEventRow from "./removal-and-storage/MultiEventRow";
 import CompletionWarning from "./common/CompletionWarning";
+import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
+import UndoStepBtn from "./common/UndoStepBtn";
 
 const RemovalAndStorage = ({ event }) => {
   return (
@@ -24,11 +26,11 @@ const RemovalAndStorage = ({ event }) => {
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="md:text-xl font-bold">Debris Size</h1>
-                <p>{event.debrisSize}</p>
+                <p>{event.debrisSize ?? "-"}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Debris Mass</h1>
-                <p>{event.debrisMass}</p>
+                <p>{event.debrisMass ?? "-"}</p>
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -36,23 +38,23 @@ const RemovalAndStorage = ({ event }) => {
                 <h1 className="md:text-xl font-bold">
                   Temporary Storage Location
                 </h1>
-                <p>{event.tempStorage}</p>
+                <p>{event.tempStorage ?? "-"}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Environmental Damage</h1>
-                <p className="break-words">{event.assessedEnvDamage}</p>
+                <p className="break-words">{event.assessedEnvDamage ?? "-"}</p>
               </div>
             </div>
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="md:text-xl font-bold">Removed By</h1>
-                <p>{event.removedBy}</p>
+                <p>{event.removedByOrgId ?? "-"}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Removal Date/s</h1>
                 <p>
-                  {event.removalStartDate.toLocaleDateString()}-
-                  {event.removalEndDate.toLocaleDateString()}
+                  {event.removalStartDate ? new Date(event.removalStartDate).toLocaleDateString() : ""}-
+                  {event.removalStartDate ? new Date(event.removalEndDate).toLocaleDateString() : ""}
                 </p>
               </div>
             </div>
@@ -121,9 +123,9 @@ const RemovalAndStorage = ({ event }) => {
           <section className="flex justify-end gap-3 py-3">
             {/* If the event is completed only show the undo button */}
             {STATUS.indexOf(event.status) <= 1 ? (
-              <button className="btn btn-primary">Mark as Completed</button>
+              <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[2]}/>
             ) : (
-              <button className="btn btn-outline">Undo Step</button>
+              <UndoStepBtn eventId={event._id} prevStatus={STATUS[1]} />
             )}
           </section>
         </div>

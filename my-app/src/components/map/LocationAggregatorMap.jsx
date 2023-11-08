@@ -4,6 +4,7 @@ import Map from "react-map-gl";
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
 import DeckGL from "@deck.gl/react";
 import "mapbox-gl/dist/mapbox-gl.css";
+import PropTypes from "prop-types";
 
 // import map config
 import {
@@ -11,13 +12,9 @@ import {
   material,
   INITIAL_VIEW_STATE,
   colorRange,
-} from "../../lib/mapconfig";
+} from "@/lib/mapconfig";
 
-const LocationAggregatorMap = ({
-  upperPercentile = 100,
-  coverage = 1,
-  data,
-}) => {
+const LocationAggregatorMap = ({ upperPercentile = 100, coverage = 1, data }) => {
   const layers = [
     new HexagonLayer({
       id: "heatmap",
@@ -27,7 +24,7 @@ const LocationAggregatorMap = ({
       elevationRange: [0, 400],
       elevationScale: data && data.length ? 50 : 0,
       extruded: true,
-      getPosition: (d) => d,
+      getPosition: (d) => d.COORDINATES,
       pickable: true,
       radius: 1000,
       upperPercentile,
@@ -57,6 +54,12 @@ const LocationAggregatorMap = ({
       </DeckGL>
     </div>
   );
+};
+
+LocationAggregatorMap.propTypes = {
+  upperPercentile: PropTypes.number,
+  coverage: PropTypes.number,
+  data: PropTypes.array,
 };
 
 export default LocationAggregatorMap;
