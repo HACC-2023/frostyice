@@ -1,3 +1,4 @@
+import { ISLANDS } from "@/constants/constants";
 import mongoose from "mongoose";
 
 // subdocument schema
@@ -84,18 +85,8 @@ const eventSchema = new mongoose.Schema({
   },
   closestIsland: {
     type: String,
-    enum: [
-      "Big Island",
-      "Maui",
-      "Molokai",
-      "Lanai",
-      "Kahoolawe",
-      "Oahu",
-      "Kauai",
-      "Niihau",
-      "NWHI",
-      "At-sea Offshore"
-    ],
+    enum: ISLANDS,
+    required: true,
   },
   closestLandmark: {
     type: String,
