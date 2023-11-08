@@ -22,7 +22,7 @@ const Navbar = () => {
     const fetchOrgName = async () => {
       const res = await fetch("/api/mongo/organization/id/" + session.user.orgId);
       const data = await res.json();
-      setOrgName(data.name);
+      setOrgName(data?.name);
     };
 
     if (session) {
