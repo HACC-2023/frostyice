@@ -20,9 +20,13 @@ const Navbar = () => {
 
   useEffect(() => {
     const fetchOrgName = async () => {
-      const res = await fetch("/api/mongo/organization/id/" + session.user.orgId);
+      const res = await fetch(
+        "/api/mongo/organization/id/" + session.user.orgId
+      );
       const data = await res.json();
-      setOrgName(data.name);
+      if (data) {
+        setOrgName(data.name);
+      }
     };
 
     if (session) {
@@ -38,29 +42,53 @@ const Navbar = () => {
 
   const orgMemberNav = [
     ...publicNav,
-    { label: "Organization Dashboard", icon: RectangleGroupIcon, link: "/dashboard" },
+    {
+      label: "Organization Dashboard",
+      icon: RectangleGroupIcon,
+      link: "/dashboard",
+    },
     { label: "Manage Events", icon: InboxIcon, link: "/manage-events" },
     { label: "Threads", icon: RectangleStackIcon, link: "/threads" },
   ];
 
   const orgAdminNav = [
     ...orgMemberNav,
-    { label: "My Organization", icon: BuildingOfficeIcon, link: "/my-organization" },
+    {
+      label: "My Organization",
+      icon: BuildingOfficeIcon,
+      link: "/my-organization",
+    },
   ];
 
   const adminNav = [
     ...orgAdminNav,
-    { label: "Manage Organizations", icon: BuildingOffice2Icon, link: "/manage-organizations" },
+    {
+      label: "Manage Organizations",
+      icon: BuildingOffice2Icon,
+      link: "/manage-organizations",
+    },
   ];
 
   const NavContainer = () => (
     <ul className="menu p-5 w-72 h-screen sticky top-0 bg-base-200 pt-10 font-medium">
       {!session && <NavContent nav={publicNav} />}
-      {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
-      {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
-      {session && session.user.role === "admin" && <NavContent nav={adminNav} />}
+      {session && session.user.role === "org_member" && (
+        <NavContent nav={orgMemberNav} />
+      )}
+      {session && session.user.role === "org_admin" && (
+        <NavContent nav={orgAdminNav} />
+      )}
+      {session && session.user.role === "admin" && (
+        <NavContent nav={adminNav} />
+      )}
       {session && <div className="divider m-0" />}
-      {session && <MenuItem label="Sign out" icon={ArrowLeftCircleIcon} link="/api/auth/signout" />}
+      {session && (
+        <MenuItem
+          label="Sign out"
+          icon={ArrowLeftCircleIcon}
+          link="/api/auth/signout"
+        />
+      )}
     </ul>
   );
 
@@ -70,8 +98,12 @@ const Navbar = () => {
         <div className="flex gap-4 m-4">
           <div className="avatar placeholder">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-14">
-              <span className="text-2xl">{session.user.firstName.charAt(0)}</span>
-              <span className="text-2xl">{session.user.lastName.charAt(0)}</span>
+              <span className="text-2xl">
+                {session.user.firstName.charAt(0)}
+              </span>
+              <span className="text-2xl">
+                {session.user.lastName.charAt(0)}
+              </span>
             </div>
           </div>
           <div className="flex flex-col justify-center">
@@ -83,7 +115,10 @@ const Navbar = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-2 p-5">
-          <Link href={"/register"} className="bg-primary rounded-full p-3 text-center">
+          <Link
+            href={"/register"}
+            className="bg-primary rounded-full p-3 text-center"
+          >
             Create an account
           </Link>
           <Link
@@ -101,7 +136,12 @@ const Navbar = () => {
     <>
       <AccountInfo />
       {nav.map((navItem) => (
-        <MenuItem key={navItem.label} label={navItem.label} icon={navItem.icon} link={navItem.link} />
+        <MenuItem
+          key={navItem.label}
+          label={navItem.label}
+          icon={navItem.icon}
+          link={navItem.link}
+        />
       ))}
     </>
   );
@@ -122,7 +162,9 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="hidden lg:block w-min">{status !== "loading" && <NavContainer />}</div>
+      <div className="hidden lg:block w-min">
+        {status !== "loading" && <NavContainer />}
+      </div>
       <div className="drawer hidden md:block lg:hidden">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
