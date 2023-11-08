@@ -56,7 +56,7 @@ const Dashboard = () => {
             className="fixed inset-0 bg-gray-500 bg-opacity-75"
             onClick={closeModal}
           ></div>
-          <div className="relative p-8 bg-white w-full max-w-lg rounded-lg shadow-lg">
+          <div className="relative p-8 bg-white w-full max-w-2xl rounded-lg shadow-lg">
             <h3 className="text-lg font-semibold text-gray-700">
               Multievent Shipment
             </h3>
@@ -69,20 +69,22 @@ const Dashboard = () => {
               className="select select-bordered w-full bg-white text-gray-600 p-2"
               multiple
             >
-              <option>Event X8WNEM</option>
-              <option>Event 38AMXL</option>
-              <option>Event S7AMDX</option>
+              {events.map((event) => (
+                <option key={event._id} value={event._id}>
+                  {event.closestIsland} ({event.reportedDate.split("T")[0]})&nbsp;-&nbsp;{event.publicType}
+                </option>
+              ))}
             </select>
 
             <div className="flex w-full flex-row mt-8">
-              <div className="w-1/2">
+              <div className="w-2/4">
                 {" "}
                 <p className="text-gray-600 mt-4 mb-2">
                   <b>Ship From</b>
                 </p>
                 <input className="input input-bordered bg-white text-gray-600 mb-2" />
               </div>
-              <div className="w-1/2">
+              <div className="w-2/4">
                 {" "}
                 <p className="text-gray-600 mt-4 mb-2">
                   <b>Ship To</b>
