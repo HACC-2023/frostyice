@@ -23,7 +23,7 @@ const ReportForm = () => {
   const [closestIsland, setClosestIsland] = useState('Big Island');
   const [closestLandmark, setClosestLandmark] = useState('');
   const [closestLandmarkRelativeLocation, setClosestLandmarkRelativeLocation] = useState('');
-  const [coordinates, setCoordinates] = useState('');
+  const [coordinates, setCoordinates] = useState(null);
 
   // debris detailed description
   const [debrisTrappedDesc, setDebrisTrappedDesc] = useState('Caught on the reef or is partially buried in sand');
@@ -36,7 +36,7 @@ const ReportForm = () => {
   const [firstName, setFirstName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [confirmEmail, setConfirmEmail] = useState(''); // TODO validation
+  const [confirmEmail, setConfirmEmail] = useState('');
 
   const selectedBtnStyle = {
     background: '#3aa2e7',
@@ -50,6 +50,16 @@ const ReportForm = () => {
     border: 'none',
   };
 
+  const validPhone = (phone) => {
+    const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const validEmail = (email) => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    return emailRegex.test(email);
+  };
+
   useEffect(() => {
     setLastName(session?.user?.lastName);
     setFirstName(session?.user?.firstName);
@@ -57,6 +67,27 @@ const ReportForm = () => {
   }, [session]);
 
   async function submitForm() {
+    // validation
+    if (!coordinates || (!closestIsland && !closestLandmark && !closestLandmarkRelativeLocation)) {
+      toast.info('Please select a location on the map or enter a location description');
+      return;
+    }
+    if (!firstName || !lastName) {
+      toast.info('Please enter your first and last name');
+      return;
+    }
+    if (!phoneNumber || !validPhone(phoneNumber)) {
+      toast.info('Please enter a valid phone number');
+      return;
+    }
+    if (!email || !validEmail(email)) {
+      toast.info('Please enter a valid email address');
+      return;
+    }
+    if (!confirmEmail || email !== confirmEmail) {
+      toast.info('Email and confirm email must match');
+      return;
+    }
     setIsLoading(true);
     const data = {
       firstName,
@@ -92,9 +123,9 @@ const ReportForm = () => {
       body: JSON.stringify(data),
     });
     if (res.status === 201) {
-      toast.success('Form submitted. Mahalo!');
+      toast.success('Form submitted - Mahalo!');
     } else {
-      toast.error('Error submitting form. Please try again later.');
+      toast.error('Error submitting form - Please try again later');
     }
     setIsLoading(false);
   }
@@ -734,8 +765,8 @@ const ReportForm = () => {
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setLastName(event.target.value)}
                 value={lastName}
+                maxLength={30}
               />
-              <p className="text-gray-400 mb-2 italic">40 max characters</p>
             </div>
             <div className="flex-row mt-4 ml-4">
               <p className="text-gray-600">
@@ -745,8 +776,8 @@ const ReportForm = () => {
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setFirstName(event.target.value)}
                 value={firstName}
+                maxLength={30}
               />
-              <p className="text-gray-400 mb-4 italic">30 max characters</p>
             </div>
 
             <div className="flex-row mt-4 ml-4">
@@ -754,11 +785,17 @@ const ReportForm = () => {
                 <b>Phone Number*</b>
               </p>
               <input
-                placeholder="Ex: (808)395-9511"
+                placeholder="Ex: 808-395-9511"
                 className="input input-bordered bg-white text-gray-600 mb-1"
-                onChange={event => setPhoneNumber(event.target.value)}
+                onChange={event => {
+                  setPhoneNumber(event.target.value);
+                }}
                 value={phoneNumber}
+                type={'tel'}
               />
+              {!validPhone(phoneNumber) && phoneNumber.length > 0 && (
+                <p className="text-red-500 mb-2 text-sm">Please enter a valid phone number</p>
+              )}
             </div>
           </div>
 
@@ -772,6 +809,9 @@ const ReportForm = () => {
                 onChange={event => setEmail(event.target.value)}
                 value={email}
               />
+              {!validEmail(email) && email.length > 0 && (
+                <p className="text-red-500 mb-2 text-sm">Please enter a valid email address</p>
+              )}
             </div>
             <div className="flex-row mt-1 ml-4">
               <p className="text-gray-600">
@@ -782,6 +822,9 @@ const ReportForm = () => {
                 onChange={event => setConfirmEmail(event.target.value)}
                 value={confirmEmail}
               />
+              {email !== confirmEmail && confirmEmail.length > 0 && (
+                <p className="text-red-500 mb-2 text-sm">Email addresses must match</p>
+              )}
             </div>
           </div>
         </div>
