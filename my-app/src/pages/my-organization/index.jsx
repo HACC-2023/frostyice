@@ -58,16 +58,21 @@ const MyOrganization = () => {
         </h3>
         <hr />
         <br />
+
         <div className="p-8 shadow bg-white">
-          <button
-            className="btn btn-sm md:btn-md btn-primary"
-            onClick={() =>
-              document.getElementById("add_member_modal_1").showModal()
-            }
-          >
-            Add Member
-          </button>
-          <AddMemberModal id="add_member_modal_1" orgs={organization} />
+          {session?.user.role != "org_member" && (
+            <div className="flex flex-row justify-between">
+              <button
+                className="btn btn-sm md:btn-md btn-primary"
+                onClick={() =>
+                  document.getElementById("add_member_modal_1").showModal()
+                }
+              >
+                Add Member
+              </button>
+              <AddMemberModal id="add_member_modal_1" orgs={organization} />
+            </div>
+          )}
           <OrgMemberTable members={orgMembers} />
         </div>
       </div>

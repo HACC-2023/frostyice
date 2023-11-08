@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import { TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 import DeleteMembersModal from "./DeleteMembersModal";
+import { useSession } from "next-auth/react";
 
 const OrgMemberTable = ({ members }) => {
+  const { data: session, status } = useSession();
 
   return (
     <div className="overflow-x-auto bg-white">
@@ -14,7 +16,7 @@ const OrgMemberTable = ({ members }) => {
             <th>Last Name</th>
             <td>Email</td>
             <td>Role</td>
-            <td></td>
+            {session?.user.role != "org_member" && <td></td>}
           </tr>
         </thead>
         <tbody>
@@ -35,18 +37,23 @@ const OrgMemberTable = ({ members }) => {
                 <span className="inline-block pr-1">{member.role}</span>
                 <PencilIcon className="w-4 h-4 text-blue-600 inline-block" />
               </td>
-              <td>
-                <button
-                  onClick={() =>
-                    document
-                      .getElementById(`delete_member_modal_${index}`)
-                      .showModal()
-                  }
-                >
-                  <TrashIcon className="w-4 h-4" />
-                </button>
-                <DeleteMembersModal id={`delete_member_modal_${index}`} member={member} />
-              </td>
+              {session?.user.role != "org_member" && (
+                <td>
+                  <button
+                    onClick={() =>
+                      document
+                        .getElementById(`delete_member_modal_${index}`)
+                        .showModal()
+                    }
+                  >
+                    <TrashIcon className="w-4 h-4" />
+                  </button>
+                  <DeleteMembersModal
+                    id={`delete_member_modal_${index}`}
+                    member={member}
+                  />
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
