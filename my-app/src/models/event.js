@@ -54,13 +54,10 @@ const eventSchema = new mongoose.Schema({
   },
   publicContainerFullness: {
     type: String,
-    required: true,
   },
   publicClaimBoat: {
     type: String,
     enum: ["Yes", "No"],
-    required: true,
-    default: "No",
   },
   publicBiofoulingRating: {
     type: Number,

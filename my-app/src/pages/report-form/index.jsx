@@ -790,7 +790,7 @@ const ReportForm = () => {
                 value={phoneNumber}
                 type={'tel'}
               />
-              {!validPhone(phoneNumber) && phoneNumber.length > 0 && (
+              {!validPhone(phoneNumber) && phoneNumber?.length > 0 && (
                 <p className="text-red-500 mb-2 text-sm">Please enter a valid phone number</p>
               )}
             </div>
@@ -806,7 +806,7 @@ const ReportForm = () => {
                 onChange={event => setEmail(event.target.value)}
                 value={email}
               />
-              {!validEmail(email) && email.length > 0 && (
+              {!validEmail(email) && email?.length > 0 && (
                 <p className="text-red-500 mb-2 text-sm">Please enter a valid email address</p>
               )}
             </div>
@@ -819,7 +819,7 @@ const ReportForm = () => {
                 onChange={event => setConfirmEmail(event.target.value)}
                 value={confirmEmail}
               />
-              {email !== confirmEmail && confirmEmail.length > 0 && (
+              {email !== confirmEmail && confirmEmail?.length > 0 && (
                 <p className="text-red-500 mb-2 text-sm">Email addresses must match</p>
               )}
             </div>

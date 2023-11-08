@@ -73,7 +73,6 @@ export default async function handler(req, res) {
         ? '' : `<b>Nearest Island:</b> ${closestIsland}<br/><b>Nearest Landmark:</b> ${closestLandmark}<br/><b>Landmark Relative Location:</b> ${debrisLandmarkRelativeLocation}<br/>`;
       const additionalDesc = publicDebrisEnvAdditionalDesc ? `<b>Additional Description:</b> ${publicDebrisEnvAdditionalDesc}<br/>` : '';
 
-      // TODO update link at bottom of email
       const emailMessage = `
         Aloha,
         <br/><br/>
@@ -94,7 +93,7 @@ export default async function handler(req, res) {
         <b>Reporter Phone:</b> ${phoneNumber}<br/>
         <b>Report Method:</b> ${req.body.payload?.telephony ? 'AI Call Center' : 'AI Text Chatbot'}<br/>
         <br/>
-        <a href="http://localhost:3000/event/${created._id}">See more details</a>
+        <a href="https://frostyice-0792b9c3-fc67-493a-b39a-69ae6658ba1e.vercel.app/events/${created._id}">See more details</a>
         <br/><br/>
         Mahalo!<br/><br/>
         Center for Marine Debris Research

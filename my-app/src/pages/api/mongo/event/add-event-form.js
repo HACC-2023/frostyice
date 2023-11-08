@@ -1,6 +1,7 @@
 import connectDB from '@/lib/mongodb';
 import Event from '@/models/event';
 import { sendEmail } from '@/server/mailService';
+import { findCloseIsland } from "@/utils/findCloseIsland";
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -27,6 +28,12 @@ export default async function handler(req, res) {
         phoneNumber,
       } = await req.body;
 
+      let derivedClosetIsland;
+
+      if (mapLat && mapLong) {
+        derivedClosetIsland = findCloseIsland(mapLat, mapLong);
+      }
+
       await connectDB();
 
       const created = await Event.create({
@@ -41,7 +48,7 @@ export default async function handler(req, res) {
         publicLatLongOrPositionDesc,
         mapLat,
         mapLong,
-        closestIsland,
+        closestIsland: closestIsland || derivedClosetIsland,
         closestLandmark,
         debrisLandmarkRelativeLocation,
         publicDebrisEnvDesc,
@@ -60,10 +67,9 @@ export default async function handler(req, res) {
       const latLongOrPositionDescription = publicLatLongOrPositionDesc ? `<b>Position Description:</b> ${publicLatLongOrPositionDesc}<br/>` : '';
       const location = mapLat && mapLong
         ? `<b>Lat:</b> ${mapLat}<br/><b>Long:</b> ${mapLong}<br/>`
-        : `<b>Nearest Island:</b> ${closestIsland}<br/><b>Nearest Landmark:</b> ${closestLandmark}<br/><b>Landmark Relative Location:</b> ${debrisLandmarkRelativeLocation}<br/>`;
+        : `<b>Nearest Landmark:</b> ${closestLandmark}<br/><b>Landmark Relative Location:</b> ${debrisLandmarkRelativeLocation}<br/>`;
       const additionalDesc = publicDebrisEnvAdditionalDesc ? `<b>Additional Description:</b> ${publicDebrisEnvAdditionalDesc}<br/>` : '';
 
-      // TODO update link at bottom of email
       const emailMessage = `
         Aloha,
         <br/><br/>
@@ -73,6 +79,7 @@ export default async function handler(req, res) {
         ${containerFullness}
         ${claimBoat}
         ${location}
+        <b>Nearest Island:</b> ${closestIsland || derivedClosetIsland}<br/>
         ${latLongOrPositionDescription}
         <b>Location Description:</b> ${publicLocationDesc}<br/>
         <b>Debris Description:</b> ${publicDebrisEnvDesc}<br/>
@@ -84,7 +91,7 @@ export default async function handler(req, res) {
         <b>Reporter Phone:</b> ${phoneNumber}<br/>
         <b>Report Method:</b> Online Form<br/>
         <br/>
-        <a href="http://localhost:3000/event/${created._id}">See more details</a>
+        <a href="https://frostyice-0792b9c3-fc67-493a-b39a-69ae6658ba1e.vercel.app/events/${created._id}">See more details</a>
         <br/><br/>
         Mahalo!<br/><br/>
         Center for Marine Debris Research
