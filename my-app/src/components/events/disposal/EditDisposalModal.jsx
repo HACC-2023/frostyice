@@ -25,14 +25,13 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
   async function editDisposal(data) {
     try {
       setStatus({ msg: "loading", body: "Adding component..." });
-      const res = await fetch("/api/mongo/", {
+      const res = await fetch(`/api/mongo/sorted-material/edit-disposal-by-id/${sortedMaterial._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: org.name,
-          location: org.location,
+          ...data,
         }),
       });
 
@@ -63,7 +62,7 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
     console.log(data);
     // converts date back to actual time
     console.log(convertLocalDateToUTC(data.disposalDate));
-    editComponent(data)
+    editDisposal(data);
   }
 
   return (

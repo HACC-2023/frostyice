@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import EditComponentModal from "./EditComponentModal";
 
 const SortingRow = ({ sortedMaterial, event }) => {
+  const modalId = `edit_component_modal_${sortedMaterial._id}`;
   return (
     <tr>
       <td>{sortedMaterial.material}</td>
@@ -11,12 +12,12 @@ const SortingRow = ({ sortedMaterial, event }) => {
         <button
           className="btn btn-outline btn-sm"
           onClick={() =>
-            document.getElementById("edit_component_modal").showModal()
+            document.getElementById(modalId).showModal()
           }
         >
           Edit
         </button>
-        <EditComponentModal id="edit_component_modal" event={event} sortedMaterial={sortedMaterial}/>
+        <EditComponentModal id={modalId} event={event} sortedMaterial={sortedMaterial}/>
         <button className="btn btn-outline btn-sm">Delete</button>
       </td>
     </tr>

@@ -1,20 +1,24 @@
+import useSWR from "swr";
 import CompletionWarning from "./common/CompletionWarning";
 import EventCollapse from "./common/EventCollapse";
 import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
 import UndoStepBtn from "./common/UndoStepBtn";
 import DisposalRow from "./disposal/DisposalRow";
 import { STATUS } from "@/constants/constants";
+import { fetcher } from "@/utils/fetcher";
 
 const Disposal = ({ event }) => {
-  const sortedMaterial = {
-    material: "Nets",
-    island: "Oahu",
-    mass: 32,
-    polymers: "Nylon",
-    eventId: "abcd1234",
-    disposalDate: null,
-    disposalMechanism: "Burned",
-  };
+  const _id = event._id;
+  const { data } = useSWR(_id ? `/api/mongo/sorted-material/get-all-by-event-id/${event._id}` : null, _id ? fetcher : null, { refreshInterval: 1000 });
+  // const sortedMaterial = {
+  //   material: "Nets",
+  //   island: "Oahu",
+  //   mass: 32,
+  //   polymers: "Nylon",
+  //   eventId: "abcd1234",
+  //   disposalDate: null,
+  //   disposalMechanism: "Burned",
+  // };
   return (
     <EventCollapse title="Disposal">
       {STATUS.indexOf(event.status) > 2 ? (
@@ -32,8 +36,12 @@ const Disposal = ({ event }) => {
                 </tr>
               </thead>
               <tbody>
-                {/* Later on use all items */}
-                <DisposalRow sortedMaterial={sortedMaterial} />
+                { data && data.map((sortedMaterial) => (
+                  <DisposalRow
+                    key={sortedMaterial._id}
+                    sortedMaterial={sortedMaterial}
+                  />
+                ))}
               </tbody>
             </table>
           </div>
