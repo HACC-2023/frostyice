@@ -8,7 +8,7 @@ import UndoStepBtn from "./common/UndoStepBtn";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 
-const Sorting = ({ event }) => {
+const Sorting = ({ event, userOrgId }) => {
   const _id = event._id;
   const { data } = useSWR(
     _id ? `/api/mongo/sorted-material/get-all-by-event-id/${event._id}` : null,
@@ -30,20 +30,19 @@ const Sorting = ({ event }) => {
     <EventCollapse title="Sorting">
       {STATUS.indexOf(event.status) > 1 ? (
         <>
-          <section className="flex justify-between md:mt-10">
-            {/* <h1>
-          Sorting Date: {sortedMaterial.sortedDate.toLocaleString("en-US")}
-        </h1> */}
-            <button
-              className="btn btn-secondary"
-              onClick={() =>
-                document.getElementById("add_component_modal").showModal()
-              }
-            >
-              Add Component
-            </button>
-            <AddComponentModal id="add_component_modal" event={event} />
-          </section>
+          {userOrgId === event.dibsByOrgId && (
+            <section className="flex justify-between md:mt-10">
+              <button
+                className="btn btn-secondary"
+                onClick={() =>
+                  document.getElementById("add_component_modal").showModal()
+                }
+              >
+                Add Component
+              </button>
+              <AddComponentModal id="add_component_modal" event={event} />
+            </section>
+          )}
           <div className="flex flex-col gap-3 my-3 py-6 px-3 bg-base-100 rounded-xl">
             <div className="overflow-x-auto w-full flex items-start rounded-xl p-3 h-96 border border-neutral">
               <table className="table table-zebra table-pin-rows">
@@ -56,21 +55,30 @@ const Sorting = ({ event }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data && (
+                  {data &&
                     data.map((sortedMaterial) => (
-                      <SortingRow key={sortedMaterial._id} sortedMaterial={sortedMaterial} event={event} />
-                    ))
-                  )}
+                      <SortingRow
+                        key={sortedMaterial._id}
+                        sortedMaterial={sortedMaterial}
+                        event={event}
+                        userOrgId={userOrgId}
+                      />
+                    ))}
                 </tbody>
               </table>
             </div>
-            <section className="flex justify-end gap-3 py-3">
-              {STATUS.indexOf(event.status) <= 2 ? (
-                <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[3]} />
-              ) : (
-                <UndoStepBtn eventId={event._id} prevStatus={STATUS[2]} />
-              )}
-            </section>
+            {userOrgId === event.dibsByOrgId && (
+              <section className="flex justify-end gap-3 py-3">
+                {STATUS.indexOf(event.status) <= 2 ? (
+                  <MarkAsCompleteBtn
+                    eventId={event._id}
+                    nextStatus={STATUS[3]}
+                  />
+                ) : (
+                  <UndoStepBtn eventId={event._id} prevStatus={STATUS[2]} />
+                )}
+              </section>
+            )}
           </div>
         </>
       ) : (

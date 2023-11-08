@@ -6,22 +6,29 @@ import CompletionWarning from "./common/CompletionWarning";
 import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
 import UndoStepBtn from "./common/UndoStepBtn";
 
-const RemovalAndStorage = ({ event }) => {
+const RemovalAndStorage = ({ event, userOrgId }) => {
+  // console.log("event", event.dibsByOrgId);
+  // console.log("userOrgId", userOrgId);
+  // console.log("event === userOrgId", event.dibsByOrgId === userOrgId);
+
+  // userOrgId === event.dibsByOrgId checks for permissions
   return (
     <EventCollapse title="Removal and Storage">
       {STATUS.indexOf(event.status) > 0 ? (
         <div>
-          <section className="flex md:mb-6">
-            <button
-              className="btn btn-secondary justify-self-end"
-              onClick={() => {
-                document.getElementById("edit_removal_modal_1").showModal();
-              }}
-            >
-              Edit
-            </button>
-            <EditRemovalModal id="edit_removal_modal_1" event={event} />
-          </section>
+          {userOrgId === event.dibsByOrgId && (
+            <section className="flex md:mb-6">
+              <button
+                className="btn btn-secondary justify-self-end"
+                onClick={() => {
+                  document.getElementById("edit_removal_modal_1").showModal();
+                }}
+              >
+                Edit
+              </button>
+              <EditRemovalModal id="edit_removal_modal_1" event={event} />
+            </section>
+          )}
           <div className="flex flex-col md:flex-row justify-evenly gap-3 my-3 py-6 px-3 bg-base-100 rounded-xl">
             <div className="flex flex-col gap-2">
               <div>
@@ -53,8 +60,13 @@ const RemovalAndStorage = ({ event }) => {
               <div>
                 <h1 className="md:text-xl font-bold">Removal Date/s</h1>
                 <p>
-                  {event.removalStartDate ? new Date(event.removalStartDate).toLocaleDateString() : ""}-
-                  {event.removalStartDate ? new Date(event.removalEndDate).toLocaleDateString() : ""}
+                  {event.removalStartDate
+                    ? new Date(event.removalStartDate).toLocaleDateString()
+                    : ""}
+                  -
+                  {event.removalStartDate
+                    ? new Date(event.removalEndDate).toLocaleDateString()
+                    : ""}
                 </p>
               </div>
             </div>
@@ -120,14 +132,16 @@ const RemovalAndStorage = ({ event }) => {
               </div>
             </>
           )}
-          <section className="flex justify-end gap-3 py-3">
-            {/* If the event is completed only show the undo button */}
-            {STATUS.indexOf(event.status) <= 1 ? (
-              <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[2]}/>
-            ) : (
-              <UndoStepBtn eventId={event._id} prevStatus={STATUS[1]} />
-            )}
-          </section>
+          {userOrgId === event.dibsByOrgId && (
+            <section className="flex justify-end gap-3 py-3">
+              {/* If the event is completed only show the undo button */}
+              {STATUS.indexOf(event.status) <= 1 ? (
+                <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[2]} />
+              ) : (
+                <UndoStepBtn eventId={event._id} prevStatus={STATUS[1]} />
+              )}
+            </section>
+          )}
         </div>
       ) : (
         <CompletionWarning />

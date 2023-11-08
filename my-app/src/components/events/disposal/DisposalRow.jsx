@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import EditDisposalModal from "./EditDisposalModal";
 import DeleteSortedMaterialModal from "../common/DeleteSortedMaterialModal";
 
-const DisposalRow = ({ sortedMaterial }) => {
+const DisposalRow = ({ sortedMaterial, userOrgId, eventDibsBy }) => {
   const editModalId = `edit_disposal_modal_${sortedMaterial._id}`;
   const deleteModalId = `delete_disposal_modal_${sortedMaterial._id}`;
 
@@ -18,23 +18,30 @@ const DisposalRow = ({ sortedMaterial }) => {
           : "-"}
       </td>
       <td className="flex gap-2">
-        <button
-          className="btn btn-sm btn-outline"
-          onClick={() => document.getElementById(editModalId).showModal()}
-        >
-          Edit
-        </button>
-        <EditDisposalModal id={editModalId} sortedMaterial={sortedMaterial} />
-        <button
-          className="btn btn-sm btn-outline"
-          onClick={() => document.getElementById(deleteModalId).showModal()}
-        >
-          Delete
-        </button>
-        <DeleteSortedMaterialModal
-          id={deleteModalId}
-          sortedMaterial={sortedMaterial}
-        />
+        {userOrgId === eventDibsBy && (
+          <>
+            <button
+              className="btn btn-sm btn-outline"
+              onClick={() => document.getElementById(editModalId).showModal()}
+            >
+              Edit
+            </button>
+            <EditDisposalModal
+              id={editModalId}
+              sortedMaterial={sortedMaterial}
+            />
+            <button
+              className="btn btn-sm btn-outline"
+              onClick={() => document.getElementById(deleteModalId).showModal()}
+            >
+              Delete
+            </button>
+            <DeleteSortedMaterialModal
+              id={deleteModalId}
+              sortedMaterial={sortedMaterial}
+            />
+          </>
+        )}
       </td>
     </tr>
   );
@@ -46,7 +53,7 @@ DisposalRow.propTypes = {
     mass: PropTypes.number.isRequired,
     polymer: PropTypes.string.isRequired,
     disposalDate: PropTypes.instanceOf(Date) || null,
-    disposalMechanism: PropTypes.string.isRequired,
+    disposalMechanism: PropTypes.string,
   }).isRequired,
 };
 
