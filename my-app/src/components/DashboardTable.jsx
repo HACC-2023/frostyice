@@ -1,53 +1,24 @@
-const dashboardDummyData = [
-  {
-    _id: 1,
-    status: "Sorting",
-    debrisType: "Net",
-    debrisDescription: "A big net stuck on a boat",
-    coordinates: "1234, 5678",
-    location: "Kuakini Street, Honolulu",
-  },
-  {
-    _id: 2,
-    status: "Removing",
-    debrisType: "Line",
-    debrisDescription: "A fishing line in the street",
-    coordinates: "1234, 5678",
-    location: "Kuakini Street, Honolulu",
-  },
-  {
-    _id: 3,
-    status: "Processing",
-    debrisType: "dFAD",
-    debrisDescription: "A dFAD stuck on the rocks",
-    coordinates: "1234, 5678",
-    location: "Kuakini Street, Honolulu",
-  },
-];
-
-const DashboardTable = () => {
+const DashboardTable = ({events}) => {
   return (
     <div className="overflow-x-auto bg-white">
       <table className="table bg-white text-gray-500">
         <thead>
           <tr className="text-gray-600">
-            <th>_ID</th>
-            <td>Status</td>
+            <td className="w-32">Date</td>
+            <td className="w-20">Status</td>
             <td>Debris Type</td>
-            <td>Debris Description</td>
-            <td>Coordinates</td>
-            <td>Location</td>
+            <td>Debris Env. Description</td>
+            <td>Closest Island</td>
           </tr>
         </thead>
         <tbody>
-          {dashboardDummyData.map((data) => (
-            <tr key={data._id}>
-              <th className="text-gray-500">{data._id}</th>
-              <td>{data.status}</td>
-              <td>{data.debrisType}</td>
-              <td>{data.debrisDescription}</td>
-              <td>{data.coordinates}</td>
-              <td>{data.location}</td>
+          {events.map((event) => (
+            <tr key={event._id}>
+              <td>{event.reportedDate.split('T')[0]}</td>
+              <td className="text-gray-500 font-semibold">{event.status}</td>
+              <td>{event.publicType}</td>
+              <td>{event.publicDebrisEnvDesc}</td>
+              <td>{event.closestIsland}</td>
             </tr>
           ))}
         </tbody>

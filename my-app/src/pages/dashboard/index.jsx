@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import DashboardTable from "@/components/DashboardTable";
 
 const Dashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [events, setEvents] = useState([]);
 
   const openModal = () => {
     setModalOpen(true);
@@ -12,6 +13,25 @@ const Dashboard = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/mongo/event/get-all-events");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setEvents(data);
+        } else {
+          console.error("Error fetching data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [events]);
 
   return (
     <div className="justify-center items-center">
@@ -26,7 +46,7 @@ const Dashboard = () => {
               Multievent Shipment
             </h6>
           </div>
-          <DashboardTable />
+          <DashboardTable events={events} />
         </div>
       </div>
 
