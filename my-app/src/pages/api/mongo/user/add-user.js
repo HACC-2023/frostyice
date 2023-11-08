@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         lastName,
         email,
         password: hashedPassword,
-        orgId: '6541e36d04b6d9f3ddc81ef6', // TODO - remove hard-coded value
+        orgId: orgId,
         role: 'org_member', // TODO - remove hard-coded value (?)
       });
       const emailMessage =
