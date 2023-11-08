@@ -1,9 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import OrgMemberTable from "@/components/OrgMemberTable";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 const MyOrganization = () => {
+  const { data: session, status } = useSession();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [orgMembers, setOrgMembers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log(session.user);
+        const response = await fetch("/api/mongo/user/get-users");
+        if (response.ok) {
+          const data = await response.json();
+          const sameOrgMembers = data.filter(
+            (user) =>
+              user.orgId === session.user.orgId &&
+              user.email !== session.user.email
+          );
+          console.log(sameOrgMembers);
+          setOrgMembers(sameOrgMembers);
+        } else {
+          console.error("Error fetching data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (session) {
+      fetchData();
+    }
+  }, [session]);
 
   const openModal = () => {
     setModalOpen(true);
@@ -32,7 +62,7 @@ const MyOrganization = () => {
             </h6>
           </button>
 
-          <OrgMemberTable />
+          <OrgMemberTable members={orgMembers} />
         </div>
       </div>
 

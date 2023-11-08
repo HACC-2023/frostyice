@@ -6,14 +6,6 @@ const Dashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
 
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,6 +24,14 @@ const Dashboard = () => {
 
     fetchData();
   }, [events]);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="justify-center items-center">

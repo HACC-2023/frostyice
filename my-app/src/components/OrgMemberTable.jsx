@@ -1,28 +1,7 @@
 import { TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
-const orgMemberTableDummyData = [
-  {
-    _id: "1",
-    member: "James Grade",
-    email: "james@hotmail",
-    role: "User",
-  },
-  {
-    _id: "2",
-    member: "Giorgio Tran",
-    email: "tran@hotmail",
-    role: "User",
-  },
-  {
-    _id: "3",
-    member: "Ana Araujo",
-    email: "ana@hotmail",
-    role: "Admin",
-  },
-];
-
-const OrgMemberTable = () => {
+const OrgMemberTable = ({ members }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
   // modal to delete a member
@@ -45,21 +24,16 @@ const OrgMemberTable = () => {
         <thead>
           <tr className="text-gray-600">
             <td></td>
-            <th>
-              <h6 className="text-lg font-semibold text-gray-600">Member</h6>
-            </th>
-            <td>
-              <h6 className="text-lg font-semibold text-gray-600">Email</h6>
-            </td>
-            <td>
-              <h6 className="text-lg font-semibold text-gray-600">Role</h6>
-            </td>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <td>Email</td>
+            <td>Role</td>
             <td></td>
           </tr>
         </thead>
         <tbody>
-          {orgMemberTableDummyData.map((data) => (
-            <tr key={data._id}>
+          {members.map((member) => (
+            <tr key={member._id}>
               <td>
                 {" "}
                 <img
@@ -68,10 +42,11 @@ const OrgMemberTable = () => {
                   alt=""
                 />
               </td>
-              <th>{data.member}</th>
-              <td>{data.email}</td>
+              <th>{member.firstName}</th>
+              <th>{member.lastName}</th>
+              <td>{member.email}</td>
               <td>
-                <span className="inline-block pr-1">{data.role}</span>
+                <span className="inline-block pr-1">{member.role}</span>
                 <PencilIcon className="w-4 h-4 text-blue-600 inline-block" />
               </td>
               <td>
