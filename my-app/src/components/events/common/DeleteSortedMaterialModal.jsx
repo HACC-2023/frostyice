@@ -3,9 +3,12 @@ import PropTypes from "prop-types";
 const DeleteSortedMaterialModal = ({ id, sortedMaterial }) => {
   async function deleteSortedMaterial() {
     try {
-      const res = await fetch(`/api/mongo/sorted-material/id/${sortedMaterial._id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `/api/mongo/sorted-material/id/${sortedMaterial._id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (res.ok) {
         console.log("Successfully deleted organization");
@@ -27,7 +30,8 @@ const DeleteSortedMaterialModal = ({ id, sortedMaterial }) => {
         <h3 className="pb-5 font-bold">DELETE ENTRY</h3>
         <form onSubmit={onSubmit}>
           <div className="w-full">
-            Are you sure you want to delete &quot;{sortedMaterial.material}&quot;?
+            Are you sure you want to delete &quot;{sortedMaterial.material}
+            &quot;?
           </div>
           <div className="modal-action">
             <button
@@ -54,8 +58,4 @@ export default DeleteSortedMaterialModal;
 
 DeleteSortedMaterialModal.propTypes = {
   id: PropTypes.string.isRequired,
-  org: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
-  }).isRequired,
 };
