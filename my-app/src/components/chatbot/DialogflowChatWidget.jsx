@@ -94,11 +94,6 @@ const DialogflowChatWidget = () => {
         df-messenger-chat-bubble:hover {
           --df-messenger-chat-bubble-background: ${dfMessengerColors.primaryColorHover};
         }
-        @media (min-width: 768px) {
-          df-messenger {
-            bottom: 16px;
-          }
-        }
       `}
     </style>
   );

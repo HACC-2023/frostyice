@@ -14,7 +14,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const Navbar = () => {
+const SideNavbar = () => {
   const { data: session, status } = useSession();
   const [orgName, setOrgName] = useState("");
 
@@ -168,7 +168,7 @@ const Navbar = () => {
       <div className="drawer hidden md:block lg:hidden">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
-          {/* Navbar */}
+          {/* SideNavbar */}
           <div className="w-full navbar">
             <div className="flex-none lg:hidden">
               <label
@@ -206,4 +206,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SideNavbar;

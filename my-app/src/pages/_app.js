@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import SideNavbar from "@/components/navbar/SideNavbar";
 import MobileNavbar from "@/components/navbar/MobileNavbar";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
@@ -34,13 +34,13 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
     <>
       <SessionProvider session={session}>
         <div className="flex md:flex-col lg:flex-row min-h-screen">
-          <Navbar />
+          <SideNavbar />
           <div className="flex-1">
             <Component {...pageProps} />
           </div>
           <MobileNavbar />
           <ToastContainer />
-          <div id="chatContainer" className={`fixed ${ scrollDirection === "down" ? "-bottom-24" : "bottom-0"} right-4 h-20 transition-all duration-500`}>
+          <div id="chatContainer" className={`fixed ${ scrollDirection === "down" ? "-bottom-24" : "md:bottom-0 bottom-14"} right-4 h-20 transition-all duration-500`}>
             <DialogflowChatWidget/>
           </div>
         </div>
