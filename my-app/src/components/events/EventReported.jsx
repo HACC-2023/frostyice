@@ -1,6 +1,11 @@
+import { useSession } from "next-auth/react";
 import EventCollapse from "./common/EventCollapse";
+import DispatchTeamBtn from "./event-reported/DispatchTeamBtn";
+import DismissBtn from "./event-reported/DismissBtn";
 
 const EventRemoval = ({ event }) => {
+  const { data: session } = useSession();
+
   return (
     <EventCollapse title="Event Reported">
       <div className="p-3 bg-base-100 rounded-xl">
@@ -78,10 +83,21 @@ const EventRemoval = ({ event }) => {
         </section>
         {/* show this section if the event is not claimed */}
       </div>
-      <section className="flex justify-end gap-3 py-3">
-        <button className="btn btn-outline">Dismiss</button>
-        <button className="btn btn-primary">Dispatch Team</button>
-      </section>
+      {!event.dibsBy ? (
+        <section className="flex justify-end gap-3 py-3">
+          <DismissBtn event={event}/>
+          {session?.user && (
+            <DispatchTeamBtn
+              userOrgId={session.user.orgId}
+              eventId={event._id}
+            />
+          )}
+        </section>
+      ) : (
+        <div className="flex justify-end text-sm py-5">
+          Team has been dispatched.
+        </div>
+      )}
     </EventCollapse>
   );
 };

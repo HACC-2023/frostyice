@@ -1,21 +1,23 @@
+/**
+ * Converts date to local format
+ * 
+ * @param {Date || String} date
+ * @returns {String} formattedDate
+ */
 export function convertDateToLocalFormat(date) {
-  /**
-   * Converts date from UTC to HST.
-   *
-   * @param   {Date || String} date   Date to convert.
-   * @returns {String}                Local date in format "YYYY-MM-DD".
-   */
-  if (typeof date === 'string') yourDate = new Date(date);
-  const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
-  return adjustedDate.toISOString().split("T")[0];
+  const convertedDate = new Date(date);
+  let offset = convertedDate.getTimezoneOffset() * 60 * 1000;
+  let adjustedDate = new Date(convertedDate.getTime() - offset);
+  let formattedDate = adjustedDate.toISOString().split("T")[0];
+  return formattedDate;
 }
+/**
+ * Converts date from HST to UTC.
+ *
+ * @param   {Date || String} date   Date to convert.
+ * @returns {Date}                  UTC date.
+ */
 export function convertLocalDateToUTC(date) {
-  /**
-   * Converts date from HST to UTC.
-   *
-   * @param   {Date || String} date   Date to convert.
-   * @returns {Date}                  UTC date.
-   */
   if (typeof date === 'string') date = new Date(date);
   return new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 }

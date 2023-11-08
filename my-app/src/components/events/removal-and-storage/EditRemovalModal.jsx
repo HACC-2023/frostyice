@@ -4,17 +4,8 @@ import { useForm } from "react-hook-form";
 import { convertDateToLocalFormat, convertLocalDateToUTC } from "@/utils/dateConverter";
 
 const EditRemovalModal = ({ id, event }) => {
-  // console.log(event.removalStartDate);
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      debrisSize: event.debrisSize,
-      debrisMass: event.debrisMass,
-      tempStorage: event.tempStorage,
-      removalStartDate: convertDateToLocalFormat(event.removalStartDate),
-      removalEndDate: convertDateToLocalFormat(event.removalEndDate),
-      assessedEnvDamage: event.assessedEnvDamage,
-    },
-  });
+  console.log(event.removalStartDate);
+  const { register, handleSubmit, reset } = useForm();
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
@@ -26,18 +17,24 @@ const EditRemovalModal = ({ id, event }) => {
     }
   }, [status]);
 
+  console.log("type of removal start date", typeof event.removalStartDate);
   // TODO: need to update this function once the APIs are ready
-  async function editEvent(org) {
+  async function editEvent(data) {
     try {
       setStatus({ msg: "loading", body: "Adding organization..." });
-      const res = await fetch("/api/mongo/", {
+      // Convert local time to UTC time
+      const removalStartDate = new Date(convertLocalDateToUTC(data.removalStartDate));
+      console.log("removalStartDate", removalStartDate);
+      const removalEndDate = new Date(convertLocalDateToUTC(data.removalEndDate));
+      const res = await fetch(`/api/mongo/event/get-event-by-id/${event._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: org.name,
-          location: org.location,
+          ...data,
+          removalStartDate: removalStartDate,
+          removalEndDate: removalEndDate,
         }),
       });
 
@@ -46,7 +43,6 @@ const EditRemovalModal = ({ id, event }) => {
           msg: "success",
           body: "Successfully edited event ✅",
         });
-        reset();
         console.log("Successfully edited event");
       } else {
         throw new Error("Failed to edit event.");
@@ -65,10 +61,10 @@ const EditRemovalModal = ({ id, event }) => {
   }
 
   function onSubmit(data) {
-    console.log(data);
+    console.log("data", data);
     console.log("event removal start date", event.removalStartDate);
     console.log("event removal start date converted", convertLocalDateToUTC(data.removalStartDate));
-    // editEvent(data);
+    editEvent(data);
   }
 
   return (
@@ -83,6 +79,7 @@ const EditRemovalModal = ({ id, event }) => {
               </label>
               <input
                 {...register("debrisSize")}
+                defaultValue={event.debrisSize}
                 type="number"
                 placeholder="Enter debris size"
                 className="input input-bordered w-full"
@@ -94,6 +91,7 @@ const EditRemovalModal = ({ id, event }) => {
               </label>
               <input
                 {...register("debrisMass")}
+                defaultValue={event.debrisMass}
                 type="number"
                 placeholder="Enter debris mass"
                 className="input input-bordered w-full"
@@ -105,6 +103,7 @@ const EditRemovalModal = ({ id, event }) => {
               </label>
               <textarea
                 {...register("assessedEnvDamage")}
+                defaultValue={event.assessedEnvDamage}
                 placeholder="Enter environmental damage"
                 className="textarea textarea-bordered w-full"
               />
@@ -115,6 +114,7 @@ const EditRemovalModal = ({ id, event }) => {
               </label>
               <input
                 {...register("removalStartDate", { valueAsDate: true })}
+                defaultValue={event.removalStartDate ? convertDateToLocalFormat(event.removalStartDate) : ""}
                 type="date"
                 className="input input-bordered w-full"
               />
@@ -125,7 +125,8 @@ const EditRemovalModal = ({ id, event }) => {
               </label>
               <input
                 {...register("removalEndDate", { valueAsDate: true })}
-                min={convertDateToLocalFormat(event.removalStartDate)}
+                min={event.removalStartDate ? convertDateToLocalFormat(event.removalStartDate) : ""}
+                defaultValue={event.removalEndDate ? convertDateToLocalFormat(event.removalEndDate) : ""}
                 type="date"
                 className="input input-bordered w-full"
               />
@@ -136,6 +137,7 @@ const EditRemovalModal = ({ id, event }) => {
               </label>
               <select
                 {...register("location")}
+                defaultValue={event.tempStorage}
                 className="select select-bordered"
               >
                 <option disabled>Choose your location</option>

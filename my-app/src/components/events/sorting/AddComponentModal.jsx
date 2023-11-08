@@ -1,3 +1,4 @@
+import { POLYMERS } from "@/constants/constants";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -15,18 +16,18 @@ const AddComponentModal = ({ id, event }) => {
     }
   }, [status]);
 
-  // TODO: Rewrite this function to support adding sorted material
-  async function addComponent(org) {
+  async function addComponent(data) {
     try {
       setStatus({ msg: "loading", body: "Adding component..." });
-      const res = await fetch("/api/mongo/component/add-component", {
+      const res = await fetch("/api/mongo/sorted-material/sorted-materials", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: org.name,
-          location: org.location,
+          ...data,
+          eventId: event._id,
+          island: event.closestIsland,
         }),
       });
 
@@ -56,7 +57,7 @@ const AddComponentModal = ({ id, event }) => {
   function onSubmit(data) {
     // check for weight. Make sure weight doesn't exceed the total weight of the event
     console.log(data);
-    // addComponent(data); see todo
+    addComponent(data);
   }
 
   return (
@@ -77,12 +78,12 @@ const AddComponentModal = ({ id, event }) => {
           </div>
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">Weight (kg)</span>
+              <span className="label-text">Mass (kg)</span>
             </label>
             <input
-              {...register("weight", { required: true})}
+              {...register("mass", { required: true})}
               type="number"
-              placeholder="Enter weight"
+              placeholder="Enter mass in Kg"
               className="input input-bordered w-full"
             />
           </div>
@@ -95,14 +96,9 @@ const AddComponentModal = ({ id, event }) => {
               className="select select-bordered"
             >
               <option disabled>Choose polymer</option>
-              <option>CA</option>
-              <option>EVA</option>
-              <option>HDPE</option>
-              <option>Nylon</option>
-              <option>PET</option>
-              <option>PP</option>
-              <option>PS</option>
-              <option>PVB</option>
+              {POLYMERS.map((polymer) => (
+                <option key={polymer}>{polymer}</option>
+              ))}
             </select>
           </div>
           <div className="modal-action">
