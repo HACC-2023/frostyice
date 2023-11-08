@@ -18,7 +18,6 @@ const AddMemberModal = ({ id, orgs }) => {
     }
   }, [status]);
 
-  console.log(orgs);
 
   async function registerUser(user) {
     try {

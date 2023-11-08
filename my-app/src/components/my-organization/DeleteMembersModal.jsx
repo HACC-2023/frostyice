@@ -16,8 +16,6 @@ const DeleteMembersModal = ({ id, member }) => {
       console.log(err);
     }
   }
-  console.log(member);
-  console.log(member._id);
 
   function onSubmit(event) {
     event.preventDefault();
