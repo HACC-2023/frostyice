@@ -22,11 +22,11 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
   }, [status]);
 
   // TODO: Rewrite this function to support editing sorted material
-  async function editDisposal(org) {
+  async function editDisposal(data) {
     try {
       setStatus({ msg: "loading", body: "Adding component..." });
-      const res = await fetch("/api/mongo/component/add-component", {
-        method: "POST",
+      const res = await fetch("/api/mongo/", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -63,7 +63,7 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
     console.log(data);
     // converts date back to actual time
     console.log(convertLocalDateToUTC(data.disposalDate));
-    // editComponent(data); see todo
+    editComponent(data)
   }
 
   return (
