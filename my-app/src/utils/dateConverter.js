@@ -22,13 +22,13 @@ export function convertLocalDateToUTC(date) {
   return new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 }
 
+/**
+ * Converts a Date object or String into a readable date String.
+ *
+ * @param   {Date || String} date   Date to convert.
+ * @returns {String}                Date in format "MON DD, YYYY HH:MM AM/PM".
+ */
 export function prettyHstDate(date) {
-  /**
-   * Converts a Date object or String into a readable date String.
-   *
-   * @param   {Date || String} date   Date to convert.
-   * @returns {String}                Date in format "MON DD, YYYY HH:MM AM/PM".
-   */
   if (typeof date === 'string') date = new Date(date);
   const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }
   return date.toLocaleString("en-US", options);

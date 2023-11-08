@@ -10,7 +10,7 @@ const ReportForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // debris description
-  const [debrisType, setDebrisType] = useState('"A mass of netting and/or fishing gear"');
+  const [debrisType, setDebrisType] = useState('"Mass of netting/fishing gear"');
   const [debrisTypeOther, setDebrisTypeOther] = useState('');
   const [containerFullness, setContainerFullness] = useState(null);
   const [claimBoat, setClaimBoat] = useState(null);
@@ -26,7 +26,7 @@ const ReportForm = () => {
   const [coordinates, setCoordinates] = useState(null);
 
   // debris detailed description
-  const [debrisTrappedDesc, setDebrisTrappedDesc] = useState('Caught on the reef or is partially buried in sand');
+  const [debrisTrappedDesc, setDebrisTrappedDesc] = useState('Caught on the reef or partially buried in sand');
   const [debrisTrappedOther, setDebrisTrappedOther] = useState('');
   const [imageURLArray, setImageURLArray] = useState([]);
   const [files, setFiles] = useState([]);
@@ -102,7 +102,7 @@ const ReportForm = () => {
       publicDebrisEnvDesc: debrisTrappedDesc,
       publicDebrisEnvAdditionalDesc: debrisTrappedOther,
     };
-    if (debrisType.includes('container')) {
+    if (debrisType.includes('Container')) {
       data.publicContainerFullness = containerFullness || 'Full';
     } else if (debrisType.includes('boat')) {
       data.publicClaimBoat = claimBoat || 'No';
@@ -141,8 +141,7 @@ const ReportForm = () => {
         <p className="text-gray-600 my-2">
           <b>
             TO REPORT MARINE ANIMALS THAT ARE ENTANGLED IN DEBRIS, CALL NOAA
-            IMMEDIATELY AT <br/>
-            <a className="text-blue-500 hover:underline" href="tel:18882569840">1-888-256-9840</a>
+            IMMEDIATELY AT <a className="whitespace-nowrap text-blue-500 hover:underline" href="tel:18882569840">1-888-256-9840</a>
             &nbsp;(round-the-clock hotline)
           </b>
         </p>
@@ -152,7 +151,7 @@ const ReportForm = () => {
           className="text-blue-500 hover:underline"
         >
           <p className="mb-2">
-            <b>GO TO DOBOR’S “WHO TO CALL” EMERGENCY CONTACT LIST</b>
+            <b>DOBOR &quot;WHO TO CALL&quot; EMERGENCY CONTACT LIST</b>
           </p>
         </a>
         <hr />
@@ -174,7 +173,7 @@ const ReportForm = () => {
           <b>Note:</b> Information you submit through this form is shared
           between divisions within DLNR, researchers at the University of
           Hawaii, NOAA, Non-Government Organizations and other agencies that
-          manage marine debris and Aquatic Invasive Species. Your contact
+          manage marine debris and aquatic invasive species. Your contact
           information is kept confidential.
         </p>
 
@@ -199,7 +198,7 @@ const ReportForm = () => {
                   type="radio"
                   className="radio radio-xs radio-info"
                   name="debrisTypeRadio"
-                  value="A mass of netting and/or fishing gear"
+                  value="Mass of netting/fishing gear"
                   defaultChecked
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -212,7 +211,7 @@ const ReportForm = () => {
                 <input
                   type="radio"
                   className="radio radio-xs radio-info"
-                  value="An abandoned/derelict boat"
+                  value="Abandoned/derelict boat"
                   name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -225,7 +224,7 @@ const ReportForm = () => {
                 <input
                   type="radio"
                   className="radio radio-xs radio-info"
-                  value="A container/drum/cylinder"
+                  value="Container/drum/cylinder"
                   name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -238,7 +237,7 @@ const ReportForm = () => {
                 <input
                   type="radio"
                   className="radio radio-xs radio-info"
-                  value="A large concentration of plastics"
+                  value="Large concentration of plastics"
                   name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -264,7 +263,7 @@ const ReportForm = () => {
                 <input
                   type="radio"
                   className="radio radio-xs radio-info"
-                  value="A large concentration of miscellaneous trash"
+                  value="Large concentration of miscellaneous trash"
                   name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -301,7 +300,7 @@ const ReportForm = () => {
             onChange={event => setDebrisTypeOther(event.target.value)}
             value={debrisTypeOther}
           />
-          { debrisType === 'A container/drum/cylinder' && (
+          { debrisType === 'Container/drum/cylinder' && (
             <span>
               <p className="text-gray-600 mt-4 mb-4">
                 <b>How full is the container/drum/cylinder?</b>
@@ -317,7 +316,7 @@ const ReportForm = () => {
               </select>
             </span>
           )}
-          { debrisType === 'An abandoned/derelict boat' && (
+          { debrisType === 'Abandoned/derelict boat' && (
             <span>
               <p className="text-gray-600 mt-4 mb-4">
                 <b>Do you want to claim the boat for personal use?*</b>
@@ -474,7 +473,7 @@ const ReportForm = () => {
             ? <span>
               <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
                 <b>
-                  Please enter latitude and longitude (e.g. 21.3161 -157.8906) here, or select a location
+                  Please enter latitude and longitude here (e.g. 21.3161 -157.8906) or select a location
                   on the map. Please also provide a position description and any information on currents
                   and winds that could help in relocating the debris.
                 </b>
@@ -680,9 +679,7 @@ const ReportForm = () => {
 
           <p className="text-gray-600 mt-4 mb-4">
             <b>
-              IF YOU CAN TAKE A PHOTOGRAPH, PLEASE TURN ON THE LOCATOR/GPS OF
-              YOUR DEVICE, TAKE THE PICTURE AND ATTACH IT (Six image/30MB
-              maximum)
+              IF YOU CAN TAKE A PHOTOGRAPH, PLEASE TURN ON YOUR DEVICE&apos;S LOCATION FIRST
             </b>
           </p>
 
