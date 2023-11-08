@@ -2,17 +2,17 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import Error from "@/components/Error";
 import Link from "next/link";
 
 const Register = () => {
   const [error, setError] = useState(false);
   const [exists, setExists] = useState(false);
+  const [passwordErr, setPasswordErr] = useState(false);
   const [errMsg, setErrMsg] = useState("");
-  const [errShow, setErrShow] = useState(false);
   const [success, setSuccess] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
+  var regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
   if (session) {
     router.push("/");
@@ -38,16 +38,25 @@ const Register = () => {
   async function onSubmit(data) {
     // console.log("data", data);
     try {
-      console.log("hello world");
+      //console.log("hello world");
       if (data.password !== data.confirmPassword) {
-        setError("Passwords do not match.");
+        setError(true);
+          setPasswordErr(true);
+        setErrMsg("The Passwords Do Not Match!")
         return;
-      }
+      } 
+       if(!regularExpression.test(data.password)) {
+        setError(true);
+        setPasswordErr(true);
+        setErrMsg("The Password Is Not Strong Enough!   Password must contain at least one number, one uppercase letter, nd one lowercase letter. ")
+        return;
+    }
 
       const res = await fetch(`/api/mongo/user/find-user/${data.email}`);
       const user = await res.json();
       if (user) {
-        setError("User already exists.");
+        setError(true);
+        setExists(true);
       } else {
         const res = await fetch("/api/mongo/user/add-user", {
           method: "POST",
@@ -65,14 +74,16 @@ const Register = () => {
         const user = await res.json();
 
         if (!res.ok) {
-          setError("Something went wrong. Please try again!");
+          setError(true);
+          setErrMsg("Something went wrong. Please try again!")
           return;
         } else {
-          setError("");
           setSuccess(true);
         }
       }
     } catch (error) {
+      setError(true);
+      setErrMsg("Something went wrong. Please try again!")
       console.log(error);
     }
   }
@@ -88,6 +99,9 @@ const Register = () => {
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Register your account
         </h2>
+      </div>
+      <div>
+        {error ? <div>An Error Occured. Please check the following issue or try again later.</div> : <br/>}
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -214,6 +228,13 @@ const Register = () => {
                 className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 invalid:[&:not(:placeholder-shown):not(:focus)]:ring-red-500 peer"
               />
             </div>
+            <div
+          className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
+            passwordErr ?{error} : "hidden"
+          }`}
+        >
+          {errMsg}
+        </div>
           </div>
 
           <div>
@@ -225,7 +246,7 @@ const Register = () => {
             </button>
           </div>
         </form>
-        {errShow ? <Error errMsg={errMsg} errShow={errShow}/> : <br/>}
+     
         <div
           className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
             error ? "" : "hidden"
