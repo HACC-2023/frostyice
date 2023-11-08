@@ -33,6 +33,7 @@ export default async function handler(req, res) {
         status: 'Reported',
         publicType,
         publicTypeDesc,
+        reportedDate: new Date(),
         publicContainerFullness,
         publicClaimBoat,
         publicBiofoulingRating,
