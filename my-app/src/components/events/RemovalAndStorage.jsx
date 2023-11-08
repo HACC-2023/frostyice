@@ -3,6 +3,8 @@ import EventCollapse from "./common/EventCollapse";
 import EditRemovalModal from "./removal-and-storage/EditRemovalModal";
 import MultiEventRow from "./removal-and-storage/MultiEventRow";
 import CompletionWarning from "./common/CompletionWarning";
+import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
+import UndoStepBtn from "./common/UndoStepBtn";
 
 const RemovalAndStorage = ({ event }) => {
   return (
@@ -121,9 +123,9 @@ const RemovalAndStorage = ({ event }) => {
           <section className="flex justify-end gap-3 py-3">
             {/* If the event is completed only show the undo button */}
             {STATUS.indexOf(event.status) <= 1 ? (
-              <button className="btn btn-primary">Mark as Completed</button>
+              <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[2]}/>
             ) : (
-              <button className="btn btn-outline">Undo Step</button>
+              <UndoStepBtn eventId={event._id} prevStatus={STATUS[1]} />
             )}
           </section>
         </div>

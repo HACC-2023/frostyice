@@ -3,6 +3,8 @@ import SortingRow from "./sorting/SortingRow";
 import EventCollapse from "./common/EventCollapse";
 import { STATUS } from "@/constants/constants";
 import CompletionWarning from "./common/CompletionWarning";
+import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
+import UndoStepBtn from "./common/UndoStepBtn";
 
 const Sorting = ({ event }) => {
   // need to send a get request here to get all of the materials from the event
@@ -53,9 +55,9 @@ const Sorting = ({ event }) => {
             </div>
             <section className="flex justify-end gap-3 py-3">
               {STATUS.indexOf(event.status) <= 2 ? (
-                <button className="btn btn-primary">Mark as Completed</button>
+                <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[3]} />
               ) : (
-                <button className="btn btn-outline">Undo Step</button>
+                <UndoStepBtn eventId={event._id} prevStatus={STATUS[2]} />
               )}
             </section>
           </div>
