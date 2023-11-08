@@ -8,7 +8,7 @@ const Home = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await fetch('/api/mongo/event/get-events-by-status/Reported');
+      const res = await fetch('/api/mongo/event/status/Reported');
       const data = await res.json();
       const sorted = data.sort((a, b) => new Date(b.reportedDate) - new Date(a.reportedDate));
       setReportedEvents(sorted);

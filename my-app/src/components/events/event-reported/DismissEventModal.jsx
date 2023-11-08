@@ -5,7 +5,7 @@ const DeleteEventModal = ({ id, eventId }) => {
   const router = useRouter();
   async function dismissEvent() {
     try {
-      const res = await fetch(`/api/mongo/event/get-event-by-id/${eventId}`, {
+      const res = await fetch(`/api/mongo/event/id/${eventId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -1,7 +1,7 @@
 const MarkAsCompleteBtn = ({ eventId, nextStatus }) => {
   async function editStatus() {
     try {
-      const res = await fetch(`/api/mongo/event/get-event-by-id/${eventId}`, {
+      const res = await fetch(`/api/mongo/event/id/${eventId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

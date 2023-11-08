@@ -26,7 +26,7 @@ const EditRemovalModal = ({ id, event }) => {
       const removalStartDate = new Date(convertLocalDateToUTC(data.removalStartDate));
       console.log("removalStartDate", removalStartDate);
       const removalEndDate = new Date(convertLocalDateToUTC(data.removalEndDate));
-      const res = await fetch(`/api/mongo/event/get-event-by-id/${event._id}`, {
+      const res = await fetch(`/api/mongo/event/id/${event._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

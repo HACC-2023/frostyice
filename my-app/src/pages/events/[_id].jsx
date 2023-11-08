@@ -44,7 +44,7 @@ const EventPage = () => {
   console.log("router", _id);
 
   const { data } = useSWR(
-    _id ? `/api/mongo/event/get-event-by-id/${_id}` : null,
+    _id ? `/api/mongo/event/id/${_id}` : null,
     _id ? fetcher : null,
     { refreshInterval: 1000 }
   );
