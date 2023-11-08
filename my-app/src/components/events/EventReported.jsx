@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import EventCollapse from "./common/EventCollapse";
 import DispatchTeamBtn from "./event-reported/DispatchTeamBtn";
 import DismissBtn from "./event-reported/DismissBtn";
+import StaticMap from "../map/StaticLocationMap/StaticMap";
 
 const EventRemoval = ({ event }) => {
   const { data: session } = useSession();
@@ -20,7 +21,8 @@ const EventRemoval = ({ event }) => {
         <section className="py-3">
           <div className="flex flex-col md:flex-row gap-x-12">
             <div className="w-full md:w-1/2 h-96 bg-primary-content flex justify-center items-center rounded-md my-3">
-              <div className="text-base-100">THIS IS WHERE MAP GOES</div>
+              {/* <div className="text-base-100">THIS IS WHERE MAP GOES</div> */}
+              <StaticMap latitude={event.mapLat} longitude={event.mapLong} />
             </div>
             <div className="w-full md:w-1/2 flex flex-col gap-x-12">
               <section className="w-full md:w-1/2">
