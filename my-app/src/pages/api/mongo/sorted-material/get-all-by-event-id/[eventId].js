@@ -6,10 +6,9 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
       await connectDB();
       const { eventId } = req.query;
-      console.log("sending post request");
       const sortedMaterials = await SortedMaterial.find({ eventId: eventId });
-      console.log("sortedMaterial ok", sortedMaterials.ok);
-      console.log("sortedMaterials", sortedMaterials);
+      // console.log("sortedMaterial ok", sortedMaterials.ok);
+      // console.log("sortedMaterials", sortedMaterials);
       res.status(200).json(sortedMaterials);
     }
   } catch (error) {

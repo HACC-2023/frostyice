@@ -1,3 +1,4 @@
+import { POLYMERS } from "@/constants/constants";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -20,35 +21,33 @@ const EditComponentModal = ({ id, event, sortedMaterial }) => {
     }
   }, [status]);
 
-  // TODO: Rewrite this function to support editing sorted material
-  async function editComponent(org) {
+  async function editComponent(data) {
     try {
       setStatus({ msg: "loading", body: "Adding component..." });
-      const res = await fetch("/api/mongo/component/add-component", {
-        method: "POST",
+      console.log("sortedMaterial._id", sortedMaterial._id);
+      const res = await fetch(`/api/mongo/sorted-material/id/${sortedMaterial._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: org.name,
-          location: org.location,
+          ...data
         }),
       });
 
       if (res.status === 200) {
         setStatus({
           msg: "success",
-          body: "Successfully added component ✅",
+          body: "Successfully edited component ✅",
         });
-        reset();
-        console.log("Successfully added component");
+        console.log("Successfully edited component");
       } else {
         throw new Error("Failed to add component.");
       }
     } catch (err) {
       setStatus({
         msg: "error",
-        body: " Failed to add Component ❌",
+        body: " Failed to edit component ❌",
       });
     } finally {
       setTimeout(() => {
@@ -60,7 +59,7 @@ const EditComponentModal = ({ id, event, sortedMaterial }) => {
 
   function onSubmit(data) {
     console.log(data);
-    // editComponent(data); see todo
+    editComponent(data);
   }
 
   return (
@@ -100,13 +99,9 @@ const EditComponentModal = ({ id, event, sortedMaterial }) => {
             >
               <option disabled>Choose polymer</option>
               <option>CA</option>
-              <option>EVA</option>
-              <option>HDPE</option>
-              <option>Nylon</option>
-              <option>PET</option>
-              <option>PP</option>
-              <option>PS</option>
-              <option>PVB</option>
+              {POLYMERS.map((polymer) => (
+                <option key={polymer}>{polymer}</option>
+              ))}
             </select>
           </div>
           <div className="modal-action">
