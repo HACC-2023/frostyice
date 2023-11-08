@@ -12,8 +12,8 @@ const ReportForm = () => {
   // debris description
   const [debrisType, setDebrisType] = useState('"A mass of netting and/or fishing gear"');
   const [debrisTypeOther, setDebrisTypeOther] = useState('');
-  const [containerFullness, setContainerFullness] = useState('Full');
-  const [claimBoat, setClaimBoat] = useState('No');
+  const [containerFullness, setContainerFullness] = useState(null);
+  const [claimBoat, setClaimBoat] = useState(null);
   const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
 
   // debris location
@@ -72,9 +72,9 @@ const ReportForm = () => {
       publicDebrisEnvAdditionalDesc: debrisTrappedOther,
     };
     if (debrisType.includes('container')) {
-      data.publicContainerFullness = containerFullness;
+      data.publicContainerFullness = containerFullness || 'Full';
     } else if (debrisType.includes('boat')) {
-      data.publicClaimBoat = claimBoat;
+      data.publicClaimBoat = claimBoat || 'No';
     }
     if (useMap) {
       data.mapLat = coordinates?.latitude;
@@ -438,24 +438,25 @@ const ReportForm = () => {
                 </span>
               </div>
             </label>
-            {(debrisRelativeLocation.includes('sea') || debrisRelativeLocation.includes('None')) && (
-              <span>
-                <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
-                  <b>
-                    Please enter latitude and longitude (e.g. 21.3161 -157.8906) here, or select a location
-                    on the map. Please also provide a position description and any information on currents
-                    and winds that could help in relocating the debris.
-                  </b>
-                </p>
-                <input
-                  type="text"
-                  className="input input-bordered bg-white text-gray-600 mb-2 w-full"
-                  onChange={event => setDebrisLocationDetails(event.target.value)}
-                  value={debrisLocationDetails}
-                />
-              </span>
-            )}
           </div>
+          {debrisRelativeLocation.includes('sea') || debrisRelativeLocation.includes('None')
+            ? <span>
+              <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
+                <b>
+                  Please enter latitude and longitude (e.g. 21.3161 -157.8906) here, or select a location
+                  on the map. Please also provide a position description and any information on currents
+                  and winds that could help in relocating the debris.
+                </b>
+              </p>
+              <input
+                type="text"
+                className="input input-bordered bg-white text-gray-600 mb-2 w-full"
+                onChange={event => setDebrisLocationDetails(event.target.value)}
+                value={debrisLocationDetails}
+              />
+            </span>
+            : ''
+          }
           <div className="mt-4 mb-2 text-center">
             <button
               className="btn me-2 px-8"
