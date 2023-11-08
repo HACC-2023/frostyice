@@ -7,9 +7,13 @@ import DisposalRow from "./disposal/DisposalRow";
 import { STATUS } from "@/constants/constants";
 import { fetcher } from "@/utils/fetcher";
 
-const Disposal = ({ event }) => {
+const Disposal = ({ event, userOrgId }) => {
   const _id = event._id;
-  const { data } = useSWR(_id ? `/api/mongo/sorted-material/get-all-by-event-id/${event._id}` : null, _id ? fetcher : null, { refreshInterval: 1000 });
+  const { data } = useSWR(
+    _id ? `/api/mongo/sorted-material/get-all-by-event-id/${event._id}` : null,
+    _id ? fetcher : null,
+    { refreshInterval: 1000 }
+  );
   // const sortedMaterial = {
   //   material: "Nets",
   //   island: "Oahu",
@@ -36,22 +40,27 @@ const Disposal = ({ event }) => {
                 </tr>
               </thead>
               <tbody>
-                { data && data.map((sortedMaterial) => (
-                  <DisposalRow
-                    key={sortedMaterial._id}
-                    sortedMaterial={sortedMaterial}
-                  />
-                ))}
+                {data &&
+                  data.map((sortedMaterial) => (
+                    <DisposalRow
+                      key={sortedMaterial._id}
+                      sortedMaterial={sortedMaterial}
+                      eventDibsBy={event.dibsByOrgId}
+                      userOrgId={userOrgId}
+                    />
+                  ))}
               </tbody>
             </table>
           </div>
-          <section className="flex justify-end gap-3 py-3">
-            {STATUS.indexOf(event.status) <= 3 ? (
-              <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[4]} />
-            ) : (
-              <UndoStepBtn eventId={event._id} prevStatus={STATUS[3]} />
-            )}
-          </section>
+          {userOrgId === event.dibsByOrgId && (
+            <section className="flex justify-end gap-3 py-3">
+              {STATUS.indexOf(event.status) <= 3 ? (
+                <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[4]} />
+              ) : (
+                <UndoStepBtn eventId={event._id} prevStatus={STATUS[3]} />
+              )}
+            </section>
+          )}
         </div>
       ) : (
         <CompletionWarning />

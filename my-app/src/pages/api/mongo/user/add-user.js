@@ -1,13 +1,13 @@
-import connectDB from '@/lib/mongodb';
-import User from '@/models/user';
-import bcrypt from 'bcryptjs';
-import { sendEmail } from '@/server/mailService';
+import connectDB from "@/lib/mongodb";
+import User from "@/models/user";
+import bcrypt from "bcryptjs";
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const {firstName, lastName, email, role, password, orgId} = await req.body;
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    if (req.method === "POST") {
+      const { firstName, lastName, email, role, orgId } =
+        await req.body;
+      const hashedPassword = await bcrypt.hash(process.env.DEFAULT_PASSWORD, 10);
       await connectDB();
       await User.create({
         firstName,
@@ -15,10 +15,9 @@ export default async function handler(req, res) {
         email,
         password: hashedPassword,
         orgId: orgId,
-        role: 'org_member', // TODO - remove hard-coded value (?)
+        role: role, // TODO - remove hard-coded value (?)
       });
-      const emailMessage =
-        `Aloha ${firstName},
+      const emailMessage = `Aloha ${firstName},
         <br/><br/>
         Your CMDR account has been created. Account details:
         <br/>
@@ -31,13 +30,11 @@ export default async function handler(req, res) {
         <br/><br/>
         <hr/>
         <i>This is an automated message. Please do not reply to this email.</i>`;
-      await sendEmail('Account Created', email, emailMessage);
-      res.status(200).json({msg: 'User added successfully!'});
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Unable to add user to database.' });
+      // await sendEmail('Account Created', email, emailMessage);
+      res.status(200).json({ msg: "User added successfully!" });
     }
-  } else {
-    res.status(405).json({ error: 'Method not allowed' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unable to add user to database." });
   }
 }

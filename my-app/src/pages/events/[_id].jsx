@@ -6,6 +6,7 @@ import Sorting from "@/components/events/Sorting";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
+import { useSession } from "next-auth/react";
 
 const dummyEvent = {
   _id: "abcd1234",
@@ -39,6 +40,7 @@ const dummyEvent = {
 
 const EventPage = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   
   const _id = router.query._id;
   console.log("router", _id);
@@ -50,16 +52,16 @@ const EventPage = () => {
   );
 
   console.log("data", data);
-  if (data) {
+  if (data && session) {
     return (
       <div className="w-full min-h-full flex justify-center">
         <div className="min-h-screen p-5 w-full md:max-w-7xl flex flex-col gap-5">
           <ProgressBar status={data.status} />
           <div className="flex flex-col gap-2">
             <EventRemoval event={data} />
-            <RemovalAndStorage event={data} />
-            <Sorting event={data} />
-            <Disposal event={data} />
+            <RemovalAndStorage event={data} userOrgId={session?.user.orgId} />
+            <Sorting event={data} userOrgId={session?.user.orgId}/>
+            <Disposal event={data} userOrgId={session?.user.orgId} />
           </div>
         </div>
       </div>
