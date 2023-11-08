@@ -11,7 +11,7 @@ const DialogflowChatWidget = () => {
       script.async = true;
 
       script.onload = () => {
-        // for the messeger to appear
+        // for the messenger to appear
         const dfMessenger = document.createElement('df-messenger');
         dfMessenger.setAttribute('project-id', 'white-sunspot-403307');
         dfMessenger.setAttribute('agent-id', '48d6d88b-9934-406d-8523-e3ec7f4f7381');
@@ -23,7 +23,7 @@ const DialogflowChatWidget = () => {
 
         dfMessenger.appendChild(chatBubble);
 
-        document.body.appendChild(dfMessenger);
+        document.getElementById('chatContainer').appendChild(dfMessenger);
       };
 
       document.body.appendChild(script);
@@ -33,6 +33,7 @@ const DialogflowChatWidget = () => {
   const dfMessengerColors = {
     textColor:'#fff',
     primaryColor: '#203444',
+    primaryColorHover: '#293b4d',
     backgroundColor: '#282b31',
     botBubbleBackground: '#428fd9',
     userBubbleBackground: '#414c52',
@@ -88,9 +89,10 @@ const DialogflowChatWidget = () => {
         }
         df-messenger {
           z-index: 999;
-          position: fixed;
-          bottom: 70px;
           right: 16px;
+        }
+        df-messenger-chat-bubble:hover {
+          --df-messenger-chat-bubble-background: ${dfMessengerColors.primaryColorHover};
         }
         @media (min-width: 768px) {
           df-messenger {
