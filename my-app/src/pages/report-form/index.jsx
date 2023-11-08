@@ -10,10 +10,10 @@ const ReportForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // debris description
-  const [debrisType, setDebrisType] = useState('"A mass of netting and/or fishing gear"');
+  const [debrisType, setDebrisType] = useState('"Mass of netting/fishing gear"');
   const [debrisTypeOther, setDebrisTypeOther] = useState('');
-  const [containerFullness, setContainerFullness] = useState('Full');
-  const [claimBoat, setClaimBoat] = useState('No');
+  const [containerFullness, setContainerFullness] = useState(null);
+  const [claimBoat, setClaimBoat] = useState(null);
   const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
 
   // debris location
@@ -23,10 +23,10 @@ const ReportForm = () => {
   const [closestIsland, setClosestIsland] = useState('Big Island');
   const [closestLandmark, setClosestLandmark] = useState('');
   const [closestLandmarkRelativeLocation, setClosestLandmarkRelativeLocation] = useState('');
-  const [coordinates, setCoordinates] = useState('');
+  const [coordinates, setCoordinates] = useState(null);
 
   // debris detailed description
-  const [debrisTrappedDesc, setDebrisTrappedDesc] = useState('Caught on the reef or is partially buried in sand');
+  const [debrisTrappedDesc, setDebrisTrappedDesc] = useState('Caught on the reef or partially buried in sand');
   const [debrisTrappedOther, setDebrisTrappedOther] = useState('');
   const [imageURLArray, setImageURLArray] = useState([]);
   const [files, setFiles] = useState([]);
@@ -36,7 +36,7 @@ const ReportForm = () => {
   const [firstName, setFirstName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [confirmEmail, setConfirmEmail] = useState(''); // TODO validation
+  const [confirmEmail, setConfirmEmail] = useState('');
 
   const selectedBtnStyle = {
     background: '#3aa2e7',
@@ -50,6 +50,16 @@ const ReportForm = () => {
     border: 'none',
   };
 
+  const validPhone = (phone) => {
+    const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const validEmail = (email) => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    return emailRegex.test(email);
+  };
+
   useEffect(() => {
     setLastName(session?.user?.lastName);
     setFirstName(session?.user?.firstName);
@@ -57,6 +67,27 @@ const ReportForm = () => {
   }, [session]);
 
   async function submitForm() {
+    // validation
+    if (!coordinates || (!closestIsland && !closestLandmark && !closestLandmarkRelativeLocation)) {
+      toast.info('Please select a location on the map or enter a location description');
+      return;
+    }
+    if (!firstName || !lastName) {
+      toast.info('Please enter your first and last name');
+      return;
+    }
+    if (!phoneNumber || !validPhone(phoneNumber)) {
+      toast.info('Please enter a valid phone number');
+      return;
+    }
+    if (!email || !validEmail(email)) {
+      toast.info('Please enter a valid email address');
+      return;
+    }
+    if (!confirmEmail || email !== confirmEmail) {
+      toast.info('Email and confirm email must match');
+      return;
+    }
     setIsLoading(true);
     const data = {
       firstName,
@@ -71,10 +102,10 @@ const ReportForm = () => {
       publicDebrisEnvDesc: debrisTrappedDesc,
       publicDebrisEnvAdditionalDesc: debrisTrappedOther,
     };
-    if (debrisType.includes('container')) {
-      data.publicContainerFullness = containerFullness;
+    if (debrisType.includes('Container')) {
+      data.publicContainerFullness = containerFullness || 'Full';
     } else if (debrisType.includes('boat')) {
-      data.publicClaimBoat = claimBoat;
+      data.publicClaimBoat = claimBoat || 'No';
     }
     if (useMap) {
       data.mapLat = coordinates?.latitude;
@@ -92,9 +123,9 @@ const ReportForm = () => {
       body: JSON.stringify(data),
     });
     if (res.status === 201) {
-      toast.success('Form submitted. Mahalo!');
+      toast.success('Form submitted - Mahalo!');
     } else {
-      toast.error('Error submitting form. Please try again later.');
+      toast.error('Error submitting form - Please try again later');
     }
     setIsLoading(false);
   }
@@ -110,8 +141,7 @@ const ReportForm = () => {
         <p className="text-gray-600 my-2">
           <b>
             TO REPORT MARINE ANIMALS THAT ARE ENTANGLED IN DEBRIS, CALL NOAA
-            IMMEDIATELY AT <br/>
-            <a className="text-blue-500 hover:underline" href="tel:18882569840">1-888-256-9840</a>
+            IMMEDIATELY AT <a className="whitespace-nowrap text-blue-500 hover:underline" href="tel:18882569840">1-888-256-9840</a>
             &nbsp;(round-the-clock hotline)
           </b>
         </p>
@@ -121,7 +151,7 @@ const ReportForm = () => {
           className="text-blue-500 hover:underline"
         >
           <p className="mb-2">
-            <b>GO TO DOBOR’S “WHO TO CALL” EMERGENCY CONTACT LIST</b>
+            <b>DOBOR &quot;WHO TO CALL&quot; EMERGENCY CONTACT LIST</b>
           </p>
         </a>
         <hr />
@@ -143,7 +173,7 @@ const ReportForm = () => {
           <b>Note:</b> Information you submit through this form is shared
           between divisions within DLNR, researchers at the University of
           Hawaii, NOAA, Non-Government Organizations and other agencies that
-          manage marine debris and Aquatic Invasive Species. Your contact
+          manage marine debris and aquatic invasive species. Your contact
           information is kept confidential.
         </p>
 
@@ -168,7 +198,7 @@ const ReportForm = () => {
                   type="radio"
                   className="radio radio-xs radio-info"
                   name="debrisTypeRadio"
-                  value="A mass of netting and/or fishing gear"
+                  value="Mass of netting/fishing gear"
                   defaultChecked
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -181,7 +211,7 @@ const ReportForm = () => {
                 <input
                   type="radio"
                   className="radio radio-xs radio-info"
-                  value="An abandoned/derelict boat"
+                  value="Abandoned/derelict boat"
                   name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -194,7 +224,7 @@ const ReportForm = () => {
                 <input
                   type="radio"
                   className="radio radio-xs radio-info"
-                  value="A container/drum/cylinder"
+                  value="Container/drum/cylinder"
                   name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -207,7 +237,7 @@ const ReportForm = () => {
                 <input
                   type="radio"
                   className="radio radio-xs radio-info"
-                  value="A large concentration of plastics"
+                  value="Large concentration of plastics"
                   name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -233,7 +263,7 @@ const ReportForm = () => {
                 <input
                   type="radio"
                   className="radio radio-xs radio-info"
-                  value="A large concentration of miscellaneous trash"
+                  value="Large concentration of miscellaneous trash"
                   name="debrisTypeRadio"
                 />
                 <span className="label-text ml-2 text-gray-600">
@@ -270,7 +300,7 @@ const ReportForm = () => {
             onChange={event => setDebrisTypeOther(event.target.value)}
             value={debrisTypeOther}
           />
-          { debrisType === 'A container/drum/cylinder' && (
+          { debrisType === 'Container/drum/cylinder' && (
             <span>
               <p className="text-gray-600 mt-4 mb-4">
                 <b>How full is the container/drum/cylinder?</b>
@@ -286,7 +316,7 @@ const ReportForm = () => {
               </select>
             </span>
           )}
-          { debrisType === 'An abandoned/derelict boat' && (
+          { debrisType === 'Abandoned/derelict boat' && (
             <span>
               <p className="text-gray-600 mt-4 mb-4">
                 <b>Do you want to claim the boat for personal use?*</b>
@@ -438,24 +468,25 @@ const ReportForm = () => {
                 </span>
               </div>
             </label>
-            {(debrisRelativeLocation.includes('sea') || debrisRelativeLocation.includes('None')) && (
-              <span>
-                <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
-                  <b>
-                    Please enter latitude and longitude (e.g. 21.3161 -157.8906) here, or select a location
-                    on the map. Please also provide a position description and any information on currents
-                    and winds that could help in relocating the debris.
-                  </b>
-                </p>
-                <input
-                  type="text"
-                  className="input input-bordered bg-white text-gray-600 mb-2 w-full"
-                  onChange={event => setDebrisLocationDetails(event.target.value)}
-                  value={debrisLocationDetails}
-                />
-              </span>
-            )}
           </div>
+          {debrisRelativeLocation.includes('sea') || debrisRelativeLocation.includes('None')
+            ? <span>
+              <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
+                <b>
+                  Please enter latitude and longitude here (e.g. 21.3161 -157.8906) or select a location
+                  on the map. Please also provide a position description and any information on currents
+                  and winds that could help in relocating the debris.
+                </b>
+              </p>
+              <input
+                type="text"
+                className="input input-bordered bg-white text-gray-600 mb-2 w-full"
+                onChange={event => setDebrisLocationDetails(event.target.value)}
+                value={debrisLocationDetails}
+              />
+            </span>
+            : ''
+          }
           <div className="mt-4 mb-2 text-center">
             <button
               className="btn me-2 px-8"
@@ -648,9 +679,7 @@ const ReportForm = () => {
 
           <p className="text-gray-600 mt-4 mb-4">
             <b>
-              IF YOU CAN TAKE A PHOTOGRAPH, PLEASE TURN ON THE LOCATOR/GPS OF
-              YOUR DEVICE, TAKE THE PICTURE AND ATTACH IT (Six image/30MB
-              maximum)
+              IF YOU CAN TAKE A PHOTOGRAPH, PLEASE TURN ON YOUR DEVICE&apos;S LOCATION FIRST
             </b>
           </p>
 
@@ -733,8 +762,8 @@ const ReportForm = () => {
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setLastName(event.target.value)}
                 value={lastName}
+                maxLength={30}
               />
-              <p className="text-gray-400 mb-2 italic">40 max characters</p>
             </div>
             <div className="flex-row mt-4 ml-4">
               <p className="text-gray-600">
@@ -744,8 +773,8 @@ const ReportForm = () => {
                 className="input input-bordered bg-white text-gray-600 mb-1"
                 onChange={event => setFirstName(event.target.value)}
                 value={firstName}
+                maxLength={30}
               />
-              <p className="text-gray-400 mb-4 italic">30 max characters</p>
             </div>
 
             <div className="flex-row mt-4 ml-4">
@@ -753,11 +782,17 @@ const ReportForm = () => {
                 <b>Phone Number*</b>
               </p>
               <input
-                placeholder="Ex: (808)395-9511"
+                placeholder="Ex: 808-395-9511"
                 className="input input-bordered bg-white text-gray-600 mb-1"
-                onChange={event => setPhoneNumber(event.target.value)}
+                onChange={event => {
+                  setPhoneNumber(event.target.value);
+                }}
                 value={phoneNumber}
+                type={'tel'}
               />
+              {!validPhone(phoneNumber) && phoneNumber.length > 0 && (
+                <p className="text-red-500 mb-2 text-sm">Please enter a valid phone number</p>
+              )}
             </div>
           </div>
 
@@ -771,6 +806,9 @@ const ReportForm = () => {
                 onChange={event => setEmail(event.target.value)}
                 value={email}
               />
+              {!validEmail(email) && email.length > 0 && (
+                <p className="text-red-500 mb-2 text-sm">Please enter a valid email address</p>
+              )}
             </div>
             <div className="flex-row mt-1 ml-4">
               <p className="text-gray-600">
@@ -781,6 +819,9 @@ const ReportForm = () => {
                 onChange={event => setConfirmEmail(event.target.value)}
                 value={confirmEmail}
               />
+              {email !== confirmEmail && confirmEmail.length > 0 && (
+                <p className="text-red-500 mb-2 text-sm">Email addresses must match</p>
+              )}
             </div>
           </div>
         </div>

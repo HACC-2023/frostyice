@@ -3,19 +3,29 @@ import SortingRow from "./sorting/SortingRow";
 import EventCollapse from "./common/EventCollapse";
 import { STATUS } from "@/constants/constants";
 import CompletionWarning from "./common/CompletionWarning";
+import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
+import UndoStepBtn from "./common/UndoStepBtn";
+import useSWR from "swr";
+import { fetcher } from "@/utils/fetcher";
 
 const Sorting = ({ event }) => {
-  // need to send a get request here to get all of the materials from the event
-  const sortedMaterial = {
-    material: "Nets",
-    island: "Oahu",
-    mass: 32,
-    polymers: "Nylon",
-    eventId: "abcd1234",
-    disposalDate: new Date(1709143329284),
-    disposalMechanism: "Recycled",
-  };
+  const _id = event._id;
+  const { data } = useSWR(
+    _id ? `/api/mongo/sorted-material/get-all-by-event-id/${event._id}` : null,
+    _id ? fetcher : null,
+    { refreshInterval: 1000 }
+  );
 
+  // const sortedMaterial = {
+  //   material: "Nets",
+  //   island: "Oahu",
+  //   mass: 32,
+  //   polymers: "Nylon",
+  //   eventId: "abcd1234",
+  //   disposalDate: new Date(1709143329284),
+  //   disposalMechanism: "Recycled",
+  // };
+  console.log("data in sorting", data);
   return (
     <EventCollapse title="Sorting">
       {STATUS.indexOf(event.status) > 1 ? (
@@ -46,16 +56,19 @@ const Sorting = ({ event }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* Later on use all items */}
-                  <SortingRow sortedMaterial={sortedMaterial} event={event} />
+                  {data && (
+                    data.map((sortedMaterial) => (
+                      <SortingRow key={sortedMaterial._id} sortedMaterial={sortedMaterial} event={event} />
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
             <section className="flex justify-end gap-3 py-3">
               {STATUS.indexOf(event.status) <= 2 ? (
-                <button className="btn btn-primary">Mark as Completed</button>
+                <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[3]} />
               ) : (
-                <button className="btn btn-outline">Undo Step</button>
+                <UndoStepBtn eventId={event._id} prevStatus={STATUS[2]} />
               )}
             </section>
           </div>

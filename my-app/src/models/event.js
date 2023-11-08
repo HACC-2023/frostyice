@@ -1,3 +1,4 @@
+import { ISLANDS } from "@/constants/constants";
 import mongoose from "mongoose";
 
 // subdocument schema
@@ -38,6 +39,7 @@ const eventSchema = new mongoose.Schema({
   },
   reportedDate: {
     type: Date,
+    required: true,
     default: new Date(),
   },
   publicType: {
@@ -47,21 +49,28 @@ const eventSchema = new mongoose.Schema({
   publicTypeDesc: {
     // if the public type is "other" or if the reported wants to add more details
     type: String,
+    required: true,
+    default: "No additional description provided"
   },
   publicContainerFullness: {
     type: String,
+    required: true,
   },
   publicClaimBoat: {
     type: String,
     enum: ["Yes", "No"],
+    required: true,
+    default: "No",
   },
   publicBiofoulingRating: {
     type: Number,
     required: true,
+    max: 10
   },
   publicLocationDesc: {
     type: String,
     required: true,
+    default: "No additional description provided"
   },
   publicLatLongOrPositionDesc: {
     // this is the free text field on DOBOR form where reporter can enter lat/long or position description
@@ -76,18 +85,8 @@ const eventSchema = new mongoose.Schema({
   },
   closestIsland: {
     type: String,
-    enum: [
-      "Big Island",
-      "Maui",
-      "Molokai",
-      "Lanai",
-      "Kahoolawe",
-      "Oahu",
-      "Kauai",
-      "Niihau",
-      "NWHI",
-      "At-sea Offshore"
-    ],
+    enum: ISLANDS,
+    required: true,
   },
   closestLandmark: {
     type: String,

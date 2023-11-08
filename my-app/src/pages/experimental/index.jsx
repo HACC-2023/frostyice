@@ -6,7 +6,7 @@ const ExperimentalPage = () => {
       <Link className="underline text-blue-600" href="/experimental/heatmap">Heatmap Test</Link>
       <Link className="underline text-blue-600" href="/experimental/click-map">Clicking on Map to get Location Test</Link>
       <Link className="underline text-blue-600" href="/experimental/uploadthing">Uploadthing Test</Link>
-      <Link className="underline text-blue-600" href="/experimental/home">Home page test</Link>
+      <Link className="underline text-blue-600" href="/home">Home page test</Link>
     </div>
   );
 };

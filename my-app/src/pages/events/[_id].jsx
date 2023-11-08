@@ -3,6 +3,9 @@ import EventRemoval from "@/components/events/EventReported";
 import ProgressBar from "@/components/events/ProgressBar";
 import RemovalAndStorage from "@/components/events/RemovalAndStorage";
 import Sorting from "@/components/events/Sorting";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { fetcher } from "@/utils/fetcher";
 
 const dummyEvent = {
   _id: "abcd1234",
@@ -13,7 +16,8 @@ const dummyEvent = {
   closestIsland: "Oahu",
   reportedDate: new Date(1699057615774),
   publicType: "A mass of netting and/or fishing gear",
-  publicLocationDesc: "At sea, within three miles of nearest land in the shore break",
+  publicLocationDesc:
+    "At sea, within three miles of nearest land in the shore break",
   publicDebrisEnvDesc: "Caught on the reef or is partially buried in sand",
   publicBiofoulingRating: 10,
   publicContact: {
@@ -34,19 +38,33 @@ const dummyEvent = {
 };
 
 const EventPage = () => {
-  return (
-    <div className="w-full min-h-full flex justify-center">
-      <div className="min-h-screen p-5 w-full md:max-w-7xl flex flex-col gap-5">
-        <ProgressBar status={dummyEvent.status} />
-        <div className="flex flex-col gap-2">
-          <EventRemoval event={dummyEvent} />
-          <RemovalAndStorage event={dummyEvent} />
-          <Sorting event={dummyEvent} />
-          <Disposal event={dummyEvent} />
+  const router = useRouter();
+  
+  const _id = router.query._id;
+  console.log("router", _id);
+
+  const { data } = useSWR(
+    _id ? `/api/mongo/event/id/${_id}` : null,
+    _id ? fetcher : null,
+    { refreshInterval: 1000 }
+  );
+
+  console.log("data", data);
+  if (data) {
+    return (
+      <div className="w-full min-h-full flex justify-center">
+        <div className="min-h-screen p-5 w-full md:max-w-7xl flex flex-col gap-5">
+          <ProgressBar status={data.status} />
+          <div className="flex flex-col gap-2">
+            <EventRemoval event={data} />
+            <RemovalAndStorage event={data} />
+            <Sorting event={data} />
+            <Disposal event={data} />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default EventPage;
