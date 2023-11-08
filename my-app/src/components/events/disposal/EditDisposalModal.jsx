@@ -21,7 +21,6 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
     }
   }, [status]);
 
-  // TODO: Rewrite this function to support editing sorted material
   async function editDisposal(data) {
     try {
       setStatus({ msg: "loading", body: "Adding component..." });

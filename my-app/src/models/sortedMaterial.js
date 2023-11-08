@@ -25,7 +25,7 @@ const sortedMaterialSchema = new mongoose.Schema({
     ref: "Event",
     required: true,
   },
-  disposalDate: {
+  disposalDate: {   
     type: Date,
   },
   disposalMechanism: {
