@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     await connectDB();
     const { _id } = req.query;
 
-    if (req.method === "POST") {
+    if (req.method === "GET") {
       const thread = await Thread.findById(_id);
       res.status(200).json(thread);
     }
