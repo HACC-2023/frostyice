@@ -1,7 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const DialogflowChatWidget = () => {
+  const [scrollDirection, setScrollDirection] = useState(null);
+
   useEffect(() => {
+    let lastScrollY = window.pageYOffset;
+
+    const updateScrollDirection = () => {
+      const scrollY = window.pageYOffset;
+      const direction = scrollY > lastScrollY ? "down" : "up";
+      if (direction !== scrollDirection && (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)) {
+        setScrollDirection(direction);
+      }
+      lastScrollY = scrollY > 0 ? scrollY : 0;
+    };
+    window.addEventListener("scroll", updateScrollDirection); // add event listener
+
     if (typeof window !== 'undefined' && !window.dialogflowMessengerLoaded) {
       window.dialogflowMessengerLoaded = true;
 
@@ -27,8 +41,9 @@ const DialogflowChatWidget = () => {
       };
 
       document.body.appendChild(script);
+      return () => window.removeEventListener("scroll", updateScrollDirection); // remove event listener
     }
-  }, []);
+  }, [scrollDirection]);
 
   const dfMessengerColors = {
     textColor:'#fff',
@@ -45,8 +60,9 @@ const DialogflowChatWidget = () => {
   };
 
   return (
-    <style>
-      {`
+    <div>
+      <style>
+        {`
         :root {
           --df-messenger-font-family: Helvetica Neue, Helvetica, sans-serif;
           --df-messenger-primary-color: ${dfMessengerColors.primaryColor};
@@ -95,7 +111,9 @@ const DialogflowChatWidget = () => {
           --df-messenger-chat-bubble-background: ${dfMessengerColors.primaryColorHover};
         }
       `}
-    </style>
+      </style>
+      <div id="chatContainer" className={`fixed ${ scrollDirection === "down" ? "-bottom-24" : "md:bottom-0 bottom-14"} right-4 h-20 transition-all duration-500`}></div>
+    </div>
   );
 };
 

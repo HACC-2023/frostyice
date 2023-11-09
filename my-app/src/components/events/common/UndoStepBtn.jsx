@@ -8,6 +8,7 @@ const UndoStepBtn = ({ eventId, prevStatus }) => {
         },
         body: JSON.stringify({
           status: prevStatus,
+          removalOrgId: null,
         }),
       });
       if (res.ok) {

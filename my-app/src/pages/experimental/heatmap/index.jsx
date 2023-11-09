@@ -15,7 +15,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await fetch('/api/mongo/event/get-all-events');
+      const res = await fetch('/api/mongo/event/all');
       const data = await res.json();
       const coords = data.map((item) => {
         return { COORDINATES: [item.mapLong, item.mapLat] };
