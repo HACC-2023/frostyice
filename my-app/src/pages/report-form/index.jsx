@@ -115,7 +115,7 @@ const ReportForm = () => {
       data.closestLandmark = closestLandmark;
       data.debrisLandmarkRelativeLocation = closestLandmarkRelativeLocation;
     }
-    const res = await fetch('/api/mongo/event/add-event-form', {
+    const res = await fetch('/api/mongo/event/add-form', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
