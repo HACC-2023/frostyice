@@ -1,9 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import DashboardTable from "@/components/DashboardTable";
 
 const Dashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/mongo/event/get-all-events");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setEvents(data);
+        } else {
+          console.error("Error fetching data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [events]);
 
   const openModal = () => {
     setModalOpen(true);
@@ -26,7 +46,7 @@ const Dashboard = () => {
               Multievent Shipment
             </h6>
           </div>
-          <DashboardTable />
+          <DashboardTable events={events} />
         </div>
       </div>
 
@@ -36,34 +56,35 @@ const Dashboard = () => {
             className="fixed inset-0 bg-gray-500 bg-opacity-75"
             onClick={closeModal}
           ></div>
-          <div className="relative p-8 bg-white w-full max-w-xl rounded-lg shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <div className="relative p-8 bg-white w-full max-w-2xl rounded-lg shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-700">
               Multievent Shipment
             </h3>
             <br />
-            <p className="text-gray-600 mt-4 mb-2">
-              <b>
-                Which events are you shipping together? (Select all that apply)
-              </b>
+            <p className="text-gray-600">
+              <b>Which events are you shipping together?</b>
             </p>
+            <p className="text-gray-600 mb-2">Select all that apply</p>
             <select
               className="select select-bordered w-full bg-white text-gray-600 p-2"
               multiple
             >
-              <option>Event X8WNEM</option>
-              <option>Event 38AMXL</option>
-              <option>Event S7AMDX</option>
+              {events.map((event) => (
+                <option key={event._id} value={event._id}>
+                  {event.closestIsland} ({event.reportedDate.split("T")[0]})&nbsp;-&nbsp;{event.publicType}
+                </option>
+              ))}
             </select>
 
             <div className="flex w-full flex-row mt-8">
-              <div className="w-1/2">
+              <div className="w-2/4">
                 {" "}
                 <p className="text-gray-600 mt-4 mb-2">
                   <b>Ship From</b>
                 </p>
                 <input className="input input-bordered bg-white text-gray-600 mb-2" />
               </div>
-              <div className="w-1/2">
+              <div className="w-2/4">
                 {" "}
                 <p className="text-gray-600 mt-4 mb-2">
                   <b>Ship To</b>

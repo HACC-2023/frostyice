@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 const AddMemberModal = ({ id, orgs }) => {
   const { register, handleSubmit, reset } = useForm();
   const [status, setStatus] = useState(null);
+  const [selectedOrgId, setSelectedOrgId] = useState("");
 
   useEffect(() => {
     if (status && (status.msg === "success" || status.msg === "error")) {
@@ -16,6 +17,7 @@ const AddMemberModal = ({ id, orgs }) => {
       }, 3000);
     }
   }, [status]);
+
 
   async function registerUser(user) {
     try {
@@ -27,7 +29,6 @@ const AddMemberModal = ({ id, orgs }) => {
         },
         body: JSON.stringify({
           ...user,
-          password: "changeme"
         }),
       });
 
@@ -116,6 +117,7 @@ const AddMemberModal = ({ id, orgs }) => {
               {...register("orgId", { required: true })}
               className="select select-bordered"
               placeholder="Choose user's organization"
+              onChange={(e) => setSelectedOrgId(e.target.value)}
             >
               <option disabled>Choose user&apos;s organization</option>
               {orgs &&

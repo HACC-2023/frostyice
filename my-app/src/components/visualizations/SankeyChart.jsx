@@ -39,7 +39,7 @@ const SankeyChart = () => {
         const dataArr = [data];
 
         const layout = {
-          width: 1240,
+          width: 1020,
           height: 480,
           font: {
             size: 10,

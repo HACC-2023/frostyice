@@ -49,9 +49,9 @@ const DisposalBarChart = () => {
           size: 13,
         },
         barmode: "stack",
-        margin: { r: 12, t: 20, b: 20, l: 20 },
-        width: 380,
-        height: 210,
+        margin: { r: 10, t: 20, b: 20, l: 30 },
+        width: 390,
+        height: 230,
         showlegend: true, // Show legend for the entire chart
       };
 
