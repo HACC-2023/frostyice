@@ -39,7 +39,8 @@ const IslandBarChart = () => {
       const layout = {
         barmode: "group",
         margin: { r: 12, t: 10, b: 20, l: 20 },
-        height: 260,
+        height: 220,
+        width: 450,
       };
 
       Plotly.newPlot(

@@ -5,10 +5,15 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 const Register = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
+  const [exists, setExists] = useState(false);
+  const [emailErr, setEmailErr] = useState(false);
+  const [passwordErr, setPasswordErr] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
+  var regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
   if (session) {
     router.push("/");
@@ -22,6 +27,7 @@ const Register = () => {
       password: "",
       image: "",
       confirmPassword: "",
+      confrimEmail: "",
     },
   });
 
@@ -34,16 +40,30 @@ const Register = () => {
   async function onSubmit(data) {
     // console.log("data", data);
     try {
-      console.log("hello world");
-      if (data.password !== data.confirmPassword) {
-        setError("Passwords do not match.");
-        return;
+      //console.log("hello world");
+      if (data.email !== data.confrimEmail) {
+        setError(true);
+        setEmailErr(true);
+        setErrMsg("The Input Email Addresses Do Not Match!")
       }
+      if (data.password !== data.confirmPassword) {
+        setError(true);
+          setPasswordErr(true);
+        setErrMsg("The Passwords Do Not Match!")
+        return;
+      } 
+       if(!regularExpression.test(data.password)) {
+        setError(true);
+        setPasswordErr(true);
+        setErrMsg("The Password Is Not Strong Enough!   Password must contain at least one number, one uppercase letter, nd one lowercase letter. ")
+        return;
+    }
 
       const res = await fetch(`/api/mongo/user/find-user/${data.email}`);
       const user = await res.json();
       if (user) {
-        setError("User already exists.");
+        setError(true);
+        setExists(true);
       } else {
         const res = await fetch("/api/mongo/user/add-user", {
           method: "POST",
@@ -61,14 +81,16 @@ const Register = () => {
         const user = await res.json();
 
         if (!res.ok) {
-          setError("Something went wrong. Please try again!");
+          setError(true);
+          setErrMsg("Something went wrong. Please try again!")
           return;
         } else {
-          setError("");
           setSuccess(true);
         }
       }
     } catch (error) {
+      setError(true);
+      setErrMsg("Something went wrong. Please try again!")
       console.log(error);
     }
   }
@@ -84,6 +106,9 @@ const Register = () => {
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Register your account
         </h2>
+      </div>
+      <div>
+        {error ? <div>An Error Occured. Please check the following issue or try again later.</div> : <br/>}
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -107,7 +132,7 @@ const Register = () => {
                 type="text"
                 pattern="^[a-zA-Z]{1,}$"
                 required
-                placeholder="e.g John Doe"
+                placeholder="e.g John"
                 className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 invalid:[&:not(:placeholder-shown):not(:focus)]:ring-red-500 peer"
               />
               <span className="mt-2 hidden text-xs text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
@@ -130,7 +155,7 @@ const Register = () => {
                 type="text"
                 pattern="^[a-zA-Z]{1,}$"
                 required
-                placeholder="e.g John Doe"
+                placeholder="e.g Doe"
                 className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 invalid:[&:not(:placeholder-shown):not(:focus)]:ring-red-500 peer"
               />
               <span className="mt-2 hidden text-xs text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
@@ -144,7 +169,7 @@ const Register = () => {
               htmlFor="email"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Email address <span className="text-red-500">*</span>
+              Email Address <span className="text-red-500">*</span>
             </label>
             <div className="mt-2">
               <input
@@ -161,6 +186,34 @@ const Register = () => {
                 Please enter a valid email address
               </span>
             </div>
+            <label
+              htmlFor="confirmEmail"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Email Address Confirmation <span className="text-red-500">*</span>
+            </label>
+            <div className="mt-2">
+              <input
+                {...register("confirmEmail")}
+                id="confirmEmail"
+                name="confirmEmail"
+                type="email"
+                pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
+                required
+                placeholder="Enter your email"
+                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 invalid:[&:not(:placeholder-shown):not(:focus)]:ring-red-500 peer"
+              />
+              <span className="mt-2 hidden text-xs text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
+                Please confirm the email address.
+              </span>
+            </div>
+            <div
+          className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
+            emailErr ?{error} : "hidden"
+          }`}
+        >
+          The Input Email Addresses Do Not Match!
+        </div>
           </div>
 
           <div>
@@ -210,6 +263,13 @@ const Register = () => {
                 className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 invalid:[&:not(:placeholder-shown):not(:focus)]:ring-red-500 peer"
               />
             </div>
+            <div
+          className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
+            passwordErr ?{error} : "hidden"
+          }`}
+        >
+          {errMsg}
+        </div>
           </div>
 
           <div>
@@ -221,14 +281,8 @@ const Register = () => {
             </button>
           </div>
         </form>
-
-        <div
-          className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
-            error ? "" : "hidden"
-          }`}
-        >
-          {error}
-        </div>
+     
+       
         <div className={`text-sm mt-3 ${success ? "" : "hidden"}`}>
           Successfully created an account!{" "}
           <Link

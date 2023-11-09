@@ -1,34 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const ReporTimesSeries = () => {
+  const [graphReady, setGraphReady] = useState(false);
+
   useEffect(() => {
     import("plotly.js-dist").then((Plotly) => {
       const data = [
         {
           Month: "2015-02",
-          "Organization1": 130.0,
-          "Organization2": 120.0,
+          Organization1: 130.0,
+          Organization2: 120.0,
         },
         {
           Month: "2015-03",
-          "Organization1": 135.0,
-          "Organization2": 125.0,
+          Organization1: 135.0,
+          Organization2: 125.0,
         },
         {
           Month: "2015-04",
-          "Organization1": 140.0,
-          "Organization2": 130.0,
+          Organization1: 140.0,
+          Organization2: 130.0,
         },
         // Continue with the next months
         {
           Month: "2017-01",
-          "Organization1": 150.0,
-          "Organization2": 140.0,
+          Organization1: 150.0,
+          Organization2: 140.0,
         },
         {
           Month: "2017-02",
-          "Organization1": 160.0,
-          "Organization2": 150.0,
+          Organization1: 160.0,
+          Organization2: 150.0,
         },
       ];
 
@@ -111,11 +113,40 @@ const ReporTimesSeries = () => {
         ],
       };
 
-      Plotly.newPlot("reportTimeSeries", chartData, layout, config);
+      Plotly.newPlot(
+        "reportTimeSeries",
+        chartData,
+        layout,
+        config,
+        (config) => {
+          setGraphReady(true);
+        }
+      );
     });
   }, []);
 
-  return <div id="reportTimeSeries"></div>;
+  useEffect(() => {
+    const checkGraphReady = setInterval(() => {
+      if (document.querySelector(".main-svg")) {
+        clearInterval(checkGraphReady);
+        setGraphReady(true);
+      }
+    }, 100);
+  }, []);
+
+  return (
+    <div>
+      <div id="reportTimeSeries" />
+
+      {graphReady ? (
+        <></>
+      ) : (
+        <div className="flex justify-center pt-8 h-20">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ReporTimesSeries;
