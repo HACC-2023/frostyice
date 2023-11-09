@@ -11,10 +11,8 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const eventsResponse = await fetch(`/api/mongo/event/removal-org-id/${session?.user?.orgId}`);
-        console.log()
         if (eventsResponse.ok) {
           const data = await eventsResponse.json();
-          console.log(data);
           setEvents(data);
         } else {
           console.error("Error fetching data");
