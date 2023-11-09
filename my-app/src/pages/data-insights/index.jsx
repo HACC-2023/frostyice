@@ -13,7 +13,7 @@ const DataInsights = () => {
 
   const tabContent = [
     <div key="tab1">
-      <div className="flex flex-row justify-between p-8 mt-2 shadow">
+      <div className="flex flex-row justify-between bg-white p-8 mt-2 shadow">
         <div className="w-3/6">
           <h6 className="text-lg font-semibold text-gray-600 mb-2">
             Aggregated Reports By City
@@ -35,7 +35,7 @@ const DataInsights = () => {
           <PieChart />
         </div>
       </div>
-      <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow">
+      <div className="flex pt-6 flex-row justify-between bg-white p-8 mt-4 shadow">
         <div className="w-2/4">
           <h6 className="text-lg font-semibold text-gray-600 mb-2">
             Reports Solved by Organization Over Time
@@ -52,7 +52,7 @@ const DataInsights = () => {
     </div>,
     <div key="tab2">
       {" "}
-      <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow">
+      <div className="flex pt-6 flex-row justify-between bg-white p-8 mt-4 shadow">
         <div className="w-3/6">
           <h6 className="text-lg font-semibold text-gray-600 mb-2">
             Components
@@ -66,7 +66,7 @@ const DataInsights = () => {
           <DisposalBarChart />
         </div>
       </div>
-      <div className="flex flex-row justify-between pt-6 p-8 mt-4 shadow">
+      <div className="flex flex-row justify-between bg-white pt-6 p-8 mt-4 shadow">
         <div className="w-1/1">
           <h6 className="text-lg font-semibold text-gray-600 mb-2">
             Flow of Marine Debris: From Islands to Disposal
@@ -81,13 +81,12 @@ const DataInsights = () => {
 
   return (
     <div className="justify-center items-center">
-      <div className="mt-2 bg-white p-8">
+      <div className="mt-2 p-8">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           Data Insights
         </h3>
         <hr />
         <br />
-
         <div className="tabs">
           {tabContent.map((content, index) => (
             <a

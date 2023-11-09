@@ -45,14 +45,14 @@ const Disposal = ({ event, userOrgId }) => {
                     <DisposalRow
                       key={sortedMaterial._id}
                       sortedMaterial={sortedMaterial}
-                      eventDibsBy={event.dibsByOrgId}
+                      removalOrgId={event.removalOrgId}
                       userOrgId={userOrgId}
                     />
                   ))}
               </tbody>
             </table>
           </div>
-          {userOrgId === event.dibsByOrgId && (
+          {userOrgId === event.removalOrgId && (
             <section className="flex justify-end gap-3 py-3">
               {STATUS.indexOf(event.status) <= 3 ? (
                 <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[4]} />

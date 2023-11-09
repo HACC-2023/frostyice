@@ -45,12 +45,12 @@ const DashboardTable = ({ events }) => {
     });
 
   return (
-    <div className="overflow-x-auto bg-white">
+    <div className="overflow-x-auto">
       <div className="flex justify-end space-x-8 mb-6 mt-6">
         <div className="flex items-center">
           <label className="text-gray-600 pr-2">Status:</label>
           <select
-            className="select bg-white text-gray-500"
+            className="select text-gray-500"
             name="status"
             value={filter.status}
             onChange={(e) => setFilter({ ...filter, status: e.target.value })}
@@ -67,7 +67,7 @@ const DashboardTable = ({ events }) => {
         <div className="flex items-center">
           <label className="text-gray-600 pr-2">Sort by Date:</label>
           <select
-            className="select bg-white text-gray-500"
+            className="select text-gray-500"
             name="dateSort"
             value={filter.dateSort}
             onChange={(e) => setFilter({ ...filter, dateSort: e.target.value })}
@@ -80,7 +80,7 @@ const DashboardTable = ({ events }) => {
         <div className="flex items-center">
           <label className="text-gray-600 pr-2">Island:</label>
           <select
-            className="select bg-white text-gray-500"
+            className="select text-gray-500"
             name="island"
             value={filter.island}
             onChange={(e) => setFilter({ ...filter, island: e.target.value })}
@@ -98,7 +98,7 @@ const DashboardTable = ({ events }) => {
         </div>
       </div>
 
-      <table className="table bg-white text-gray-600">
+      <table className="table text-gray-600">
         <thead>
           <tr className="text-gray-600">
             <td className="w-56">Status</td>

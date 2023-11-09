@@ -23,10 +23,14 @@ export const ISLANDS = [
   "Maui",
   "Molokai",
   "Lanai",
-  "Kahoolawe",
   "Oahu",
   "Kauai",
-  "Niihau",
-  "NWHI",
   "At-sea Offshore"
-]
+];
+
+export const STORAGE_NODES = [
+  "CMDR Hub",
+  "Maui Node",
+  "Big Island Node",
+  "Kauai Node",
+];

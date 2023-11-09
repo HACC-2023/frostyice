@@ -7,7 +7,7 @@ const DispatchTeamBtn = ({ userOrgId, eventId }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          dibsByOrgId: userOrgId,
+          removalOrgId: userOrgId,
           status: STATUS[1],
         }),
       });
