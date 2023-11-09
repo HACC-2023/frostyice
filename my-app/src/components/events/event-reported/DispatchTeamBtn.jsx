@@ -1,5 +1,9 @@
+import { STATUS } from "@/constants/constants";
+
 const DispatchTeamBtn = ({ userOrgId, eventId }) => {
   async function dispatchTeam() {
+    console.log("userOrgId", userOrgId);
+    console.log("eventId", eventId);
     try {
       const res = await fetch(`/api/mongo/event/id/${eventId}`, {
         method: "PUT",
@@ -11,12 +15,11 @@ const DispatchTeamBtn = ({ userOrgId, eventId }) => {
           status: STATUS[1],
         }),
       });
-      if (res.status === 200) {
+      if (res.ok) {
         console.log("Successfully dispatched team");
-      } else {
-        throw new Error("Failed to dispatch team");
       }
     } catch (err) {
+      console.log(err);
       console.log("Failed to dispatch team");
     }
   }
