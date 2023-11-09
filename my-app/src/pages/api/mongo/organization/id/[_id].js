@@ -16,6 +16,7 @@ export default async function handler(req, res) {
       await Organization.findByIdAndUpdate(_id, {
         name,
         location,
+        associatedNode
       }, { runValidators: true });
       res.status(200).json({ msg: "Organization updated successfully!" });
     }

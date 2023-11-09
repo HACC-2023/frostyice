@@ -5,8 +5,8 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
       await connectDB();
-      const { _id } = req.query;
-      const events = await Event.find({ dibsByOrgId: _id });
+      const { storageNode } = req.query;
+      const events = await Event.find({ tempStorage: storageNode });
       res.status(200).json(events);
     } catch (error) {
       res.status(500).json({ error: "Helpful error message" });

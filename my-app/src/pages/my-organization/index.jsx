@@ -52,16 +52,16 @@ const MyOrganization = () => {
 
   return (
     <div className="justify-center items-center">
-      <div className="mt-2 bg-white p-14">
+      <div className="mt-2 p-14">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           My Organization
         </h3>
         <hr />
         <br />
 
-        <div className="p-8 shadow bg-white">
+        <div className="p-8 shadow">
           {session?.user.role != "org_member" && (
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-end">
               <button
                 className="btn btn-sm md:btn-md btn-primary"
                 onClick={() =>

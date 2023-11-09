@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     try {
       await connectDB();
       const { _id } = req.query;
-      const events = await Event.find({ removedByOrgId: _id });
+      const events = await Event.find({ removalOrgId: _id });
       res.status(200).json(events);
     } catch (error) {
       res.status(500).json({ error: "Helpful error message" });

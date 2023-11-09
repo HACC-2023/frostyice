@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import EditDisposalModal from "./EditDisposalModal";
 import DeleteSortedMaterialModal from "../common/DeleteSortedMaterialModal";
 
-const DisposalRow = ({ sortedMaterial, userOrgId, eventDibsBy }) => {
+const DisposalRow = ({ sortedMaterial, userOrgId, removalOrgId }) => {
   const editModalId = `edit_disposal_modal_${sortedMaterial._id}`;
   const deleteModalId = `delete_disposal_modal_${sortedMaterial._id}`;
 
@@ -18,7 +18,7 @@ const DisposalRow = ({ sortedMaterial, userOrgId, eventDibsBy }) => {
           : "-"}
       </td>
       <td className="flex gap-2">
-        {userOrgId === eventDibsBy && (
+        {userOrgId === removalOrgId && (
           <>
             <button
               className="btn btn-sm btn-outline"

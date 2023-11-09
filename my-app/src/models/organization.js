@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { ISLANDS, STORAGE_NODES } from "@/constants/constants";
 
 const organizationSchema = new Schema({
   name: {
@@ -8,7 +9,12 @@ const organizationSchema = new Schema({
   },
   location: {
     type: String,
-    enum: ["Oahu", "Maui", "Big Island", "Kauai"],
+    enum: ISLANDS,
+    required: true,
+  },
+  associatedNode: {
+    type: String,
+    enum: STORAGE_NODES,
     required: true,
   }
 });
