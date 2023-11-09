@@ -8,6 +8,7 @@ import ComponentsPieChart from "@/components/visualizations/ComponentsPieChart";
 import DisposalBarChart from "@/components/visualizations/DisposalBarChart";
 import SankeyChart from "@/components/visualizations/SankeyChart";
 import dynamic from "next/dynamic";
+import locations from "@/dummy-data/locations.json";
 
 const LocationAggregatorMap = dynamic(
   () => import("@/components/map/LocationAggregatorMap"),
@@ -20,16 +21,17 @@ const DataInsights = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await fetch('/api/mongo/event/all');
+      const res = await fetch("/api/mongo/event/all");
       const data = await res.json();
       const coords = data.map((item) => {
         return { COORDINATES: [item.mapLong, item.mapLat] };
       });
       setCoordinates(coords);
     };
-    getData().then(r => console.log('Fetched locations'));
+    getData().then((r) => console.log("Fetched locations"));
   }, []);
 
+  console.log("coordinates", coordinates);
   const tabContent = [
     <div key="tab1">
       <div className="flex flex-row justify-between bg-white p-8 mt-2 shadow">
@@ -38,7 +40,7 @@ const DataInsights = () => {
             Aggregated Reports By City
           </h6>
           {/* <CityMap /> */}
-          <LocationAggregatorMap data={coordinates} />
+          <LocationAggregatorMap data={locations} />
         </div>
         <div className="w-2/4 pl-4">
           <h6 className="text-lg font-semibold text-gray-600 mb-4">

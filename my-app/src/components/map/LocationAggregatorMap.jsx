@@ -2,13 +2,14 @@
 import React, { useCallback, useState } from "react";
 import Map from "react-map-gl";
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
+// import { HexagonLayer } from "deck.gl";
 import DeckGL from "@deck.gl/react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import PropTypes from "prop-types";
 import { FlyToInterpolator } from "deck.gl";
 
 // import map config
-import { lightingEffect, material, colorRange } from "@/lib/mapconfig";
+import { lightingEffect, material } from "@/lib/mapconfig";
 import { ISLANDS_CENTER_COORDINATES } from "@/constants/constants";
 
 const LocationAggregatorMap = ({
@@ -19,10 +20,10 @@ const LocationAggregatorMap = ({
   const layers = [
     new HexagonLayer({
       id: "heatmap",
-      colorRange,
+      // colorRange,
       coverage,
       data,
-      elevationRange: [0, 10],
+      elevationRange: [0, 500],
       elevationScale: data && data.length ? 50 : 0,
       extruded: true,
       getPosition: (d) => d.COORDINATES,
@@ -32,16 +33,15 @@ const LocationAggregatorMap = ({
       material,
 
       transitions: {
-        elevationScale: 10,
+        elevationScale: 500,
       },
     }),
     // new HeatmapLayer({
     //   data,
     //   id: 'heatmp-layer',
     //   pickable: false,
-    //   getPosition: d => [d[0], d[1]],
-    //   getWeight: d => d[2],
-    //   radiusPixels: 30,
+    //   getPosition: d => d.COORDINATES,
+    //   radiusPixels: 10,
     //   intensity: 1,
     //   threshold: 0.03
     // })
@@ -50,6 +50,7 @@ const LocationAggregatorMap = ({
     longitude: -157,
     latitude: 21,
     zoom: 5.6,
+    minZoom: 5.6,
     bearing: 0,
     pitch: 40.5,
   });
@@ -59,6 +60,7 @@ const LocationAggregatorMap = ({
       longitude: longitude,
       latitude: latitude,
       zoom: zoom,
+      minZoom: 5.6,
       pitch: 40.5,
       bearing: 0,
       transitionDuration: 1000,
@@ -77,7 +79,7 @@ const LocationAggregatorMap = ({
     return `\
       latitude: ${Number.isFinite(lat) ? lat.toFixed(6) : ""}
       longitude: ${Number.isFinite(lng) ? lng.toFixed(6) : ""}
-      ${count} Reports`;
+      ${count} Report/ss`;
   }
 
   return (
@@ -96,7 +98,7 @@ const LocationAggregatorMap = ({
             style={{ width: "100%", height: "100%" }}
             controller={true}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-            mapStyle="mapbox://styles/mapbox/dark-v10"
+            mapStyle="mapbox://styles/giorgio808/cloro3xca005y01pq4dkc11ib"
           />
         </DeckGL>
       </div>
