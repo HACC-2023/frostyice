@@ -8,11 +8,7 @@ import PropTypes from "prop-types";
 import { FlyToInterpolator } from "deck.gl";
 
 // import map config
-import {
-  lightingEffect,
-  material,
-  colorRange,
-} from "@/lib/mapconfig";
+import { lightingEffect, material, colorRange } from "@/lib/mapconfig";
 import { ISLANDS_CENTER_COORDINATES } from "@/constants/constants";
 
 const LocationAggregatorMap = ({
@@ -49,7 +45,6 @@ const LocationAggregatorMap = ({
     //   intensity: 1,
     //   threshold: 0.03
     // })
-
   ];
   const [initialViewState, setInitialViewState] = useState({
     longitude: -157,
@@ -71,17 +66,17 @@ const LocationAggregatorMap = ({
     });
   }, []);
 
-  function getTooltip({object}) {
+  function getTooltip({ object }) {
     if (!object) {
       return null;
     }
     const lat = object.position[1];
     const lng = object.position[0];
     const count = object.points.length;
-  
+
     return `\
-      latitude: ${Number.isFinite(lat) ? lat.toFixed(6) : ''}
-      longitude: ${Number.isFinite(lng) ? lng.toFixed(6) : ''}
+      latitude: ${Number.isFinite(lat) ? lat.toFixed(6) : ""}
+      longitude: ${Number.isFinite(lng) ? lng.toFixed(6) : ""}
       ${count} Reports`;
   }
 
@@ -112,13 +107,11 @@ const LocationAggregatorMap = ({
           onSelectIsland({
             longitude: mapInfo.long,
             latitude: mapInfo.lat,
-            zoom: mapInfo.zoom
-          })
+            zoom: mapInfo.zoom,
+          });
         }}
       >
-        <option disabled>
-          Select an Island
-        </option>
+        <option disabled>Select an Island</option>
         {Object.values(ISLANDS_CENTER_COORDINATES).map((island) => (
           <option key={island.name} value={JSON.stringify(island.mapInfo)}>
             {island.name}

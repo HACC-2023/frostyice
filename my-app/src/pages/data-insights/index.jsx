@@ -1,5 +1,5 @@
-import { useState } from "react";
-import CityMap from "@/components/visualizations/CityMapBox";
+import { useState, useEffect } from "react";
+// import CityMap from "@/components/visualizations/CityMapBox";
 import IslandBarChart from "@/components/visualizations/IslandBarChart";
 import PieChart from "@/components/visualizations/PieChart";
 import ReportTimesSeries from "@/components/visualizations/ReportTimeSeries";
@@ -7,9 +7,28 @@ import OrganizationFunnel from "@/components/visualizations/OrganizationFunnel";
 import ComponentsPieChart from "@/components/visualizations/ComponentsPieChart";
 import DisposalBarChart from "@/components/visualizations/DisposalBarChart";
 import SankeyChart from "@/components/visualizations/SankeyChart";
+import dynamic from "next/dynamic";
+
+const LocationAggregatorMap = dynamic(
+  () => import("@/components/map/LocationAggregatorMap"),
+  { ssr: false }
+);
 
 const DataInsights = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const [coordinates, setCoordinates] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await fetch('/api/mongo/event/all');
+      const data = await res.json();
+      const coords = data.map((item) => {
+        return { COORDINATES: [item.mapLong, item.mapLat] };
+      });
+      setCoordinates(coords);
+    };
+    getData().then(r => console.log('Fetched locations'));
+  }, []);
 
   const tabContent = [
     <div key="tab1">
@@ -18,7 +37,8 @@ const DataInsights = () => {
           <h6 className="text-lg font-semibold text-gray-600 mb-2">
             Aggregated Reports By City
           </h6>
-          <CityMap />
+          {/* <CityMap /> */}
+          <LocationAggregatorMap data={coordinates} />
         </div>
         <div className="w-2/4 pl-4">
           <h6 className="text-lg font-semibold text-gray-600 mb-4">
