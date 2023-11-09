@@ -11,7 +11,6 @@ import { FlyToInterpolator } from "deck.gl";
 import {
   lightingEffect,
   material,
-  INITIAL_VIEW_STATE,
   colorRange,
 } from "@/lib/mapconfig";
 import { ISLANDS_CENTER_COORDINATES } from "@/constants/constants";
@@ -27,7 +26,7 @@ const LocationAggregatorMap = ({
       colorRange,
       coverage,
       data,
-      elevationRange: [0, 400],
+      elevationRange: [0, 10],
       elevationScale: data && data.length ? 50 : 0,
       extruded: true,
       getPosition: (d) => d.COORDINATES,
@@ -37,35 +36,43 @@ const LocationAggregatorMap = ({
       material,
 
       transitions: {
-        elevationScale: 400,
+        elevationScale: 10,
       },
     }),
   ];
   const [initialViewState, setInitialViewState] = useState({
-    latitude: 37.7751,
-    longitude: -122.4193,
-    zoom: 11,
+    longitude: -157,
+    latitude: 21,
+    zoom: 5.6,
     bearing: 0,
-    pitch: 0,
+    pitch: 40.5,
   });
 
-  const onSelectIsland = useCallback(({ longitude, latitude }) => {
+  const onSelectIsland = useCallback(({ longitude, latitude, zoom }) => {
     setInitialViewState({
       longitude: longitude,
       latitude: latitude,
-      zoom: 9,
-      pitch: 0,
+      zoom: zoom,
+      pitch: 40.5,
       bearing: 0,
       transitionDuration: 1000,
       transitionInterpolator: new FlyToInterpolator(),
     });
   }, []);
-  // flies to island when selected
-  // const onSelectIsland = useCallback(({ longitude, latitude }) => {
-  //   console.log("onSelectIsland", longitude, latitude);
-  //   console.log(mapRef.current);
-  //   mapRef.current?.flyTo({ center: [longitude, latitude], duration: 2000 });
-  // }, []);
+
+  function getTooltip({object}) {
+    if (!object) {
+      return null;
+    }
+    const lat = object.position[1];
+    const lng = object.position[0];
+    const count = object.points.length;
+  
+    return `\
+      latitude: ${Number.isFinite(lat) ? lat.toFixed(6) : ''}
+      longitude: ${Number.isFinite(lng) ? lng.toFixed(6) : ''}
+      ${count} Reports`;
+  }
 
   return (
     <div>
@@ -76,6 +83,7 @@ const LocationAggregatorMap = ({
           effects={[lightingEffect]}
           initialViewState={initialViewState}
           controller={true}
+          getTooltip={getTooltip}
         >
           <Map
             reuseMaps
@@ -89,22 +97,19 @@ const LocationAggregatorMap = ({
       <select
         className="select select-bordered"
         onChange={(e) => {
-          const coordinates = e.target.value.split(",").map((c) => Number(c));
-          // return onSelectIsland({
-          //   longitude: coordinates[1],
-          //   latitude: coordinates[0],
-          // });
+          const mapInfo = JSON.parse(e.target.value);
           onSelectIsland({
-            longitude: coordinates[1],
-            latitude: coordinates[0]
+            longitude: mapInfo.long,
+            latitude: mapInfo.lat,
+            zoom: mapInfo.zoom
           })
         }}
       >
-        <option disabled selected>
+        <option disabled>
           Select an Island
         </option>
         {Object.values(ISLANDS_CENTER_COORDINATES).map((island) => (
-          <option key={island.name} value={island.coordinates}>
+          <option key={island.name} value={JSON.stringify(island.mapInfo)}>
             {island.name}
           </option>
         ))}

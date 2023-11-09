@@ -16,7 +16,16 @@ export const STATUS = [
   "Complete",
 ];
 
-export const POLYMERS = ["CA", "EVA", "HDPE", "Nylon", "PET", "PP", "PS", "PVB"];
+export const POLYMERS = [
+  "CA",
+  "EVA",
+  "HDPE",
+  "Nylon",
+  "PET",
+  "PP",
+  "PS",
+  "PVB",
+];
 
 export const ISLANDS = [
   "Big Island",
@@ -28,48 +37,48 @@ export const ISLANDS = [
   "Kauai",
   "Niihau",
   "NWHI",
-  "At-sea Offshore"
-]
+  "At-sea Offshore",
+];
 
 export const ISLANDS_CENTER_COORDINATES = {
+  ALL_ISLANDS: {
+    name: "All Islands",
+    mapInfo: { lat: 21, long: -157, zoom: 5.6 },
+  },
   BIG_ISLAND: {
     name: "Big Island",
-    coordinates: [19.6385, -155.5565]
+    mapInfo: { lat: 19.6385, long: -155.5565, zoom: 7.5 },
   },
   MAUI: {
     name: "Maui",
-    coordinates: [20.7493, -156.2390]
+    mapInfo: { lat: 20.9064, long: -156.3, zoom: 8.5 },
   },
   MOLOKAI: {
     name: "Molokai",
-    coordinates: [21.0389, -157.3705]
+    mapInfo: {
+      lat: 21.1526,
+      long: -157.0965,
+      zoom: 9,
+    },
   },
   LANAI: {
     name: "Lanai",
-    coordinates: [20.8423, -156.9378]
+    mapInfo: { lat: 20.8423, long: -156.9378, zoom: 10 },
   },
   KAHOOLAWE: {
     name: "Kahoolawe",
-    coordinates: [20.5501, -156.6168]
+    mapInfo: { lat: 20.5501, long: -156.6168, zoom: 11 },
   },
   OAHU: {
     name: "Oahu",
-    coordinates: [21.4337, -157.9636]
+    mapInfo: { lat: 21.4337, long: -157.9636, zoom: 8.7 },
   },
   KAUAI: {
     name: "Kauai",
-    coordinates: [22.0570, -159.5233]
+    mapInfo: { lat: 22.057, long: -159.5233, zoom: 9 },
   },
   NIIHAU: {
     name: "Niihau",
-    coordinates: [21.8969, -160.1551]
+    mapInfo: { lat: 21.8969, long: -160.1551, zoom: 10 },
   },
-  NWHI: {
-    name: "NWHI",
-    coordinates: [25.0000, -170.0000]
-  },
-  AT_SEA_OFFSHORE: {
-    name: "At-sea Offshore",
-    coordinates: [21.0000, -160.0000]
-  }
-}
+};
