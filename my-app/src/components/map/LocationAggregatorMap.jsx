@@ -106,7 +106,7 @@ const LocationAggregatorMap = ({
         </DeckGL>
       </div>
       <select
-        className="select select-bordered"
+        className="select select-bordered my-3"
         onChange={(e) => {
           const mapInfo = JSON.parse(e.target.value);
           onSelectIsland({
