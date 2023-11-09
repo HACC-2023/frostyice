@@ -1,7 +1,7 @@
 // components/Map.jsx
 import React, { useCallback, useState } from "react";
 import Map from "react-map-gl";
-import { HexagonLayer } from "@deck.gl/aggregation-layers";
+import { HexagonLayer, HeatmapLayer } from "@deck.gl/aggregation-layers";
 // import { HexagonLayer } from "deck.gl";
 import DeckGL from "@deck.gl/react";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -17,35 +17,44 @@ const LocationAggregatorMap = ({
   coverage = 1,
   data,
 }) => {
-  const layers = [
-    new HexagonLayer({
-      id: "heatmap",
-      // colorRange,
-      coverage,
-      data,
-      elevationRange: [0, 500],
-      elevationScale: data && data.length ? 50 : 0,
-      extruded: true,
-      getPosition: (d) => d.COORDINATES,
-      pickable: true,
-      radius: 1000,
-      upperPercentile,
-      material,
+  const [layers, setLayers] = useState();
 
-      transitions: {
-        elevationScale: 500,
-      },
-    }),
-    // new HeatmapLayer({
-    //   data,
-    //   id: 'heatmp-layer',
-    //   pickable: false,
-    //   getPosition: d => d.COORDINATES,
-    //   radiusPixels: 10,
-    //   intensity: 1,
-    //   threshold: 0.03
-    // })
-  ];
+  const mapVisLayers = {
+    hexagonLayer: [
+      new HexagonLayer({
+        id: "heatmap",
+        // colorRange,
+        coverage,
+        data,
+        elevationRange: [0, 500],
+        elevationScale: data && data.length ? 50 : 0,
+        extruded: true,
+        getPosition: (d) => d.COORDINATES,
+        pickable: true,
+        radius: 1000,
+        upperPercentile,
+        material,
+
+        transitions: {
+          elevationScale: 500,
+        },
+      }),
+    ],
+
+    heatmapLayer: [
+      new HeatmapLayer({
+        data,
+        id: "heatmap-layer",
+        pickable: false,
+        getPosition: (d) => d.COORDINATES,
+        radiusPixels: 10,
+        intensity: 1,
+        threshold: 0.03,
+      }),
+    ]
+  };
+
+  const countLayer = [];
   const [initialViewState, setInitialViewState] = useState({
     longitude: -157,
     latitude: 21,
@@ -67,6 +76,10 @@ const LocationAggregatorMap = ({
       transitionInterpolator: new FlyToInterpolator(),
     });
   }, []);
+
+  const onSelectVisualization = (vis) => {
+    setLayers(mapVisLayers[vis]);
+  }
 
   function getTooltip({ object }) {
     if (!object) {
@@ -99,27 +112,44 @@ const LocationAggregatorMap = ({
             controller={true}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
             mapStyle="mapbox://styles/giorgio808/cloro3xca005y01pq4dkc11ib"
+            onLoad={() => {setLayers(mapVisLayers["heatmapLayer"])}}
           />
         </DeckGL>
       </div>
-      <select
-        className="select select-bordered my-3"
-        onChange={(e) => {
-          const mapInfo = JSON.parse(e.target.value);
-          onSelectIsland({
-            longitude: mapInfo.long,
-            latitude: mapInfo.lat,
-            zoom: mapInfo.zoom,
-          });
-        }}
-      >
-        <option disabled>Select an Island</option>
-        {Object.values(ISLANDS_CENTER_COORDINATES).map((island) => (
-          <option key={island.name} value={JSON.stringify(island.mapInfo)}>
-            {island.name}
-          </option>
-        ))}
-      </select>
+      <div className="flex py-2 gap-3">
+        <div>
+          <h1 className="font-bold text-sm">Select Island</h1>
+          <select
+            className="select select-bordered my-1 select-sm"
+            onChange={(e) => {
+              const mapInfo = JSON.parse(e.target.value);
+              onSelectIsland({
+                longitude: mapInfo.long,
+                latitude: mapInfo.lat,
+                zoom: mapInfo.zoom,
+              });
+            }}
+          >
+            <option disabled>Select an Island</option>
+            {Object.values(ISLANDS_CENTER_COORDINATES).map((island) => (
+              <option key={island.name} value={JSON.stringify(island.mapInfo)}>
+                {island.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <h1 className="font-bold text-sm"> Select Data Visualization </h1>
+          <select className="select select-bordered my-1 select-sm" onChange={(e) => {
+            const vis = e.target.value;
+            setLayers(mapVisLayers[vis]);
+          }}>
+            <option disabled>Select a Visualization</option>
+            <option value="heatmapLayer">Heatmap</option>
+            <option value="hexagonLayer">Hexagon Map</option>
+          </select>
+        </div>
+      </div>
     </div>
   );
 };
