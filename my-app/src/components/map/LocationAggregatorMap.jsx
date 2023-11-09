@@ -1,10 +1,11 @@
 // components/Map.jsx
-import React from "react";
+import React, { useCallback, useState } from "react";
 import Map from "react-map-gl";
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
 import DeckGL from "@deck.gl/react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import PropTypes from "prop-types";
+import { FlyToInterpolator } from "deck.gl";
 
 // import map config
 import {
@@ -13,8 +14,13 @@ import {
   INITIAL_VIEW_STATE,
   colorRange,
 } from "@/lib/mapconfig";
+import { ISLANDS_CENTER_COORDINATES } from "@/constants/constants";
 
-const LocationAggregatorMap = ({ upperPercentile = 100, coverage = 1, data }) => {
+const LocationAggregatorMap = ({
+  upperPercentile = 100,
+  coverage = 1,
+  data,
+}) => {
   const layers = [
     new HexagonLayer({
       id: "heatmap",
@@ -35,23 +41,74 @@ const LocationAggregatorMap = ({ upperPercentile = 100, coverage = 1, data }) =>
       },
     }),
   ];
+  const [initialViewState, setInitialViewState] = useState({
+    latitude: 37.7751,
+    longitude: -122.4193,
+    zoom: 11,
+    bearing: 0,
+    pitch: 0,
+  });
+
+  const onSelectIsland = useCallback(({ longitude, latitude }) => {
+    setInitialViewState({
+      longitude: longitude,
+      latitude: latitude,
+      zoom: 9,
+      pitch: 0,
+      bearing: 0,
+      transitionDuration: 1000,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
+  }, []);
+  // flies to island when selected
+  // const onSelectIsland = useCallback(({ longitude, latitude }) => {
+  //   console.log("onSelectIsland", longitude, latitude);
+  //   console.log(mapRef.current);
+  //   mapRef.current?.flyTo({ center: [longitude, latitude], duration: 2000 });
+  // }, []);
 
   return (
     <div>
-      <DeckGL
-        style={{ width: "600px", height: "400px" }}
-        layers={layers}
-        effects={[lightingEffect]}
-        initialViewState={INITIAL_VIEW_STATE}
-        controller={true}
-      >
-        <Map
-          reuseMaps
+      <div className="h-[400px] w-full relative">
+        <DeckGL
+          style={{ width: "100%", height: "100%" }}
+          layers={layers}
+          effects={[lightingEffect]}
+          initialViewState={initialViewState}
           controller={true}
-          mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-          mapStyle="mapbox://styles/mapbox/dark-v10"
-        ></Map>
-      </DeckGL>
+        >
+          <Map
+            reuseMaps
+            style={{ width: "100%", height: "100%" }}
+            controller={true}
+            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+            mapStyle="mapbox://styles/mapbox/dark-v10"
+          />
+        </DeckGL>
+      </div>
+      <select
+        className="select select-bordered"
+        onChange={(e) => {
+          const coordinates = e.target.value.split(",").map((c) => Number(c));
+          // return onSelectIsland({
+          //   longitude: coordinates[1],
+          //   latitude: coordinates[0],
+          // });
+          onSelectIsland({
+            longitude: coordinates[1],
+            latitude: coordinates[0]
+          })
+        }}
+      >
+        <option disabled selected>
+          Select an Island
+        </option>
+        {Object.values(ISLANDS_CENTER_COORDINATES).map((island) => (
+          <option key={island.name} value={island.coordinates}>
+            {island.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
