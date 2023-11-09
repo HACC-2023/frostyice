@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import DashboardTable from "@/components/DashboardTable";
+import { useSession } from "next-auth/react";
 
 const Dashboard = () => {
+  const { data: session, status } = useSession();
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/mongo/event/all"); // TODO only org id? or island?
-        if (response.ok) {
-          const data = await response.json();
+        const eventsResponse = await fetch(`/api/mongo/event/removal-org-id/${session?.user?.orgId}`);
+        console.log()
+        if (eventsResponse.ok) {
+          const data = await eventsResponse.json();
           console.log(data);
           setEvents(data);
         } else {
@@ -21,16 +24,8 @@ const Dashboard = () => {
       }
     };
 
-    fetchData();
-  }, [events]);
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+    if (session) fetchData();
+  }, [session]);
 
   return (
     <div className="justify-center items-center">
@@ -41,7 +36,7 @@ const Dashboard = () => {
         <div className="p-8 shadow bg-white">
           <button
             className="flex flex-row pb-3 hover:brightness-150 transition-all"
-            onClick={()=>document.getElementById('my_modal_1').showModal()}
+            onClick={()=>document.getElementById('multieventModal').showModal()}
           >
             <PlusCircleIcon className="h-5 w-5 text-gray-600" style={{ marginTop: '2px' }} />
             <h6 className="text-gray-600 pl-1 font-semibold text-md">
@@ -52,7 +47,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <dialog id="my_modal_1" className="modal">
+      <dialog id="multieventModal" className="modal">
         <div class="modal-box bg-white max-w-2xl">
           <h3 className="text-lg font-semibold text-gray-700">
             Multievent Shipment
@@ -101,7 +96,7 @@ const Dashboard = () => {
           </div>
         </div>
         <form method="dialog" className="modal-backdrop">
-          <button>close</button>
+          <button className="cursor-default">close</button>
         </form>
       </dialog>
     </div>
