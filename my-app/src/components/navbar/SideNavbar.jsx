@@ -71,7 +71,7 @@ const SideNavbar = () => {
   ];
 
   const NavContainer = () => (
-    <ul className="menu p-5 w-72 h-screen sticky top-0 bg-base-200 pt-10 font-medium">
+    <ul className="menu p-5 w-72 min-h-screen sticky top-0 bg-base-200 pt-10 font-medium">
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && (
         <NavContent nav={orgMemberNav} />
