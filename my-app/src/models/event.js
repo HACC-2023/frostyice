@@ -104,7 +104,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
   },
   removalOrgId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     trim: true,
   },
   removalStartDate: {
