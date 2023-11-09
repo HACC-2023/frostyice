@@ -39,6 +39,17 @@ const LocationAggregatorMap = ({
         elevationScale: 10,
       },
     }),
+    // new HeatmapLayer({
+    //   data,
+    //   id: 'heatmp-layer',
+    //   pickable: false,
+    //   getPosition: d => [d[0], d[1]],
+    //   getWeight: d => d[2],
+    //   radiusPixels: 30,
+    //   intensity: 1,
+    //   threshold: 0.03
+    // })
+
   ];
   const [initialViewState, setInitialViewState] = useState({
     longitude: -157,
