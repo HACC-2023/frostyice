@@ -42,10 +42,10 @@ export function findCloseIsland(lat, long) {
     return 'Lanai';
   }
   if (Math.sqrt((lat - kahoolaweCenter[0]) ** 2 + (long - kahoolaweCenter[1]) ** 2) <= kahoolaweRadiusBoundary) {
-    return 'Kahoolawe';
+    return 'Maui';
   }
   if (Math.sqrt((lat - centerNiiahu[0]) ** 2 + (long - centerNiiahu[1]) ** 2) <= niiahuRadiusBoundary) {
-    return 'Niihau';
+    return 'Kauai';
   }
   return 'At-sea Offshore';
 }

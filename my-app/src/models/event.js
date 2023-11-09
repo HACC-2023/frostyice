@@ -1,4 +1,4 @@
-import { ISLANDS } from "@/constants/constants";
+import { ISLANDS, STORAGE_NODES } from "@/constants/constants";
 import mongoose from "mongoose";
 
 // subdocument schema
@@ -103,10 +103,6 @@ const eventSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
   },
-  dibsByOrgId: {
-    type: String,
-    trim: true,
-  },
   removedByOrgId: {
     type: String,
     trim: true,
@@ -126,8 +122,8 @@ const eventSchema = new mongoose.Schema({
     trim: true,
   },
   tempStorage: {
-    type: Number,
-    trim: true,
+    type: String,
+    enum: STORAGE_NODES,
   },
   assessedEnvDamage: {
     type: String,
