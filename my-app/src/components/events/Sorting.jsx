@@ -30,7 +30,7 @@ const Sorting = ({ event, userOrgId }) => {
     <EventCollapse title="Sorting">
       {STATUS.indexOf(event.status) > 1 ? (
         <>
-          {userOrgId === event.dibsByOrgId && (
+          {userOrgId === event.removalOrgId && (
             <section className="flex justify-between md:mt-10">
               <button
                 className="btn btn-secondary"
@@ -67,7 +67,7 @@ const Sorting = ({ event, userOrgId }) => {
                 </tbody>
               </table>
             </div>
-            {userOrgId === event.dibsByOrgId && (
+            {userOrgId === event.removalOrgId && (
               <section className="flex justify-end gap-3 py-3">
                 {STATUS.indexOf(event.status) <= 2 ? (
                   <MarkAsCompleteBtn

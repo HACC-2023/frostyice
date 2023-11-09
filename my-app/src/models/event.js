@@ -103,7 +103,7 @@ const eventSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
   },
-  removedByOrgId: {
+  removalOrgId: {
     type: String,
     trim: true,
   },

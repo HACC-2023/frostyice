@@ -7,16 +7,16 @@ import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
 import UndoStepBtn from "./common/UndoStepBtn";
 
 const RemovalAndStorage = ({ event, userOrgId }) => {
-  // console.log("event", event.dibsByOrgId);
+  // console.log("event", event.removalOrgId);
   // console.log("userOrgId", userOrgId);
-  // console.log("event === userOrgId", event.dibsByOrgId === userOrgId);
+  // console.log("event === userOrgId", event.removalOrgId === userOrgId);
 
-  // userOrgId === event.dibsByOrgId checks for permissions
+  // userOrgId === event.removalOrgId checks for permissions
   return (
     <EventCollapse title="Removal and Storage">
       {STATUS.indexOf(event.status) > 0 ? (
         <div>
-          {userOrgId === event.dibsByOrgId && (
+          {userOrgId === event.removalOrgId && (
             <section className="flex md:mb-6">
               <button
                 className="btn btn-secondary justify-self-end"
@@ -55,7 +55,7 @@ const RemovalAndStorage = ({ event, userOrgId }) => {
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="md:text-xl font-bold">Removed By</h1>
-                <p>{event.removedByOrgId ?? "-"}</p>
+                <p>{event.removalOrgId ?? "-"}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Removal Date/s</h1>
@@ -132,7 +132,7 @@ const RemovalAndStorage = ({ event, userOrgId }) => {
               </div>
             </>
           )}
-          {userOrgId === event.dibsByOrgId && (
+          {userOrgId === event.removalOrgId && (
             <section className="flex justify-end gap-3 py-3">
               {/* If the event is completed only show the undo button */}
               {STATUS.indexOf(event.status) <= 1 ? (

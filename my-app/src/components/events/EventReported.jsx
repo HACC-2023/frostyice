@@ -85,7 +85,7 @@ const EventRemoval = ({ event }) => {
         </section>
         {/* show this section if the event is not claimed */}
       </div>
-      {!event.dibsByOrgId ? (
+      {!event.removalOrgId ? (
         <section className="flex justify-end gap-3 py-3">
           <DismissBtn event={event} />
           {session?.user && (

@@ -11,7 +11,7 @@ const SortingRow = ({ sortedMaterial, event, userOrgId }) => {
       <td>{sortedMaterial.mass}</td>
       <td>{sortedMaterial.polymer}</td>
       <td className="flex gap-2">
-        {userOrgId === event.dibsByOrgId && (
+        {userOrgId === event.removalOrgId && (
           <>
             <button
               className="btn btn-outline btn-sm"
