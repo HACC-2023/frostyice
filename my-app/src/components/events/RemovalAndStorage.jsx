@@ -138,7 +138,7 @@ const RemovalAndStorage = ({ event, userOrgId }) => {
               {STATUS.indexOf(event.status) <= 1 ? (
                 <MarkAsCompleteBtn eventId={event._id} nextStatus={STATUS[2]} />
               ) : (
-                <UndoStepBtn eventId={event._id} prevStatus={STATUS[1]} />
+                <UndoStepBtn eventId={event._id} prevStatus={STATUS[0]} />
               )}
             </section>
           )}
