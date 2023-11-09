@@ -3,6 +3,7 @@ import EventCollapse from "./common/EventCollapse";
 import DispatchTeamBtn from "./event-reported/DispatchTeamBtn";
 import DismissBtn from "./event-reported/DismissBtn";
 import StaticMap from "../map/StaticLocationMap/StaticMap";
+import { prettyHstDate } from "@/utils/dateConverter";
 
 const EventRemoval = ({ event }) => {
   const { data: session } = useSession();
@@ -14,7 +15,7 @@ const EventRemoval = ({ event }) => {
           <div className="flex flex-col md:flex-row justify-between">
             <h3 className="font-bold md:text-xl">Event ID: {event._id}</h3>
             <time className="font-bold md:text-xl">
-              Date Reported: {event.reportedDate.toLocaleString("en-US")}
+              Date Reported: {prettyHstDate(event.reportedDate)}
             </time>
           </div>
         </header>
