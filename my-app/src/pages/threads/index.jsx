@@ -28,13 +28,16 @@ const Threads = () => {
   }
 
   return (
-    <>
-      {data.length === 0 ? (
-        <div>There are no threads at this moment</div>
-      ) : (
-        data.map((thread) => <Thread key={thread._id} thread={thread} />)
-      )}
-    </>
+    <div className="mx-32 my-10">
+      <h1 className="text-4xl font-semibold text-gray-800 mb-2">Threads</h1>
+      <div className="shadow-md p-5">
+        {data.length === 0 ? (
+          <div>There are no threads at this moment</div>
+        ) : (
+          data.map((thread) => <Thread key={thread._id} thread={thread} />)
+        )}
+      </div>
+    </div>
   );
 };
 
