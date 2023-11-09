@@ -3,6 +3,7 @@ import { TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 import DeleteMembersModal from "./DeleteMembersModal";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { ROLES } from "@/roles/roles";
 
 const OrgMemberTable = ({ members }) => {
   const { data: session, status } = useSession();
@@ -50,8 +51,8 @@ const OrgMemberTable = ({ members }) => {
   };
 
   return (
-    <div className="overflow-x-auto bg-white">
-      <table className="table bg-white text-gray-600">
+    <div className="overflow-x-auto">
+      <table className="table mt-6 text-gray-600">
         <thead>
           <tr className="text-gray-600">
             <td></td>
@@ -59,7 +60,7 @@ const OrgMemberTable = ({ members }) => {
             <th>Last Name</th>
             <td>Email</td>
             <td>Role</td>
-            {session?.user.role !== "org_member" && <td></td>}
+            {session?.user.role !== ROLES.ORG_MEMBER && <td></td>}
           </tr>
         </thead>
         <tbody>
