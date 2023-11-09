@@ -92,7 +92,7 @@ const LocationAggregatorMap = ({
     return `\
       latitude: ${Number.isFinite(lat) ? lat.toFixed(6) : ""}
       longitude: ${Number.isFinite(lng) ? lng.toFixed(6) : ""}
-      ${count} Report/ss`;
+      ${count} Report/s`;
   }
 
   return (

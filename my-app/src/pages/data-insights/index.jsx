@@ -8,7 +8,6 @@ import ComponentsPieChart from "@/components/visualizations/ComponentsPieChart";
 import DisposalBarChart from "@/components/visualizations/DisposalBarChart";
 import SankeyChart from "@/components/visualizations/SankeyChart";
 import dynamic from "next/dynamic";
-import locations from "@/dummy-data/locations.json";
 
 const LocationAggregatorMap = dynamic(
   () => import("@/components/map/LocationAggregatorMap"),
@@ -40,7 +39,7 @@ const DataInsights = () => {
             Aggregated Reports By City
           </h6>
           {/* <CityMap /> */}
-          <LocationAggregatorMap data={locations} />
+          <LocationAggregatorMap data={coordinates} />
         </div>
         <div className="w-2/4 pl-4">
           <h6 className="text-lg font-semibold text-gray-600 mb-4">
