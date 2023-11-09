@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const SideNavbar = () => {
   const { data: session, status } = useSession();
@@ -70,7 +71,7 @@ const SideNavbar = () => {
   ];
 
   const NavContainer = () => (
-    <ul className="menu p-5 w-72 h-screen sticky top-0 bg-base-200 pt-10 font-medium">
+    <ul className="menu p-5 w-72 min-h-screen sticky top-0 bg-base-200 pt-10 font-medium">
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && (
         <NavContent nav={orgMemberNav} />
@@ -91,6 +92,12 @@ const SideNavbar = () => {
       )}
     </ul>
   );
+
+  const router = useRouter();
+
+  const isLinkActive = (href) => {
+    return router.pathname === href;
+  };
 
   const AccountInfo = () => (
     <>
@@ -152,7 +159,7 @@ const SideNavbar = () => {
 
     return (
       <li className="m-1">
-        <Link href={link}>
+        <Link href={link} className={`hover:text-neutral-300 ${isLinkActive(link) ? "bg-neutral text-neutral-300" : ""}`}>
           {icon && <IconElement height={ICON_HEIGHT} />}
           <span>{label}</span>
         </Link>
