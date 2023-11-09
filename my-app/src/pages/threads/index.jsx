@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Thread from "@/components/Thread";
-import { set } from "mongoose";
 import Loading from "@/components/Loading";
 
 // TODO: implement page for each thread

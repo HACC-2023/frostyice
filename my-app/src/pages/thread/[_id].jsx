@@ -61,7 +61,7 @@ const ThreadPage = () => {
           <ThreadInfo thread={thread}></ThreadInfo>
           <h1 className=" text-xl font-semibold text-gray-800 mb-2">Messages</h1>
           {thread.messages.length ? (
-            thread.messages.map((message) => <Chat message={message}></Chat>)
+            thread.messages.map((message, index) => <Chat key={index} message={message}></Chat>)
           ) : (
             <div>There are currently no messages</div>
           )}

@@ -48,16 +48,16 @@ const Register = () => {
       }
       if (data.password !== data.confirmPassword) {
         setError(true);
-          setPasswordErr(true);
+        setPasswordErr(true);
         setErrMsg("The Passwords Do Not Match!")
         return;
       } 
-       if(!regularExpression.test(data.password)) {
+      if(!regularExpression.test(data.password)) {
         setError(true);
         setPasswordErr(true);
         setErrMsg("The Password Is Not Strong Enough!   Password must contain at least one number, one uppercase letter, nd one lowercase letter. ")
         return;
-    }
+      }
 
       const res = await fetch(`/api/mongo/user/find-user/${data.email}`);
       const user = await res.json();
@@ -208,12 +208,12 @@ const Register = () => {
               </span>
             </div>
             <div
-          className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
-            emailErr ?{error} : "hidden"
-          }`}
-        >
+              className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
+                emailErr ?{error} : "hidden"
+              }`}
+            >
           The Input Email Addresses Do Not Match!
-        </div>
+            </div>
           </div>
 
           <div>
@@ -264,12 +264,12 @@ const Register = () => {
               />
             </div>
             <div
-          className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
-            passwordErr ?{error} : "hidden"
-          }`}
-        >
-          {errMsg}
-        </div>
+              className={`mt-2 py-1.5 px-2 rounded text-sm bg-red-100 text-red-600 border border-red-500 ${
+                passwordErr ?{error} : "hidden"
+              }`}
+            >
+              {errMsg}
+            </div>
           </div>
 
           <div>
