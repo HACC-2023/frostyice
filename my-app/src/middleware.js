@@ -6,9 +6,19 @@ import { ROLES } from "./roles/roles";
 
 export const ADMIN_ROUTES = [
   "/admin",
-  "/admin/manage-organizations",
-  // "/experimental"
 ];
+
+export const ORG_ADMIN_ROUTES = [
+  "/organization",
+]
+
+export const MEMBER_ROUTES = [
+  "/data-insights",
+  "/events",
+  "/home",
+  "/thread",
+  "/threads",
+]
 
 export default withAuth(
   function middleware(request) {
@@ -20,13 +30,20 @@ export default withAuth(
     ) {
       return NextResponse.rewrite(new URL("/denied", request.url));
     }
-    // If there isn't a token, then user can't access item page
+
     if (
-      request.nextUrl.pathname.startsWith("/items") &&
-      !request.nextauth.token?.role
+      ORG_ADMIN_ROUTES.some((path) => request.nextUrl.pathname.startsWith(path)) &&
+      request.nextauth.token?.role !== (ROLES.ORG_ADMIN || ROLES.ADMIN)
     ) {
       return NextResponse.rewrite(new URL("/denied", request.url));
     }
+    // If there isn't a token, then user can't access item page
+    // if (
+    //   request.nextUrl.pathname.startsWith("/items") &&
+    //   !request.nextauth.token?.role
+    // ) {
+    //   return NextResponse.rewrite(new URL("/denied", request.url));
+    // }
   },
   {
     callbacks: {
@@ -45,9 +62,12 @@ export const config = {
      * - favicon.ico (favicon file)
      */
     "/((?!api/uploadthing|).*)",
-    "/admin",
-    "/items",
-    "/experimental",
-    "/admin/manage-organizations"
+    "/admin/:path*",
+    "/events/:path*",
+    "/home",
+    "/organization",
+    "/data-insights",
+    "/thread",
+    "/threads",
   ],
 };
