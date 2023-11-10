@@ -1,50 +1,60 @@
 import { useEffect, useState } from "react";
 import Dropzone from "react-dropzone";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Loading from "@/components/Loading";
-import {uploadFiles} from "@/utils/uploadthing";
+import { uploadFiles } from "@/utils/uploadthing";
 
 const ReportForm = () => {
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
   // debris description
-  const [debrisType, setDebrisType] = useState('"Mass of netting/fishing gear"');
-  const [debrisTypeOther, setDebrisTypeOther] = useState("No additional description");
+  const [debrisType, setDebrisType] = useState(
+    '"Mass of netting/fishing gear"'
+  );
+  const [debrisTypeOther, setDebrisTypeOther] = useState(
+    "No additional description"
+  );
   const [containerFullness, setContainerFullness] = useState(null);
   const [claimBoat, setClaimBoat] = useState(null);
-  const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
+  const [biofoulingRating, setBiofoulingRating] = useState(
+    "1 - No algae or marine life at all"
+  );
 
   // debris location
-  const [debrisRelativeLocation, setDebrisRelativeLocation] = useState('At sea, BEYOND three miles from nearest land');
-  const [debrisLocationDetails, setDebrisLocationDetails] = useState('');
+  const [debrisRelativeLocation, setDebrisRelativeLocation] = useState(
+    "At sea, BEYOND three miles from nearest land"
+  );
+  const [debrisLocationDetails, setDebrisLocationDetails] = useState("");
   const [coordinates, setCoordinates] = useState(null);
 
   // debris detailed description
-  const [debrisTrappedDesc, setDebrisTrappedDesc] = useState('Caught on the reef or partially buried in sand');
-  const [debrisTrappedOther, setDebrisTrappedOther] = useState('');
+  const [debrisTrappedDesc, setDebrisTrappedDesc] = useState(
+    "Caught on the reef or partially buried in sand"
+  );
+  const [debrisTrappedOther, setDebrisTrappedOther] = useState("");
   const [imageURLArray, setImageURLArray] = useState([]);
   const [files, setFiles] = useState([]);
 
   // reporter contact info
-  const [lastName, setLastName] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [confirmEmail, setConfirmEmail] = useState('');
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
 
   const selectedBtnStyle = {
-    background: '#3aa2e7',
-    border: '1px solid #56A9E0',
-    color: 'white',
+    background: "#3aa2e7",
+    border: "1px solid #56A9E0",
+    color: "white",
   };
 
   const regularBtnStyle = {
-    background: '#b2b6b6',
-    color: '#555555',
-    border: 'none',
+    background: "#b2b6b6",
+    color: "#555555",
+    border: "none",
   };
 
   const validPhone = (phone) => {
@@ -66,23 +76,23 @@ const ReportForm = () => {
   async function submitForm() {
     // validation
     if (!coordinates) {
-      toast.info('Please select a location on the map');
+      toast.info("Please select a location on the map");
       return;
     }
     if (!firstName || !lastName) {
-      toast.info('Please enter your first and last name');
+      toast.info("Please enter your first and last name");
       return;
     }
     if (!phoneNumber || !validPhone(phoneNumber)) {
-      toast.info('Please enter a valid phone number');
+      toast.info("Please enter a valid phone number");
       return;
     }
     if (!email || !validEmail(email)) {
-      toast.info('Please enter a valid email address');
+      toast.info("Please enter a valid email address");
       return;
     }
     if (!confirmEmail || email !== confirmEmail) {
-      toast.info('Email and confirm email must match');
+      toast.info("Email and confirm email must match");
       return;
     }
     setIsLoading(true);
@@ -111,30 +121,30 @@ const ReportForm = () => {
       mapLat: coordinates?.latitude,
       mapLong: coordinates?.longitude,
     };
-    if (debrisType.includes('Container')) {
-      data.publicContainerFullness = containerFullness || 'Full';
-    } else if (debrisType.includes('boat')) {
-      data.publicClaimBoat = claimBoat || 'No';
+    if (debrisType.includes("Container")) {
+      data.publicContainerFullness = containerFullness || "Full";
+    } else if (debrisType.includes("boat")) {
+      data.publicClaimBoat = claimBoat || "No";
     }
-    const res = await fetch('/api/mongo/event/add-form', {
-      method: 'POST',
+    const res = await fetch("/api/mongo/event/add-form", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
     if (res.status === 201) {
-      toast.success('Form submitted - Mahalo!');
+      toast.success("Form submitted - Mahalo!");
     } else {
-      toast.error('Error submitting form - Please try again later');
+      toast.error("Error submitting form - Please try again later");
     }
     setIsLoading(false);
   }
 
   return (
-    <div className="justify-center items-center">
+    <div className="px-5 bg-white min-h-screen pb-32">
       {isLoading && <Loading />}
-      <div className="mt-2 bg-white p-14">
+      <div className=" bg-white py-3">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           Report Marine Debris
         </h3>
@@ -142,7 +152,13 @@ const ReportForm = () => {
         <p className="text-gray-600 my-2">
           <b>
             TO REPORT MARINE ANIMALS THAT ARE ENTANGLED IN DEBRIS, CALL NOAA
-            IMMEDIATELY AT <a className="whitespace-nowrap text-blue-500 hover:underline" href="tel:18882569840">1-888-256-9840</a>
+            IMMEDIATELY AT{" "}
+            <a
+              className="whitespace-nowrap text-blue-500 hover:underline"
+              href="tel:18882569840"
+            >
+              1-888-256-9840
+            </a>
             &nbsp;(round-the-clock hotline)
           </b>
         </p>
@@ -188,11 +204,14 @@ const ReportForm = () => {
         </p>
 
         {/* 1st section */}
-        <div className="p-8 mt-4 mb-4 shadow">
+        <div className="mt-4 mb-4">
           <p className="text-gray-600 mb-2">
             <b>1) I FOUND/LOCATED THE FOLLOWING*</b>
           </p>
-          <div className="form-control" onChange={event => setDebrisType(event.target.value)}>
+          <div
+            className="form-control"
+            onChange={(event) => setDebrisType(event.target.value)}
+          >
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
@@ -289,19 +308,19 @@ const ReportForm = () => {
 
           <p className="text-gray-600 mt-4 mb-4">
             <b>
-              ENTER DESCRIPTION OF THE TYPE OF DEBRIS FOUND AND WHAT IT
-              WOULD TAKE TO REMOVE IT (for example, a large section of a dock or
-              a shipping container requiring a crane to remove, a wooden beam
+              ENTER DESCRIPTION OF THE TYPE OF DEBRIS FOUND AND WHAT IT WOULD
+              TAKE TO REMOVE IT (for example, a large section of a dock or a
+              shipping container requiring a crane to remove, a wooden beam
               10&rsquo; long that would require 3-4 people to lift, etc.)
             </b>
           </p>
           <input
             type="text"
             className="input input-bordered w-full bg-white text-gray-600 mb-2"
-            onChange={event => setDebrisTypeOther(event.target.value)}
+            onChange={(event) => setDebrisTypeOther(event.target.value)}
             value={debrisTypeOther}
           />
-          { debrisType === 'Container/drum/cylinder' && (
+          {debrisType === "Container/drum/cylinder" && (
             <span>
               <p className="text-gray-600 mt-4 mb-4">
                 <b>How full is the container/drum/cylinder?</b>
@@ -309,7 +328,7 @@ const ReportForm = () => {
               <select
                 className="select select-bordered w-full max-w-xs bg-white text-gray-600"
                 defaultValue="Full"
-                onChange={event => setContainerFullness(event.target.value)}
+                onChange={(event) => setContainerFullness(event.target.value)}
               >
                 <option>Full</option>
                 <option>Partially Filled</option>
@@ -317,12 +336,15 @@ const ReportForm = () => {
               </select>
             </span>
           )}
-          { debrisType === 'Abandoned/derelict boat' && (
+          {debrisType === "Abandoned/derelict boat" && (
             <span>
               <p className="text-gray-600 mt-4 mb-4">
                 <b>Do you want to claim the boat for personal use?*</b>
               </p>
-              <div className="form-control" onChange={event => setClaimBoat(event.target.value)}>
+              <div
+                className="form-control"
+                onChange={(event) => setClaimBoat(event.target.value)}
+              >
                 <label className="label cursor-pointer">
                   <div className="flex items-left">
                     <input
@@ -359,7 +381,7 @@ const ReportForm = () => {
           </p>
 
           <select
-            onChange={event => setBiofoulingRating(event.target.value)}
+            onChange={(event) => setBiofoulingRating(event.target.value)}
             defaultValue="1 - No algae or marine life at all"
             className="select select-bordered w-full max-w-xs bg-white text-gray-600"
           >
@@ -383,12 +405,15 @@ const ReportForm = () => {
 
         {/* 2nd section */}
 
-        <div className="px-8 pt-2 mb-4 shadow">
+        <div className=" pt-2 mb-4 ">
           <p className="text-gray-600 mt-4 mb-4">
             <b>THIS DEBRIS IS LOCATED*</b>
           </p>
 
-          <div className="form-control" onChange={event => setDebrisRelativeLocation(event.target.value)}>
+          <div
+            className="form-control"
+            onChange={(event) => setDebrisRelativeLocation(event.target.value)}
+          >
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
@@ -470,37 +495,44 @@ const ReportForm = () => {
               </div>
             </label>
           </div>
-          {debrisRelativeLocation.includes('sea') || debrisRelativeLocation.includes('None')
-            ? <span>
+          {debrisRelativeLocation.includes("sea") ||
+          debrisRelativeLocation.includes("None") ? (
+            <span>
               <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
                 <b>
-                  Please provide a position description and any information on currents
-                  and winds that could help in relocating the debris.
+                  Please provide a position description and any information on
+                  currents and winds that could help in relocating the debris.
                 </b>
               </p>
               <input
                 type="text"
                 className="input input-bordered bg-white text-gray-600 mb-2 w-full"
-                onChange={event => setDebrisLocationDetails(event.target.value)}
+                onChange={(event) =>
+                  setDebrisLocationDetails(event.target.value)
+                }
                 value={debrisLocationDetails}
               />
             </span>
-            : ''
-          }
-          <div className="grid flex-grow card rounded-box pb-4">
-            <div className="mt-4 mb-4">
+          ) : (
+            ""
+          )}
+          <div className="grid flex-grow card rounded-box">
+            <div className="mt-4">
               <ClickableMap setCoordinates={setCoordinates} />
             </div>
           </div>
         </div>
 
         {/* 3rd section */}
-        <div className="px-8 pt-2 mb-4 shadow">
+        <div className="pt-2 mb-4 ">
           <p className="text-gray-600 mt-4 mb-4">
             <b>3) THE DEBRIS IS BEST DESCRIBED AS:*</b>
           </p>
 
-          <div className="form-control" onChange={event => setDebrisTrappedDesc(event.target.value)}>
+          <div
+            className="form-control"
+            onChange={(event) => setDebrisTrappedDesc(event.target.value)}
+          >
             <label className="label cursor-pointer">
               <div className="flex items-left">
                 <input
@@ -525,7 +557,8 @@ const ReportForm = () => {
                   value="Loose in the shore break or on the shoreline and could go back out to sea"
                 />
                 <span className="label-text ml-2 text-gray-600">
-                  Loose in the shore break or on the shoreline and could go back out to sea
+                  Loose in the shore break or on the shoreline and could go back
+                  out to sea
                 </span>
               </div>
             </label>
@@ -581,7 +614,8 @@ const ReportForm = () => {
                   value="Pushed inland above the high wash of the waves so it cannot be swept away"
                 />
                 <span className="label-text ml-2 text-gray-600">
-                  Pushed inland above the high wash of the waves so it cannot be swept away
+                  Pushed inland above the high wash of the waves so it cannot be
+                  swept away
                 </span>
               </div>
             </label>
@@ -606,17 +640,18 @@ const ReportForm = () => {
           </p>
           <input
             className="input input-bordered w-full bg-white text-gray-600 mb-2"
-            onChange={event => setDebrisTrappedOther(event.target.value)}
+            onChange={(event) => setDebrisTrappedOther(event.target.value)}
             value={debrisTrappedOther}
           />
 
           <p className="text-gray-600 mt-4 mb-4">
             <b>
-              IF YOU CAN TAKE A PHOTOGRAPH, PLEASE TURN ON YOUR DEVICE&apos;S LOCATION FIRST
+              IF YOU CAN TAKE A PHOTOGRAPH, PLEASE TURN ON YOUR DEVICE&apos;S
+              LOCATION FIRST
             </b>
           </p>
 
-          <div className="p-4 mb-8">
+          <div>
             <Dropzone
               onDrop={(acceptedFiles) => {
                 setFiles([...files, acceptedFiles[0]]);
@@ -631,7 +666,7 @@ const ReportForm = () => {
                 <section>
                   <div
                     {...getRootProps()}
-                    className="h-36 bg-gray-200 text-slate-500 border-2 border-slate-300"
+                    className="h-36 bg-gray-200 text-slate-500 rounded-lg"
                   >
                     <input {...getInputProps()} />
                     <div className="text-center">
@@ -652,7 +687,7 @@ const ReportForm = () => {
                           htmlFor="file-upload"
                           className="relative cursor-pointer rounded-md bg-white font-semibold focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                         >
-                          <span>Upload a file</span>
+                          <span>Upload an Image</span>
                           <input
                             id="file-upload"
                             name="file-upload"
@@ -671,94 +706,110 @@ const ReportForm = () => {
               )}
             </Dropzone>
             <br />
-            {imageURLArray.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt=""
-                className="self-center"
-                width="300px"
-                height="240px"
-              />
-            ))}
+            <div className="w-full flex justify-center py-3 bg-gray-200 rounded-lg">
+              {imageURLArray.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt=""
+                  className="self-center"
+                  width="300px"
+                  height="240px"
+                />
+              ))}
+            </div>
           </div>
         </div>
-
+        
+        <div className="divider" />
         {/* 4th section */}
-        <div className="p-8 mt-8 mb-4 shadow">
-          <div className="flex flex-col lg:flex-row">
-            <div className="flex-row mt-4">
+        <div className="">
+          <div className="flex flex-col lg:flex-row gap-3">
+            <div className="flex-row">
               <p className="text-gray-600">
                 <b>Last Name*</b>
               </p>
               <input
-                className="input input-bordered bg-white text-gray-600 mb-1"
-                onChange={event => setLastName(event.target.value)}
+                className="input input-bordered bg-white text-gray-600 w-full"
+                onChange={(event) => setLastName(event.target.value)}
                 value={lastName}
                 maxLength={30}
               />
             </div>
-            <div className="flex-row mt-4 ml-4">
+            <div className="flex-row">
               <p className="text-gray-600">
                 <b>First Name*</b>
               </p>
               <input
-                className="input input-bordered bg-white text-gray-600 mb-1"
-                onChange={event => setFirstName(event.target.value)}
+                className="input input-bordered bg-white text-gray-600 w-full"
+                onChange={(event) => setFirstName(event.target.value)}
                 value={firstName}
                 maxLength={30}
               />
             </div>
 
-            <div className="flex-row mt-4 ml-4">
+            <div className="flex-row">
               <p className="text-gray-600">
                 <b>Phone Number*</b>
               </p>
               <input
                 placeholder="Ex: 808-395-9511"
-                className="input input-bordered bg-white text-gray-600 mb-1"
-                onChange={event => {
+                className="input input-bordered bg-white text-gray-600 w-full"
+                onChange={(event) => {
                   setPhoneNumber(event.target.value);
                 }}
                 value={phoneNumber}
-                type={'tel'}
+                type={"tel"}
               />
               {!validPhone(phoneNumber) && phoneNumber?.length > 0 && (
-                <p className="text-red-500 mb-2 text-sm">Please enter a valid phone number</p>
+                <p className="text-red-500 mb-2 text-sm">
+                  Please enter a valid phone number
+                </p>
               )}
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row">
-            <div className="flex-row mt-1">
+          <div className="flex flex-col lg:flex-row gap-3 py-3">
+            <div className="flex-row">
               <p className="text-gray-600">
                 <b>E-mail Address*</b>
               </p>
               <input
-                className="input input-bordered bg-white text-gray-600 mb-1"
-                onChange={event => setEmail(event.target.value)}
+                className="input input-bordered bg-white text-gray-600 mb-1 w-full"
+                onChange={(event) => setEmail(event.target.value)}
                 value={email}
               />
               {!validEmail(email) && email?.length > 0 && (
-                <p className="text-red-500 mb-2 text-sm">Please enter a valid email address</p>
+                <p className="text-red-500 mb-2 text-sm">
+                  Please enter a valid email address
+                </p>
               )}
             </div>
-            <div className="flex-row mt-1 ml-4">
+            <div className="flex-row">
               <p className="text-gray-600">
                 <b>Confirm E-mail Address*</b>
               </p>
               <input
-                className="input input-bordered bg-white text-gray-600 mb-1"
-                onChange={event => setConfirmEmail(event.target.value)}
+                className="input input-bordered bg-white text-gray-600 mb-1 w-full"
+                onChange={(event) => setConfirmEmail(event.target.value)}
                 value={confirmEmail}
               />
               {email !== confirmEmail && confirmEmail?.length > 0 && (
-                <p className="text-red-500 mb-2 text-sm">Email addresses must match</p>
+                <p className="text-red-500 mb-2 text-sm">
+                  Email addresses must match
+                </p>
               )}
             </div>
           </div>
         </div>
-        <button className="btn btn-primary" onClick={submitForm}>Submit</button>
+        <div className="flex justify-end">
+          <button
+            className="btn btn-primary w-full md:w-32"
+            onClick={submitForm}
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   );
