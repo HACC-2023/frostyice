@@ -17,7 +17,9 @@ const LocationAggregatorMap = ({
   coverage = 1,
   data,
 }) => {
-  const [layers, setLayers] = useState();
+  const [layers, setLayers] = useState(null);
+
+  const [doneLoading, setDoneLoading] = useState(false);
 
   const mapVisLayers = {
     hexagonLayer: [
@@ -51,7 +53,7 @@ const LocationAggregatorMap = ({
         intensity: 1,
         threshold: 0.03,
       }),
-    ]
+    ],
   };
 
   const countLayer = [];
@@ -79,7 +81,7 @@ const LocationAggregatorMap = ({
 
   const onSelectVisualization = (vis) => {
     setLayers(mapVisLayers[vis]);
-  }
+  };
 
   function getTooltip({ object }) {
     if (!object) {
@@ -100,7 +102,7 @@ const LocationAggregatorMap = ({
       <div className="h-[400px] w-full relative">
         <DeckGL
           style={{ width: "100%", height: "100%" }}
-          layers={layers}
+          layers={layers ?? mapVisLayers.heatmapLayer}
           effects={[lightingEffect]}
           initialViewState={initialViewState}
           controller={true}
@@ -112,9 +114,17 @@ const LocationAggregatorMap = ({
             controller={true}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
             mapStyle="mapbox://styles/giorgio808/cloro3xca005y01pq4dkc11ib"
-            onLoad={() => {setLayers(mapVisLayers["heatmapLayer"])}}
+            onLoad={() => setDoneLoading(true)}
           />
         </DeckGL>
+        {!doneLoading && (
+          <div className="h-full w-full absolute bg-primary flex flex-col items-center justify-center">
+            <div className="loading loading-ring text-white" />
+            <div className="text-white text-xs py-1 italic font-thin">
+              Loading map...
+            </div>
+          </div>
+        )}
       </div>
       <div className="flex py-2 gap-3">
         <div>
@@ -140,10 +150,13 @@ const LocationAggregatorMap = ({
         </div>
         <div>
           <h1 className="font-bold text-sm"> Select Data Visualization </h1>
-          <select className="select select-bordered my-1 select-sm" onChange={(e) => {
-            const vis = e.target.value;
-            setLayers(mapVisLayers[vis]);
-          }}>
+          <select
+            className="select select-bordered my-1 select-sm"
+            onChange={(e) => {
+              const vis = e.target.value;
+              setLayers(mapVisLayers[vis]);
+            }}
+          >
             <option disabled>Select a Visualization</option>
             <option value="heatmapLayer">Heatmap</option>
             <option value="hexagonLayer">Hexagon Map</option>

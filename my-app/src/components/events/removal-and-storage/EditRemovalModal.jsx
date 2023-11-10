@@ -136,7 +136,7 @@ const EditRemovalModal = ({ id, event }) => {
                 <span className="label-text">Temporary Storage Location</span>
               </label>
               <select
-                {...register("location")}
+                {...register("tempStorage")}
                 defaultValue={event.tempStorage}
                 className="select select-bordered"
               >

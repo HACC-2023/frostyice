@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
 import {useSession} from "next-auth/react";
 import Loading from "@/components/Loading";
+import {uploadFiles} from "@/utils/uploadthing";
 
 const ReportForm = () => {
   const { data: session, status } = useSession();
@@ -11,18 +12,14 @@ const ReportForm = () => {
 
   // debris description
   const [debrisType, setDebrisType] = useState('"Mass of netting/fishing gear"');
-  const [debrisTypeOther, setDebrisTypeOther] = useState('');
+  const [debrisTypeOther, setDebrisTypeOther] = useState("No additional description");
   const [containerFullness, setContainerFullness] = useState(null);
   const [claimBoat, setClaimBoat] = useState(null);
   const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
 
   // debris location
-  const [useMap, setUseMap] = useState(true);
   const [debrisRelativeLocation, setDebrisRelativeLocation] = useState('At sea, BEYOND three miles from nearest land');
   const [debrisLocationDetails, setDebrisLocationDetails] = useState('');
-  const [closestIsland, setClosestIsland] = useState('Big Island');
-  const [closestLandmark, setClosestLandmark] = useState('');
-  const [closestLandmarkRelativeLocation, setClosestLandmarkRelativeLocation] = useState('');
   const [coordinates, setCoordinates] = useState(null);
 
   // debris detailed description
@@ -68,8 +65,8 @@ const ReportForm = () => {
 
   async function submitForm() {
     // validation
-    if (!coordinates || (!closestIsland && !closestLandmark && !closestLandmarkRelativeLocation)) {
-      toast.info('Please select a location on the map or enter a location description');
+    if (!coordinates) {
+      toast.info('Please select a location on the map');
       return;
     }
     if (!firstName || !lastName) {
@@ -89,11 +86,21 @@ const ReportForm = () => {
       return;
     }
     setIsLoading(true);
+    // upload image
+    let image;
+    if (files.length > 0) {
+      const fileRes = await uploadFiles({
+        files,
+        endpoint: "imageUploader",
+      });
+      image = fileRes[0].url;
+    }
     const data = {
       firstName,
       lastName,
       email,
       phoneNumber,
+      imageUrl: image || null,
       publicType: debrisType,
       publicTypeDesc: debrisTypeOther,
       publicBiofoulingRating: parseInt(biofoulingRating.slice(0, 1)),
@@ -101,19 +108,13 @@ const ReportForm = () => {
       publicLatLongOrPositionDesc: debrisLocationDetails,
       publicDebrisEnvDesc: debrisTrappedDesc,
       publicDebrisEnvAdditionalDesc: debrisTrappedOther,
+      mapLat: coordinates?.latitude,
+      mapLong: coordinates?.longitude,
     };
     if (debrisType.includes('Container')) {
       data.publicContainerFullness = containerFullness || 'Full';
     } else if (debrisType.includes('boat')) {
       data.publicClaimBoat = claimBoat || 'No';
-    }
-    if (useMap) {
-      data.mapLat = coordinates?.latitude;
-      data.mapLong = coordinates?.longitude;
-    } else {
-      data.closestIsland = closestIsland;
-      data.closestLandmark = closestLandmark;
-      data.debrisLandmarkRelativeLocation = closestLandmarkRelativeLocation;
     }
     const res = await fetch('/api/mongo/event/add-form', {
       method: 'POST',
@@ -473,8 +474,7 @@ const ReportForm = () => {
             ? <span>
               <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
                 <b>
-                  Please enter latitude and longitude here (e.g. 21.3161 -157.8906) or select a location
-                  on the map. Please also provide a position description and any information on currents
+                  Please provide a position description and any information on currents
                   and winds that could help in relocating the debris.
                 </b>
               </p>
@@ -487,78 +487,11 @@ const ReportForm = () => {
             </span>
             : ''
           }
-          <div className="mt-4 mb-2 text-center">
-            <button
-              className="btn me-2 px-8"
-              style={useMap ? selectedBtnStyle : regularBtnStyle}
-              onClick={() => setUseMap(true)}
-            >
-              Select on Map
-            </button>
-            <span className="text-sm">OR</span>
-            <button
-              className="btn ms-2"
-              style={useMap ? regularBtnStyle : selectedBtnStyle}
-              onClick={() => setUseMap(false)}
-            >
-              Enter Description
-            </button>
+          <div className="grid flex-grow card rounded-box pb-4">
+            <div className="mt-4 mb-4">
+              <ClickableMap setCoordinates={setCoordinates} />
+            </div>
           </div>
-          {useMap
-            ?  <div className="grid flex-grow card rounded-box pb-4">
-              <div className="mt-4 mb-4">
-                <ClickableMap setCoordinates={setCoordinates} />
-              </div>
-            </div>
-            : <div className="grid flex-grow card rounded-box pb-4">
-              <p className="text-gray-600 mt-4 mb-4">
-                <b>
-                  If on land or in the nearshore waters - indicate which island*
-                </b>
-              </p>
-
-              <select
-                defaultValue="Big Island"
-                className="select select-bordered w-full max-w-xs bg-white text-gray-600"
-                onChange={event => setClosestIsland(event.target.value)}
-              >
-                <option>Big Island</option>
-                <option>Maui</option>
-                <option>Molokai</option>
-                <option>Lanai</option>
-                <option>Kahoolawe</option>
-                <option>Oahu</option>
-                <option>Kauai</option>
-                <option>Niihau</option>
-                <option>NWHI</option>
-              </select>
-
-              <p className="text-gray-600 mt-4">
-                <b>Nearest town, street address, nearby landmarks*</b>
-              </p>
-              <input
-                className="input input-bordered bg-white text-gray-600 mb-2"
-                onChange={event => setClosestLandmark(event.target.value)}
-                value={closestLandmark}
-              />
-              <span className="text-gray-400">0 of 120 max characters</span>
-
-              <p className="text-gray-600 mt-4 max-w-2xl">
-                <b>
-                  Where is the debris situated in relation to the landmark you
-                  provided (i.e. 200 feet north, etc.)
-                </b>
-              </p>
-              <input
-                className="input input-bordered bg-white text-gray-600 mb-2"
-                onChange={event => setClosestLandmarkRelativeLocation(event.target.value)}
-                value={closestLandmarkRelativeLocation}
-              />
-              <span className="text-gray-400 mb-4">
-                0 of 120 max characters
-              </span>
-            </div>
-          }
         </div>
 
         {/* 3rd section */}

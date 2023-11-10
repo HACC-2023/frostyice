@@ -18,7 +18,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
           </div>
           <MobileNavbar />
           <ToastContainer />
-          <DialogflowChatWidget/>
+          <DialogflowChatWidget />
         </div>
       </SessionProvider>
     </>

@@ -5,15 +5,32 @@ export default async function handler(req, res) {
   try {
     if (req.method === "POST") {
       const { name, location } = await req.body;
+      const associatedNode = () => {
+        switch (location) {
+        case "Big Island":
+          return "Big Island Node";
+        case "Maui":
+        case "Molokai":
+        case "Lanai":
+          return "Maui Node";
+        case "Kauai":
+          return "Kauai Node";
+        default:
+          return "CMDR Hub";
+        }
+      }
       await connectDB();
       await Organization.create({
         name,
-        location
+        location,
+        associatedNode: associatedNode(),
       });
+      res.status(200).json({msg: "Organization added successfully"});
+    } else {
+      res.status(405).json({ error: "Method not allowed" });
     }
-    res.status(200).json({ msg: "Item added successfully!" });
   } catch (error) {
     console.log("error", error);
-    res.status(500).json({ error: "Unable to add item to database." });
+    res.status(500).json({ error: "Unable to add organization" });
   }
 }

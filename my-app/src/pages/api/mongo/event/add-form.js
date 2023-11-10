@@ -2,6 +2,7 @@ import connectDB from '@/lib/mongodb';
 import Event from '@/models/event';
 import { sendEmail } from '@/server/mailService';
 import { findCloseIsland } from "@/utils/findCloseIsland";
+import Thread from "@/models/threads/thread";
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -16,9 +17,6 @@ export default async function handler(req, res) {
         publicLatLongOrPositionDesc,
         mapLat,
         mapLong,
-        closestIsland,
-        closestLandmark,
-        debrisLandmarkRelativeLocation,
         publicDebrisEnvDesc,
         publicDebrisEnvAdditionalDesc,
         imageUrl,
@@ -48,9 +46,7 @@ export default async function handler(req, res) {
         publicLatLongOrPositionDesc,
         mapLat,
         mapLong,
-        closestIsland: closestIsland || derivedClosetIsland,
-        closestLandmark,
-        debrisLandmarkRelativeLocation,
+        closestIsland: derivedClosetIsland,
         publicDebrisEnvDesc,
         publicDebrisEnvAdditionalDesc,
         imageUrl,
@@ -62,12 +58,13 @@ export default async function handler(req, res) {
         },
       });
 
+      await Thread.create({
+        eventId: created._id,
+      });
+
       const containerFullness = publicContainerFullness ? `<b>Container Fullness:</b> ${publicContainerFullness}<br/>` : '';
       const claimBoat = publicClaimBoat ? `<b>Intend to Claim Boat:</b> ${publicClaimBoat}<br/>` : '';
       const latLongOrPositionDescription = publicLatLongOrPositionDesc ? `<b>Position Description:</b> ${publicLatLongOrPositionDesc}<br/>` : '';
-      const location = mapLat && mapLong
-        ? `<b>Lat:</b> ${mapLat}<br/><b>Long:</b> ${mapLong}<br/>`
-        : `<b>Nearest Landmark:</b> ${closestLandmark}<br/><b>Landmark Relative Location:</b> ${debrisLandmarkRelativeLocation}<br/>`;
       const additionalDesc = publicDebrisEnvAdditionalDesc ? `<b>Additional Description:</b> ${publicDebrisEnvAdditionalDesc}<br/>` : '';
 
       const emailMessage = `
@@ -78,8 +75,9 @@ export default async function handler(req, res) {
         <b>Type:</b> ${publicType !== 'Other' ? publicType : `Other - ${publicTypeDesc}`}<br/>
         ${containerFullness}
         ${claimBoat}
-        ${location}
-        <b>Nearest Island:</b> ${closestIsland || derivedClosetIsland}<br/>
+        <b>Lat:</b> ${mapLat}<br/
+        <b>Long:</b> ${mapLong}<br/>
+        <b>Nearest Island:</b> ${derivedClosetIsland}<br/>
         ${latLongOrPositionDescription}
         <b>Location Description:</b> ${publicLocationDesc}<br/>
         <b>Debris Description:</b> ${publicDebrisEnvDesc}<br/>

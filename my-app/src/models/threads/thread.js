@@ -11,6 +11,7 @@ const threadSchema = new Schema({
   messages: {
     type: [Message],
     required: true,
+    default: [],
   },
 });
 

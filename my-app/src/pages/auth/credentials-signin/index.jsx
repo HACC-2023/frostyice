@@ -134,7 +134,7 @@ const SignIn = () => {
             <p className="text-center text-sm text-gray-500">
               Make a report as a guest{" "}
               <Link
-                href="/report-form"
+                href="/report"
                 className="font-semibold leading-6 text-primary hover:text-secondary"
               >
                 here.

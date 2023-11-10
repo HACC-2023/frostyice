@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 
 const DeleteOrgModal = ({ id, org }) => {
   async function deleteOrganization(orgData) {
@@ -17,12 +18,12 @@ const DeleteOrgModal = ({ id, org }) => {
       );
 
       if (res.ok && res2.ok) {
-        console.log("Successfully deleted organization");
+        toast.success("Successfully deleted organization");
       } else {
-        throw new Error("Failed to delete organization.");
+        toast.error("Failed to delete organization")
       }
     } catch (err) {
-      console.log(err);
+      toast.error("Failed to delete organization")
     }
   }
   console.log(org);
