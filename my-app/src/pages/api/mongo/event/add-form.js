@@ -2,6 +2,7 @@ import connectDB from '@/lib/mongodb';
 import Event from '@/models/event';
 import { sendEmail } from '@/server/mailService';
 import { findCloseIsland } from "@/utils/findCloseIsland";
+import Thread from "@/models/threads/thread";
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -55,6 +56,10 @@ export default async function handler(req, res) {
           email,
           phoneNumber,
         },
+      });
+
+      await Thread.create({
+        eventId: created._id,
       });
 
       const containerFullness = publicContainerFullness ? `<b>Container Fullness:</b> ${publicContainerFullness}<br/>` : '';

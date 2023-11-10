@@ -1,7 +1,8 @@
 import connectDB from '@/lib/mongodb';
 import Event from '@/models/event';
-import { findCloseIsland } from "@/utils/findCloseIsland";
 import Organization from "@/models/organization";
+import Thread from "@/models/threads/thread";
+import { findCloseIsland } from "@/utils/findCloseIsland";
 
 /*
 
@@ -41,7 +42,7 @@ export default async function handler(req, res) {
 
             const matchingOrgs = await Organization.find({ location: derivedClosetIsland });
 
-            await Event.create({
+            const newEvent = await Event.create({
                 status,
                 publicType,
                 publicTypeDesc,
@@ -68,6 +69,11 @@ export default async function handler(req, res) {
                     phoneNumber,
                 },
             });
+
+            await Thread.create({
+                eventId: newEvent._id,
+            });
+
             res.status(201).json({msg: 'Event reported'});
         } catch (error) {
             console.log(error);
