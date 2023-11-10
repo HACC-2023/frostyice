@@ -21,9 +21,7 @@ const SideNavbar = () => {
 
   useEffect(() => {
     const fetchOrgName = async () => {
-      const res = await fetch(
-        "/api/mongo/organization/id/" + session.user.orgId
-      );
+      const res = await fetch("/api/mongo/organization/id/" + session.user.orgId);
       const data = await res.json();
       if (data) {
         setOrgName(data.name);
@@ -71,25 +69,13 @@ const SideNavbar = () => {
   ];
 
   const NavContainer = () => (
-    <ul className="menu p-5 w-72 min-h-screen sticky top-0 bg-base-200 pt-10 font-medium">
+    <ul className="menu p-5 w-72 min-h-screen sticky top-0 bg-gray-100 pt-10 font-medium">
       {!session && <NavContent nav={publicNav} />}
-      {session && session.user.role === "org_member" && (
-        <NavContent nav={orgMemberNav} />
-      )}
-      {session && session.user.role === "org_admin" && (
-        <NavContent nav={orgAdminNav} />
-      )}
-      {session && session.user.role === "admin" && (
-        <NavContent nav={adminNav} />
-      )}
+      {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
+      {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
+      {session && session.user.role === "admin" && <NavContent nav={adminNav} />}
       {session && <div className="divider m-0" />}
-      {session && (
-        <MenuItem
-          label="Sign out"
-          icon={ArrowLeftCircleIcon}
-          link="/api/auth/signout"
-        />
-      )}
+      {session && <MenuItem label="Sign out" icon={ArrowLeftCircleIcon} link="/api/auth/signout" />}
     </ul>
   );
 
@@ -103,29 +89,22 @@ const SideNavbar = () => {
     <>
       {session ? (
         <div className="flex gap-4 m-4">
-          <div className="avatar placeholder">
-            <div className="bg-neutral-focus text-neutral-content rounded-full w-14">
-              <span className="text-2xl">
-                {session.user.firstName.charAt(0)}
-              </span>
-              <span className="text-2xl">
-                {session.user.lastName.charAt(0)}
-              </span>
+          <div className="avatar placeholder h-fit">
+            <div className="bg-gray-300 text-neutral-content rounded-full w-14">
+              <span className="text-2xl">{session.user.firstName.charAt(0)}</span>
+              <span className="text-2xl">{session.user.lastName.charAt(0)}</span>
             </div>
           </div>
           <div className="flex flex-col justify-center">
-            <div>
+            <div className="font-bold">
               {session.user.firstName} {session.user.lastName}
             </div>
-            <div>{orgName}</div>
+            <div className="text-xs">{orgName}</div>
           </div>
         </div>
       ) : (
         <div className="flex flex-col gap-2 p-5">
-          <Link
-            href={"/register"}
-            className="bg-primary rounded-full p-3 text-center"
-          >
+          <Link href={"/register"} className="bg-primary rounded-full p-3 text-center">
             Create an account
           </Link>
           <Link
@@ -159,7 +138,7 @@ const SideNavbar = () => {
 
     return (
       <li className="m-1">
-        <Link href={link} className={`hover:text-neutral-300 ${isLinkActive(link) ? "bg-neutral text-neutral-300" : ""}`}>
+        <Link href={link} className={`${isLinkActive(link) ? "font-bold" : ""}`}>
           {icon && <IconElement height={ICON_HEIGHT} />}
           <span>{label}</span>
         </Link>
@@ -169,9 +148,7 @@ const SideNavbar = () => {
 
   return (
     <>
-      <div className="hidden lg:block w-min">
-        {status !== "loading" && <NavContainer />}
-      </div>
+      <div className="hidden lg:block w-min">{status !== "loading" && <NavContainer />}</div>
       <div className="drawer hidden md:block lg:hidden">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
