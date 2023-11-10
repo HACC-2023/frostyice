@@ -4,6 +4,7 @@ import DispatchTeamBtn from "./event-reported/DispatchTeamBtn";
 import DismissBtn from "./event-reported/DismissBtn";
 import StaticMap from "../map/StaticLocationMap/StaticMap";
 import { prettyHstDate } from "@/utils/dateConverter";
+import Image from "next/image";
 
 const EventRemoval = ({ event }) => {
   const { data: session } = useSession();
@@ -85,8 +86,8 @@ const EventRemoval = ({ event }) => {
               </li>)}
             </ul>
           </div>
-          <div className="w-full md:w-1/2 h-96 bg-primary-content rounded-md flex items-center justify-center text-base-100 py-3">
-            IMAGE GOES HERE
+          <div className="w-full md:w-1/2 h-96 rounded-md bg-secondary flex items-center justify-center text-base-100 py-3 overflow-hidden">
+            {event.imageUrl ? (<Image src={event.imageUrl} width="800" height="800" alt="event image" className="object-cover"/>) : "No image uploaded."}
           </div>
         </section>
         {/* show this section if the event is not claimed */}

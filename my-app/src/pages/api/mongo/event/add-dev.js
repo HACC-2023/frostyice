@@ -11,75 +11,75 @@ this is a development endpoint to easily add events to the database
  */
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
-        try {
-            const {
-                status,
-                publicType,
-                publicTypeDesc,
-                publicContainerFullness,
-                publicClaimBoat,
-                publicBiofoulingRating,
-                publicLocationDesc,
-                mapLat,
-                mapLong,
-                publicDebrisEnvDesc,
-                imageUrl,
-                firstName,
-                lastName,
-                email,
-                phoneNumber,
-                removalStartDate,
-                removalEndDate,
-                debrisSize,
-                debrisMass,
-                tempStorage,
-            } = await req.body;
+  if (req.method === 'POST') {
+    try {
+      const {
+        status,
+        publicType,
+        publicTypeDesc,
+        publicContainerFullness,
+        publicClaimBoat,
+        publicBiofoulingRating,
+        publicLocationDesc,
+        mapLat,
+        mapLong,
+        publicDebrisEnvDesc,
+        imageUrl,
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        removalStartDate,
+        removalEndDate,
+        debrisSize,
+        debrisMass,
+        tempStorage,
+      } = await req.body;
 
-            const derivedClosetIsland = findCloseIsland(mapLat, mapLong);
+      const derivedClosetIsland = findCloseIsland(mapLat, mapLong);
 
-            await connectDB();
+      await connectDB();
 
-            const matchingOrgs = await Organization.find({ location: derivedClosetIsland });
+      const matchingOrgs = await Organization.find({ location: derivedClosetIsland });
 
-            const newEvent = await Event.create({
-                status,
-                publicType,
-                publicTypeDesc,
-                reportedDate: new Date(),
-                publicContainerFullness,
-                publicClaimBoat,
-                publicBiofoulingRating,
-                publicLocationDesc,
-                publicDebrisEnvDesc,
-                mapLat,
-                mapLong,
-                removalOrgId: matchingOrgs[Math.floor(Math.random() * matchingOrgs.length)]._id,
-                closestIsland: derivedClosetIsland,
-                imageUrl,
-                removalStartDate: removalStartDate ? new Date(removalStartDate) : null,
-                removalEndDate: removalStartDate ? new Date(removalEndDate): null,
-                debrisSize,
-                debrisMass,
-                tempStorage,
-                publicContact: {
-                    firstName,
-                    lastName,
-                    email,
-                    phoneNumber,
-                },
-            });
+      const newEvent = await Event.create({
+        status,
+        publicType,
+        publicTypeDesc,
+        reportedDate: new Date(),
+        publicContainerFullness,
+        publicClaimBoat,
+        publicBiofoulingRating,
+        publicLocationDesc,
+        publicDebrisEnvDesc,
+        mapLat,
+        mapLong,
+        removalOrgId: matchingOrgs[Math.floor(Math.random() * matchingOrgs.length)]._id,
+        closestIsland: derivedClosetIsland,
+        imageUrl,
+        removalStartDate: removalStartDate ? new Date(removalStartDate) : null,
+        removalEndDate: removalStartDate ? new Date(removalEndDate): null,
+        debrisSize,
+        debrisMass,
+        tempStorage,
+        publicContact: {
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+        },
+      });
 
-            await Thread.create({
-                eventId: newEvent._id,
-            });
+      await Thread.create({
+        eventId: newEvent._id,
+      });
 
-            res.status(201).json({msg: 'Event reported'});
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({error: 'Unable to report event'});
-        }
-    } else {
-        res.status(405).json({error: 'Method not allowed'});
+      res.status(201).json({msg: 'Event reported'});
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({error: 'Unable to report event'});
     }
+  } else {
+    res.status(405).json({error: 'Method not allowed'});
+  }
 }

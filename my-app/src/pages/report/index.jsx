@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
 import {useSession} from "next-auth/react";
 import Loading from "@/components/Loading";
+import {uploadFiles} from "@/utils/uploadthing";
 
 const ReportForm = () => {
   const { data: session, status } = useSession();
@@ -11,7 +12,7 @@ const ReportForm = () => {
 
   // debris description
   const [debrisType, setDebrisType] = useState('"Mass of netting/fishing gear"');
-  const [debrisTypeOther, setDebrisTypeOther] = useState('');
+  const [debrisTypeOther, setDebrisTypeOther] = useState("No additional description");
   const [containerFullness, setContainerFullness] = useState(null);
   const [claimBoat, setClaimBoat] = useState(null);
   const [biofoulingRating, setBiofoulingRating] = useState('1 - No algae or marine life at all');
@@ -85,11 +86,21 @@ const ReportForm = () => {
       return;
     }
     setIsLoading(true);
+    // upload image
+    let image;
+    if (files.length > 0) {
+      const fileRes = await uploadFiles({
+        files,
+        endpoint: "imageUploader",
+      });
+      image = fileRes[0].url;
+    }
     const data = {
       firstName,
       lastName,
       email,
       phoneNumber,
+      imageUrl: image || null,
       publicType: debrisType,
       publicTypeDesc: debrisTypeOther,
       publicBiofoulingRating: parseInt(biofoulingRating.slice(0, 1)),
