@@ -36,11 +36,11 @@ const SideNavbar = () => {
   const publicNav = [
     { label: "Home", icon: HomeIcon, link: "/home" },
     { label: "Report Event", icon: PlusCircleIcon, link: "/report" },
-    { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
   ];
 
   const orgMemberNav = [
     ...publicNav,
+    { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
     {
       label: "Organization Events",
       icon: RectangleGroupIcon,
@@ -69,7 +69,7 @@ const SideNavbar = () => {
   ];
 
   const NavContainer = () => (
-    <ul className="menu p-5 w-72 min-h-screen sticky top-0 bg-gray-100 pt-10 font-medium">
+    <ul className="menu p-5 w-72 min-h-screen sticky top-0 bg-base-100 pt-10 font-medium border-r border-solid border-gray-300">
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
@@ -104,12 +104,9 @@ const SideNavbar = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-2 p-5">
-          <Link href={"/register"} className="bg-primary rounded-full p-3 text-center">
-            Create an account
-          </Link>
           <Link
             href={"/auth/credentials-signin"}
-            className="rounded-full p-3 text-center border-slate-800 border-solid border"
+            className="rounded-full p-3 text-center bg-base-300 border-slate-800 border-solid"
           >
             Log in
           </Link>
@@ -138,7 +135,7 @@ const SideNavbar = () => {
 
     return (
       <li className="m-1">
-        <Link href={link} className={`${isLinkActive(link) ? "font-bold" : ""}`}>
+        <Link href={link} className={`${isLinkActive(link) ? "font-extrabold" : ""}`}>
           {icon && <IconElement height={ICON_HEIGHT} />}
           <span>{label}</span>
         </Link>
