@@ -22,7 +22,9 @@ const InfoItem = ({ label }) => {
 };
 
 const EventInfo = ({ thread }) => {
-  const { data: event, error } = useSWR(`/api/mongo/event/id/${thread.eventId}`, fetcher);
+  const { data: event, error } = useSWR(`/api/mongo/event/id/${thread.eventId}`, fetcher, {
+    refreshInterval: 1000,
+  });
   if (error) return <div>failed to load</div>;
   if (!event) return <Loading />;
 
@@ -57,18 +59,48 @@ const ThreadPage = () => {
   const { data: session } = useSession();
 
   const _id = router.query._id;
-  console.log("router1", _id);
 
   const { data: thread, error } = useSWR(`/api/mongo/thread/id/${_id}`, fetcher);
   if (error) return <div>failed to load</div>;
   if (!thread) return <Loading />;
 
-  console.log("thread data!", thread);
-
-  const handleSumit = (e) => {
+  const handleSubmit = async (e, threadId) => {
     e.preventDefault();
-    console.log("submit");
-    // TODO: make a put request to the thread by pushing the message to the messages array
+
+    const content = e.target[0].value;
+
+    if (!content) {
+      return;
+    }
+
+    e.target[0].value = ""; // reset input field
+
+    const authorName = `${session.user.firstName} ${session.user.lastName}`;
+    const authorEmail = session.user.email;
+    const orgId = session.user.orgId;
+    let authorOrganization = "";
+
+    try {
+      const org = await fetch(`/api/mongo/organization/id/${orgId}`).then((res) => res.json());
+      authorOrganization = org.name;
+    } catch (e) {
+      console.log("error fetching org", e);
+    }
+    const timestamp = new Date().toISOString();
+
+    try {
+      const response = await fetch(`/api/mongo/thread/send-message/${threadId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: { authorName, authorEmail, authorOrganization, content, timestamp },
+        }),
+      });
+    } catch (error) {
+      console.error("Error sending data to API:", error);
+    }
   };
 
   const ChatItem = ({ message }) => {
@@ -95,7 +127,7 @@ const ThreadPage = () => {
         ) : (
           <div className="mb-4">There are currently no messages</div>
         )}
-        <form onSubmit={handleSumit}>
+        <form onSubmit={(e) => handleSubmit(e, _id)}>
           <div className="flex gap-4 w-full">
             <input
               type="text"
