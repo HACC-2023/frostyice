@@ -6,7 +6,7 @@ import { ROLES } from "./roles/roles";
 
 export const ADMIN_ROUTES = [
   "/admin",
-  "/manage-organizations",
+  "/admin/manage-organizations",
   // "/experimental"
 ];
 
@@ -48,6 +48,6 @@ export const config = {
     "/admin",
     "/items",
     "/experimental",
-    "/manage-organizations"
+    "/admin/manage-organizations"
   ],
 };
