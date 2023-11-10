@@ -22,9 +22,7 @@ const InfoItem = ({ label }) => {
 };
 
 const EventInfo = ({ thread }) => {
-  const { data: event, error } = useSWR(`/api/mongo/event/id/${thread.eventId}`, fetcher, {
-    refreshInterval: 1000,
-  });
+  const { data: event, error } = useSWR(`/api/mongo/event/id/${thread.eventId}`, fetcher);
   if (error) return <div>failed to load</div>;
   if (!event) return <Loading />;
 
@@ -60,7 +58,9 @@ const ThreadPage = () => {
 
   const _id = router.query._id;
 
-  const { data: thread, error } = useSWR(`/api/mongo/thread/id/${_id}`, fetcher);
+  const { data: thread, error } = useSWR(`/api/mongo/thread/id/${_id}`, fetcher, {
+    refreshInterval: 100,
+  });
   if (error) return <div>failed to load</div>;
   if (!thread) return <Loading />;
 
