@@ -42,7 +42,6 @@ const Dashboard = () => {
   }, [session]);
 
   async function addToMultiEventTransport() {
-    console.log(shipmentDate, selectedEvents, fromNode)
     try {
       const res = await fetch('/api/mongo/event/transport/add', {
         method: 'POST',
@@ -91,7 +90,7 @@ const Dashboard = () => {
         </div>
       </div>
       <dialog id="multieventModal" className="modal">
-        <div class="modal-box bg-white max-w-2xl">
+        <div className="modal-box bg-white max-w-2xl">
           <h3 className="text-lg font-semibold text-gray-700">
             Shipment to CMDR Hub
           </h3>
