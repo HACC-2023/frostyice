@@ -36,6 +36,7 @@ const eventSchema = new mongoose.Schema({
       "Disposal",
       "Complete",
     ],
+    default: "Reported",
   },
   reportedDate: {
     type: Date,
