@@ -497,25 +497,25 @@ const ReportForm = () => {
           </div>
           {debrisRelativeLocation.includes("sea") ||
           debrisRelativeLocation.includes("None") ? (
-              <span>
-                <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
-                  <b>
+            <span>
+              <p className="text-gray-600 mt-4 mb-4 max-w-2xl">
+                <b>
                   Please provide a position description and any information on
                   currents and winds that could help in relocating the debris.
-                  </b>
-                </p>
-                <input
-                  type="text"
-                  className="input input-bordered bg-white text-gray-600 mb-2 w-full"
-                  onChange={(event) =>
-                    setDebrisLocationDetails(event.target.value)
-                  }
-                  value={debrisLocationDetails}
-                />
-              </span>
-            ) : (
-              ""
-            )}
+                </b>
+              </p>
+              <input
+                type="text"
+                className="input input-bordered bg-white text-gray-600 mb-2 w-full"
+                onChange={(event) =>
+                  setDebrisLocationDetails(event.target.value)
+                }
+                value={debrisLocationDetails}
+              />
+            </span>
+          ) : (
+            ""
+          )}
           <div className="grid flex-grow card rounded-box">
             <div className="mt-4">
               <ClickableMap setCoordinates={setCoordinates} />
@@ -706,21 +706,23 @@ const ReportForm = () => {
               )}
             </Dropzone>
             <br />
-            <div className="w-full flex justify-center py-3 bg-gray-200 rounded-lg">
-              {imageURLArray.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt=""
-                  className="self-center"
-                  width="300px"
-                  height="240px"
-                />
-              ))}
-            </div>
+            {imageURLArray.length > 0 && (
+              <div className="w-full flex justify-center py-3 bg-gray-200 rounded-lg">
+                {imageURLArray.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt=""
+                    className="self-center"
+                    width="300px"
+                    height="240px"
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
-        
+
         <div className="divider" />
         {/* 4th section */}
         <div className="">
