@@ -46,7 +46,7 @@ const DashboardTable = ({ events }) => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex justify-end space-x-8 mb-6 mt-6">
+      <div className="flex justify-end space-x-8 mb-6">
         <div className="flex items-center">
           <label className="text-gray-600 pr-2">Status:</label>
           <select

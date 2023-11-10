@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import OrgMemberTable from "@/components/my-organization/OrgMemberTable";
+import OrgMemberTable from "@/components/organization/OrgMemberTable";
 import AddMemberModal from "@/components/manage-org/modals/AddMemberModal";
 
 const MyOrganization = () => {
