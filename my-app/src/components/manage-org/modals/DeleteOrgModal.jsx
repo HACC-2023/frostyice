@@ -18,7 +18,7 @@ const DeleteOrgModal = ({ id, org }) => {
       );
 
       if (res.ok && res2.ok) {
-        toast.success("Successfully deleted organization");
+        toast.success("Deleted organization");
       } else {
         toast.error("Failed to delete organization")
       }
@@ -26,8 +26,7 @@ const DeleteOrgModal = ({ id, org }) => {
       toast.error("Failed to delete organization")
     }
   }
-  console.log(org);
-  console.log(org._id);
+
   function onSubmit(event) {
     event.preventDefault();
     deleteOrganization(org);

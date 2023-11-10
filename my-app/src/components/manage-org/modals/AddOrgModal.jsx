@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ISLANDS } from "@/constants/constants";
 import { toast } from "react-toastify";
+import { ISLANDS } from "@/constants/constants";
 
 const AddOrgModal = ({ id }) => {
   const { register, handleSubmit, reset } = useForm();
@@ -32,9 +32,11 @@ const AddOrgModal = ({ id }) => {
       });
       setStatus(null);
       document.getElementById(id).close();
-      if (res.status === 200) {
-        toast.success('Successfully added organization');
+      if (res.ok) {
+        toast.success('Added organization');
         reset();
+      } else if (res.status === 409) {
+        toast.error('Organization already exists');
       } else {
         toast.error('Failed to add organization');
       }
@@ -78,6 +80,14 @@ const AddOrgModal = ({ id }) => {
             </select>
           </div>
           <div className="modal-action">
+            {status && status.msg === "loading" && (
+              <div className="my-auto me-auto">
+                <div className="flex items-center gap-2">
+                  <span className="loading loading-spinner" />
+                  {status.body}
+                </div>
+              </div>
+            )}
             <button
               className="btn btn-outline"
               type="button"
@@ -90,12 +100,6 @@ const AddOrgModal = ({ id }) => {
             </button>
           </div>
         </form>
-        {status && status.msg === "loading" && (
-          <div className="flex items-center gap-2">
-            <span className="loading loading-spinner" />
-            {status.body}
-          </div>
-        )}
       </div>
       <form method="dialog" className="modal-backdrop">
         <button className="cursor-default">close</button>

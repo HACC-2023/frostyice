@@ -35,6 +35,10 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Unable to add user to database." });
+    if (error.code === 11000) {
+      res.status(409).json({ error: "Email not unique" });
+    } else {
+      res.status(500).json({ error: "Error adding user" });
+    }
   }
 }
