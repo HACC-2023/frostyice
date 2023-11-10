@@ -1,6 +1,7 @@
 import connectDB from '@/lib/mongodb';
 import Event from '@/models/event';
 import { sendEmail } from '@/server/mailService';
+import Thread from "@/models/threads/thread";
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -65,6 +66,10 @@ export default async function handler(req, res) {
       }
 
       const created = await Event.create(eventDetails);
+
+      await Thread.create({
+        eventId: created._id,
+      });
 
       const containerFullness = publicContainerFullness ? `<b>Container Fullness:</b> ${publicContainerFullness}<br/>` : '';
       const claimBoat = publicClaimBoat ? `<b>Intend to Claim Boat:</b> ${publicClaimBoat}<br/>` : '';

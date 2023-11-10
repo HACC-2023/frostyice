@@ -6,7 +6,7 @@ const ProgressBar = ({ status }) => {
       <div className="flex justify-center py-12">
         <ul className="steps steps-horizontal">
           <li data-content="✓" className="step step-primary">
-            Event Reported
+            Reported
           </li>
           <li data-content="●" className="step">
             Removal &amp; Storage
@@ -26,7 +26,7 @@ const ProgressBar = ({ status }) => {
       <div className="flex justify-center py-12">
         <ul className="steps steps-horizontal">
           <li data-content="✓" className="step step-primary">
-            Event Reported
+            Reported
           </li>
           <li data-content="●" className="step step-primary">
             Removal &amp; Storage
@@ -46,7 +46,7 @@ const ProgressBar = ({ status }) => {
       <div className="flex justify-center py-12">
         <ul className="steps steps-horizontal">
           <li data-content="✓" className="step step-primary">
-            Event Reported
+            Reported
           </li>
           <li data-content="✓" className="step step-primary">
             Removal &amp; Storage
@@ -66,7 +66,7 @@ const ProgressBar = ({ status }) => {
       <div className="flex justify-center py-12">
         <ul className="steps steps-horizontal">
           <li data-content="✓" className="step step-primary">
-            Event Reported
+            Reported
           </li>
           <li data-content="✓" className="step step-primary">
             Removal &amp; Storage
@@ -86,7 +86,7 @@ const ProgressBar = ({ status }) => {
       <div className="flex justify-center py-12">
         <ul className="steps steps-horizontal">
           <li data-content="✓" className="step step-primary">
-            Event Reported
+            Reported
           </li>
           <li data-content="✓" className="step step-primary">
             Removal &amp; Storage

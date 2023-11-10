@@ -5,8 +5,14 @@ import MultiEventRow from "./removal-and-storage/MultiEventRow";
 import CompletionWarning from "./common/CompletionWarning";
 import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
 import UndoStepBtn from "./common/UndoStepBtn";
+import useSWR from "swr";
+import { fetcher } from "@/utils/fetcher";
 
 const RemovalAndStorage = ({ event, userOrgId }) => {
+  const { data: organization } = useSWR(
+    event.removalOrgId ? `/api/mongo/organization/id/${event.removalOrgId}` : null,
+    event.removalOrgId ? fetcher : null
+  );
   // console.log("event", event.removalOrgId);
   // console.log("userOrgId", userOrgId);
   // console.log("event === userOrgId", event.removalOrgId === userOrgId);
@@ -55,7 +61,7 @@ const RemovalAndStorage = ({ event, userOrgId }) => {
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="md:text-xl font-bold">Removed By</h1>
-                <p>{event.removalOrgId ?? "-"}</p>
+                <p>{organization ? organization.name : "-"}</p>
               </div>
               <div>
                 <h1 className="md:text-xl font-bold">Removal Date/s</h1>

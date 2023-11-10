@@ -37,18 +37,18 @@ const SideNavbar = () => {
 
   const publicNav = [
     { label: "Home", icon: HomeIcon, link: "/home" },
-    { label: "Report Event", icon: PlusCircleIcon, link: "/report-form" },
+    { label: "Report Event", icon: PlusCircleIcon, link: "/report" },
     { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
   ];
 
   const orgMemberNav = [
     ...publicNav,
     {
-      label: "Organization Dashboard",
+      label: "Organization Events",
       icon: RectangleGroupIcon,
-      link: "/dashboard",
+      link: "/events/organization",
     },
-    { label: "Manage Events", icon: InboxIcon, link: "/manage-events" },
+    { label: "All Events", icon: InboxIcon, link: "/events/all" },
     { label: "Threads", icon: RectangleStackIcon, link: "/threads" },
   ];
 
@@ -57,7 +57,7 @@ const SideNavbar = () => {
     {
       label: "My Organization",
       icon: BuildingOfficeIcon,
-      link: "/my-organization",
+      link: "/organization",
     },
   ];
 
@@ -66,7 +66,7 @@ const SideNavbar = () => {
     {
       label: "Manage Organizations",
       icon: BuildingOffice2Icon,
-      link: "/manage-organizations",
+      link: "/admin/manage-organizations",
     },
   ];
 

@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         email,
         password: hashedPassword,
         orgId: orgId,
-        role: role, // TODO - remove hard-coded value (?)
+        role: role,
       });
       const emailMessage = `Aloha ${firstName},
         <br/><br/>

@@ -56,12 +56,6 @@ const ClickableMap = ({ setCoordinates }) => {
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         mapStyle="mapbox://styles/mapbox/streets-v10"
         onClick={onMapClick}
-        onLoad={() => {
-          // console.log(geoControlRef.current);
-          // Uses users location if they allow usage of their location
-          geoControlRef.current?.trigger();
-          // setIsMapLoading(false);
-        }}
       >
         {marker && (
           <Marker

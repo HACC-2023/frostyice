@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { ISLANDS } from "@/constants/constants";
+import { toast } from "react-toastify";
 
 const AddOrgModal = ({ id }) => {
   const { register, handleSubmit, reset } = useForm();
@@ -28,37 +30,25 @@ const AddOrgModal = ({ id }) => {
           location: org.location,
         }),
       });
-
+      setStatus(null);
+      document.getElementById(id).close();
       if (res.status === 200) {
-        setStatus({
-          msg: "success",
-          body: "Successfully added organization ✅",
-        });
+        toast.success('Successfully added organization');
         reset();
-        console.log("Successfully added organization");
       } else {
-        throw new Error("Failed to add organization.");
+        toast.error('Failed to add organization');
       }
     } catch (err) {
-      setStatus({
-        msg: "error",
-        body: " Failed to add organization ❌",
-      });
-    } finally {
-      setTimeout(() => {
-        setStatus(null);
-        console.log("status reset");
-      }, 3000);
+      toast.error('Failed to add organization');
     }
   }
 
   function onSubmit(data) {
-    console.log(data);
     addOrganization(data);
   }
 
   return (
-    <dialog id={id} className="modal modal-bottom sm:modal-middle">
+    <dialog id={id} className="modal modal-bottom sm:modal-middle z-50">
       <div className="modal-box">
         <h3 className="pb-5 font-bold">ADD ORGANIZATION</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -81,11 +71,10 @@ const AddOrgModal = ({ id }) => {
               {...register("location", { required: true })}
               className="select select-bordered"
             >
-              <option disabled>Choose your location</option>
-              <option>Oahu</option>
-              <option>Maui</option>
-              <option>Big Island</option>
-              <option>Kauai</option>
+              <option disabled>Choose location</option>
+              {ISLANDS.map((island, index) => {
+                if (island !== 'At-sea Offshore') return <option key={index}>{island}</option>;
+              })}
             </select>
           </div>
           <div className="modal-action">
@@ -101,8 +90,6 @@ const AddOrgModal = ({ id }) => {
             </button>
           </div>
         </form>
-        {status && status.msg === "success" && <div>{status.body}</div>}
-        {status && status.msg === "error" && <div>{status.body}</div>}
         {status && status.msg === "loading" && (
           <div className="flex items-center gap-2">
             <span className="loading loading-spinner" />
@@ -111,7 +98,7 @@ const AddOrgModal = ({ id }) => {
         )}
       </div>
       <form method="dialog" className="modal-backdrop">
-        <button>close</button>
+        <button className="cursor-default">close</button>
       </form>
     </dialog>
   );
