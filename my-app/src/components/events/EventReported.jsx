@@ -9,7 +9,7 @@ const EventRemoval = ({ event }) => {
   const { data: session } = useSession();
 
   return (
-    <EventCollapse title="Event Reported">
+    <EventCollapse title="Reported">
       <div className="p-3 bg-base-100 rounded-xl">
         <header>
           <div className="flex flex-col md:flex-row justify-between">
