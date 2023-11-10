@@ -7,16 +7,16 @@ export default async function handler(req, res) {
       const { name, location } = await req.body;
       const associatedNode = () => {
         switch (location) {
-          case "Big Island":
-            return "Big Island Node";
-          case "Maui":
-          case "Molokai":
-          case "Lanai":
-            return "Maui Node";
-          case "Kauai":
-            return "Kauai Node";
-          default:
-            return "CMDR Hub";
+        case "Big Island":
+          return "Big Island Node";
+        case "Maui":
+        case "Molokai":
+        case "Lanai":
+          return "Maui Node";
+        case "Kauai":
+          return "Kauai Node";
+        default:
+          return "CMDR Hub";
         }
       }
       await connectDB();

@@ -75,10 +75,10 @@ const Dashboard = () => {
         <div className="p-8 shadow bg-white">
           {(session?.user?.role === "admin" || session?.user.role === "org_admin")
           && <button
-              className="flex flex-row pb-3 hover:brightness-150 transition-all"
-              onClick={() => {
-                document.getElementById('multieventModal').showModal();
-              }}
+            className="flex flex-row pb-3 hover:brightness-150 transition-all"
+            onClick={() => {
+              document.getElementById('multieventModal').showModal();
+            }}
           >
             <PlusCircleIcon className="h-5 w-5 text-gray-600" style={{ marginTop: '2px' }} />
             <h6 className="text-gray-600 pl-1 font-semibold text-md">
@@ -100,17 +100,17 @@ const Dashboard = () => {
           </p>
           <p className="text-gray-600 mb-2">Select all that apply</p>
           <select
-              className="select select-bordered w-full bg-white text-gray-600 p-2"
-              multiple
-              style={{ height: '200px' }}
-                onChange={(e) => {
-                  setSelectedEvents([...e.target.selectedOptions].map(o => o.value));
-                }}
+            className="select select-bordered w-full bg-white text-gray-600 p-2"
+            multiple
+            style={{ height: '200px' }}
+            onChange={(e) => {
+              setSelectedEvents([...e.target.selectedOptions].map(o => o.value));
+            }}
           >
             {storedEvents.map((event) => (
-                <option key={event._id} value={event._id}>
-                  {event.closestIsland} ({event.reportedDate.split("T")[0]})&nbsp;-&nbsp;{event.publicType}
-                </option>
+              <option key={event._id} value={event._id}>
+                {event.closestIsland} ({event.reportedDate.split("T")[0]})&nbsp;-&nbsp;{event.publicType}
+              </option>
             ))}
           </select>
 
@@ -131,8 +131,8 @@ const Dashboard = () => {
               <button className="text-gray-900 bg-white hover:bg-gray-50 rounded-md px-4 py-2 text-sm font-semibold shadow-sm">Close</button>
             </form>
             <button
-                className="ml-3 text-white bg-blue-600 hover:bg-red-500 rounded-md px-3 py-2 text-sm font-semibold shadow-sm"
-                onClick={() => addToMultiEventTransport()}
+              className="ml-3 text-white bg-blue-600 hover:bg-red-500 rounded-md px-3 py-2 text-sm font-semibold shadow-sm"
+              onClick={() => addToMultiEventTransport()}
             >
               Submit
             </button>
