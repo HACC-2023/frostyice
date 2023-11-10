@@ -65,7 +65,7 @@ export const config = {
     "/admin/:path*",
     "/events/:path*",
     "/home",
-    "/organization",
+    // "/organization",
     "/data-insights",
     "/thread",
     "/threads",
