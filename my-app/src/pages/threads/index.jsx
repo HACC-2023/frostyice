@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Thread from "@/components/Thread";
 import Loading from "@/components/Loading";
 
-// TODO: implement page for each thread
 // TODO: implement sorting
 
 const Threads = () => {
@@ -19,8 +18,6 @@ const Threads = () => {
 
     getThreads();
   }, []);
-
-  console.log("threads data!", data);
 
   if (isLoading) {
     return <Loading></Loading>;
