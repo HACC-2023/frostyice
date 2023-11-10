@@ -27,20 +27,20 @@ const EventInfo = ({ thread }) => {
 
   return (
     <div className="relative">
-      <div>{event.publicLocationDesc}</div>
-      <span
+      <div
         className={`${getStatusColor(
           event.status
-        )} rounded-full px-2.5 py-0.5 text-sm font-semibold text-white absolute top-4 right-2`}
+        )} rounded-full px-2.5 py-0.5 text-sm font-semibold text-white md:absolute ml-auto mb-3 md:mb-0 top-4 right-2 w-fit`}
       >
         {event.status}
-      </span>
+      </div>
+      <div>{event.publicLocationDesc}</div>
       <div className="mb-3">
         {event.publicDebrisEnvDesc === "Other"
           ? event.publicDebrisEnvAdditionalDesc
           : event.publicDebrisEnvDesc}
       </div>
-      <div className="flex gap-5 flex-wrap">
+      <div className="flex gap-2 flex-wrap">
         <InfoItem label={prettyHstDate(event.reportedDate)}></InfoItem>
         <InfoItem label={event.closestIsland}></InfoItem>
       </div>
@@ -58,9 +58,9 @@ const Thread = ({ thread }) => {
     <Link href={`/thread/${thread._id}`}>
       <div className="px-3 py-5 border-solid border-gray-300 border-b">
         <EventInfo thread={thread}></EventInfo>
-          <div className="flex items-center gap-1 mt-5 text-gray-600">
-            {thread.messages.length} replies
-          </div>
+        <div className="flex items-center gap-1 mt-5 text-gray-600">
+          {thread.messages.length} replies
+        </div>
       </div>
     </Link>
   );

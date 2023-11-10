@@ -29,22 +29,24 @@ const EventInfo = ({ thread }) => {
   return (
     <div className="bg-base-100 py-8 relative shadow-md px-6 rounded-lg">
       <h2 className="text-xl font-semibold text-gray-800 mb-2">Event Info</h2>
-      <div>{event.publicLocationDesc}</div>
-      <span
-        className={`${getStatusColor(
-          event.status
-        )} rounded-full px-2.5 py-0.5 text-sm font-semibold text-white absolute top-4 right-2`}
-      >
-        {event.status}
-      </span>
-      <div className="mb-3">
-        {event.publicDebrisEnvDesc === "Other"
-          ? event.publicDebrisEnvAdditionalDesc
-          : event.publicDebrisEnvDesc}
-      </div>
-      <div className="flex gap-5 flex-wrap">
-        <InfoItem label={prettyHstDate(event.reportedDate)}></InfoItem>
-        <InfoItem label={event.closestIsland}></InfoItem>
+      <div className="relative">
+        <div
+          className={`${getStatusColor(
+            event.status
+          )} rounded-full px-2.5 py-0.5 text-sm font-semibold text-white md:absolute ml-auto mb-3 md:mb-0 top-4 right-2 w-fit`}
+        >
+          {event.status}
+        </div>
+        <div>{event.publicLocationDesc}</div>
+        <div className="mb-3">
+          {event.publicDebrisEnvDesc === "Other"
+            ? event.publicDebrisEnvAdditionalDesc
+            : event.publicDebrisEnvDesc}
+        </div>
+        <div className="flex gap-2 flex-wrap">
+          <InfoItem label={prettyHstDate(event.reportedDate)}></InfoItem>
+          <InfoItem label={event.closestIsland}></InfoItem>
+        </div>
       </div>
     </div>
   );
