@@ -4,13 +4,9 @@ import { ROLES } from "./roles/roles";
 // Without a defined matcher, this one line applies next-auth to entire project
 // export { default } from "next-auth/middleware"
 
-export const ADMIN_ROUTES = [
-  "/admin",
-];
+export const ADMIN_ROUTES = ["/admin"];
 
-export const ORG_ADMIN_ROUTES = [
-  "/organization",
-]
+export const ORG_ADMIN_ROUTES = ["/organization"];
 
 export const MEMBER_ROUTES = [
   "/data-insights",
@@ -18,7 +14,7 @@ export const MEMBER_ROUTES = [
   "/home",
   "/thread",
   "/threads",
-]
+];
 
 export default withAuth(
   function middleware(request) {
@@ -28,12 +24,16 @@ export default withAuth(
       ADMIN_ROUTES.some((path) => request.nextUrl.pathname.startsWith(path)) &&
       request.nextauth.token?.role !== ROLES.ADMIN
     ) {
+      console.log("hello admin");
       return NextResponse.rewrite(new URL("/denied", request.url));
     }
 
     if (
-      ORG_ADMIN_ROUTES.some((path) => request.nextUrl.pathname.startsWith(path)) &&
-      request.nextauth.token?.role !== (ROLES.ORG_ADMIN || ROLES.ADMIN)
+      ORG_ADMIN_ROUTES.some((path) =>
+        request.nextUrl.pathname.startsWith(path)
+      ) &&
+      request.nextauth.token?.role !== ROLES.ORG_ADMIN &&
+      request.nextauth.token?.role !== ROLES.ADMIN
     ) {
       return NextResponse.rewrite(new URL("/denied", request.url));
     }
