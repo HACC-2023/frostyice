@@ -117,7 +117,14 @@ const LocationAggregatorMap = ({
             onLoad={() => setDoneLoading(true)}
           />
         </DeckGL>
-        {!doneLoading && (<div className="h-full w-full absolute bg-primary">HELLO</div>)}
+        {!doneLoading && (
+          <div className="h-full w-full absolute bg-primary flex flex-col items-center justify-center">
+            <div className="loading loading-ring text-white" />
+            <div className="text-white text-xs py-1 italic font-thin">
+              Loading map...
+            </div>
+          </div>
+        )}
       </div>
       <div className="flex py-2 gap-3">
         <div>
