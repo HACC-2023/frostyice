@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 // TODO switch to logout instead of events if logged in?
 const MobileNavbar = () => {
   const { data: session, status } = useSession();
+  console.log(session);
   return (
     <div className="btm-nav md:hidden">
       <Link href="/home" className="hover:brightness-125 hover:bg-accent/10 transition-all">

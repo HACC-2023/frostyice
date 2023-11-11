@@ -1,11 +1,9 @@
-import { Fragment } from "react";
 import { useSession } from "next-auth/react";
 import {
   HomeIcon,
   PlusCircleIcon,
   ChartPieIcon,
   RectangleGroupIcon,
-  InboxIcon,
   RectangleStackIcon,
   BuildingOfficeIcon,
   BuildingOffice2Icon,
@@ -42,7 +40,6 @@ const SideNavbar = () => {
     ...publicNav,
     { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
     { label: "Events", icon: RectangleGroupIcon, link: "/events?organization=true" },
-    { label: "Threads", icon: RectangleStackIcon, link: "/threads" },
   ];
 
   const orgAdminNav = [
