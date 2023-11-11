@@ -57,7 +57,7 @@ const OrgMemberTable = ({ members }) => {
       <table className="table mt-6 text-gray-600">
         <thead>
           <tr className="text-gray-600">
-            <td></td>
+
             <th>First Name</th>
             <th>Last Name</th>
             <td>Email</td>
@@ -68,14 +68,7 @@ const OrgMemberTable = ({ members }) => {
         <tbody>
           {members.map((member, index) => (
             <tr key={member._id}>
-              <td>
-                {" "}
-                <img
-                  className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                  src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
-                />
-              </td>
+
               <th>{member.firstName}</th>
               <th>{member.lastName}</th>
               <td>{member.email}</td>
