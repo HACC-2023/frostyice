@@ -29,7 +29,7 @@ const DeleteMembersModal = ({ id, member }) => {
         <h3 className="pb-5 font-bold">DELETE MEMBER</h3>
         <form onSubmit={onSubmit}>
           <div className="w-full">
-            Are you sure you want to delete &quot;{member.firstName}&quot;?
+            Are you sure you want to delete &quot;{member?.firstName}&quot;?
           </div>
           <div className="modal-action">
             <button
