@@ -11,7 +11,7 @@ const SignIn = () => {
 
   // sends them to the home page
   if (session) {
-    router.push('/');
+    router.push('/home');
   }
 
   const { register, handleSubmit } = useForm({

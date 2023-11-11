@@ -2,6 +2,8 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import Error from '@/components/Error';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const LocationAggregatorMap = dynamic(
   () => import('@/components/map/LocationAggregatorMap'),
@@ -13,8 +15,10 @@ const LocationAggregatorMap = dynamic(
 // TODO: download the image instead of using the url
 
 const Home = () => {
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
   const [coordinates, setCoordinates] = useState([]);
+  const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const getData = async () => {
@@ -25,8 +29,12 @@ const Home = () => {
       });
       setCoordinates(coords);
     };
+    if (session?.user) {
+      // if user is logged in, navigate to home page
+      router.push('/home');
+    }
     getData().then((r) => console.log('Fetched locations'));
-  }, []);
+  }, [session]);
 
   return (
     <div className='min-h-screen'>
