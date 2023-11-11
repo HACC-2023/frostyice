@@ -70,9 +70,11 @@ export default async function handler(req, res) {
         },
       });
 
-      await Thread.create({
+      const newThread = await Thread.create({
         eventId: newEvent._id,
       });
+
+      await Event.findByIdAndUpdate(newEvent._id, { threadId: newThread._id });
 
       res.status(201).json({msg: 'Event reported'});
     } catch (error) {

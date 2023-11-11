@@ -67,9 +67,11 @@ export default async function handler(req, res) {
 
       const created = await Event.create(eventDetails);
 
-      await Thread.create({
+      const newThread = await Thread.create({
         eventId: created._id,
       });
+
+      await Event.findByIdAndUpdate(created._id, { threadId: newThread._id });
 
       const containerFullness = publicContainerFullness ? `<b>Container Fullness:</b> ${publicContainerFullness}<br/>` : '';
       const claimBoat = publicClaimBoat ? `<b>Intend to Claim Boat:</b> ${publicClaimBoat}<br/>` : '';
