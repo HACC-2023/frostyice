@@ -58,9 +58,11 @@ export default async function handler(req, res) {
         },
       });
 
-      await Thread.create({
+      const newThread = await Thread.create({
         eventId: created._id,
       });
+
+      await Event.findByIdAndUpdate(created._id, { threadId: newThread._id });
 
       const containerFullness = publicContainerFullness ? `<b>Container Fullness:</b> ${publicContainerFullness}<br/>` : '';
       const claimBoat = publicClaimBoat ? `<b>Intend to Claim Boat:</b> ${publicClaimBoat}<br/>` : '';
@@ -89,7 +91,7 @@ export default async function handler(req, res) {
         <b>Reporter Phone:</b> ${phoneNumber}<br/>
         <b>Report Method:</b> Online Form<br/>
         <br/>
-        <a href="https://frostyice-0792b9c3-fc67-493a-b39a-69ae6658ba1e.vercel.app/events/${created._id}">See more details</a>
+        <a href="https://frostyice-0792b9c3-fc67-493a-b39a-69ae6658ba1e.vercel.app/event/${created._id}">See more details</a>
         <br/><br/>
         Mahalo!<br/><br/>
         Center for Marine Debris Research

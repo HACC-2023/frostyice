@@ -3,6 +3,8 @@ import AddOrgModal from "@/components/manage-org/modals/AddOrgModal";
 import TableRow from "@/components/manage-org/table/TableRow";
 import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
+import Loading from "@/components/Loading";
+import UsersTableRow from "@/components/manage-org/table/UsersTableRow";
 
 const ManageOrganizations = () => {
   const { data, error, isLoading } = useSWR(
@@ -10,7 +12,12 @@ const ManageOrganizations = () => {
     fetcher,
     { refreshInterval: 1000 }
   );
-  
+  const { data: users } = useSWR("/api/mongo/user/get-users", fetcher, {
+    refreshInterval: 1000,
+  });
+
+  console.log("users", users);
+
   console.log(data, error, isLoading);
   return (
     <div className="min-h-screen p-3">
@@ -36,22 +43,55 @@ const ManageOrganizations = () => {
           >
             Add Member
           </button>
-          <AddMemberModal id="add_member_modal_1" orgs={data}/>
+          <AddMemberModal id="add_member_modal_1" orgs={data} />
         </div>
+        {users ? (
+          <div className="w-full md:w-3/4 mb-12">
+            <h1 className="font-bold px-2 py-3">Members</h1>
+            <div className="h-96 overflow-auto border">
+              <div className="overflow-x-auto w-full flex items-center py-3">
+                <table className="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th />
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user, index) => (
+                      <UsersTableRow user={user} index={index} key={index}/>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Loading />
+        )}
         {data ? (
-          <div className="overflow-x-auto w-full md:w-3/4 flex items-center rounded-xl py-3">
-            <table className="table table-zebra">
-              <thead>
-                <tr>
-                  <th />
-                  <th>Organization Name</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((org, index) => (<TableRow org={org} index={index} key={index} />))}
-              </tbody>
-            </table>
+          <div className="w-full md:w-3/4">
+            <h1 className="font-bold px-2 py-3">Organizations</h1>
+            <div className="h-96 overflow-auto border">
+              <div className="overflow-x-auto w-full flex items-center py-3">
+                <table className="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th />
+                      <th>Organization Name</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((org, index) => (
+                      <TableRow org={org} index={index} key={index} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="overflow-x-auto w-full md:w-3/4 flex items-center rounded-xl py-3">

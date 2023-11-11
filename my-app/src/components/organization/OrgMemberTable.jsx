@@ -13,6 +13,8 @@ const OrgMemberTable = ({ members }) => {
     setEditingRole({ index, role });
   };
 
+  console.log(session?.user.role);
+
   // Update role using API function
   const updateRole = async (userId, newRole) => {
     try {
@@ -55,7 +57,6 @@ const OrgMemberTable = ({ members }) => {
       <table className="table mt-6 text-gray-600">
         <thead>
           <tr className="text-gray-600">
-            <td></td>
             <th>First Name</th>
             <th>Last Name</th>
             <td>Email</td>
@@ -66,62 +67,63 @@ const OrgMemberTable = ({ members }) => {
         <tbody>
           {members.map((member, index) => (
             <tr key={member._id}>
-              <td>
-                {" "}
-                <img
-                  className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                  src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
-                />
-              </td>
               <th>{member.firstName}</th>
               <th>{member.lastName}</th>
               <td>{member.email}</td>
               <td>
-                {editingRole.index === index ? (
-                  <div className="flex-col items-center">
-                    <input
-                      type="text"
-                      className="text-gray-500 bg-white border-2 border-gray-200 rounded-md p-1 w-28 focus:outline-none focus:border-blue"
-                      value={editingRole.role}
-                      onChange={(e) =>
-                        setEditingRole({
-                          index: editingRole.index,
-                          role: e.target.value,
-                        })
-                      }
-                    />
-
-                    <div className="flex-row mt-1">
-                      <button
-                        onClick={() => saveRole(member._id, editingRole.role)}
-                        className="bg-blue-600 text-white hover:bg-blue-500 px-2 py-0.3 rounded"
+                {session?.user.role !== ROLES.ORG_MEMBER ? (
+                  editingRole.index === index ? (
+                    <div className="flex-col items-center">
+                      <select
+                        className="select select-sm select-bordered mb-2"
+                        value={editingRole.role}
+                        onChange={(e) =>
+                          setEditingRole({
+                            index: editingRole.index,
+                            role: e.target.value,
+                          })
+                        }
                       >
-                        Save
-                      </button>
+                        {Object.values(ROLES).map((role, index) => (
+                          <option value={role} key={index}>
+                            {role}
+                          </option>
+                        ))}
+                      </select>
 
-                      <button
-                        onClick={cancelEdit}
-                        className="bg-red-600 text-white hover:bg-red-500 px-2 py-0.3 rounded ml-2"
-                      >
-                        Cancel
-                      </button>
+                      <div className="flex-row mt-1">
+                        <button
+                          onClick={() => saveRole(member._id, editingRole.role)}
+                          className="px-2 py-0.3 rounded btn btn-sm btn-primary text-xs"
+                        >
+                          Save
+                        </button>
+
+                        <button
+                          onClick={cancelEdit}
+                          className="px-2 py-0.3 rounded ml-2 btn btn-sm btn-outline text-xs"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="relative">
+                      {member.role}
+                      {editingRole.index !== index && (
+                        <PencilIcon
+                          className="w-4 h-4 text-blue-600 absolute top-0 right-0 cursor-pointer"
+                          onClick={() => toggleEditing(index, member.role)}
+                        />
+                      )}
+                    </div>
+                  )
                 ) : (
-                  // Render role as text with PencilIcon when not editing
-                  <div className="relative">
-                    {member.role}
-                    {editingRole.index !== index && (
-                      <PencilIcon
-                        className="w-4 h-4 text-blue-600 absolute top-0 right-0 cursor-pointer"
-                        onClick={() => toggleEditing(index, member.role)}
-                      />
-                    )}
-                  </div>
+                  <div>{member.role}</div>
                 )}
               </td>
-              {session?.user.role !== "org_member" && (
+
+              {session?.user.role !== ROLES.ORG_MEMBER && (
                 <td>
                   <button
                     onClick={() =>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useSession } from 'next-auth/react';
 
 // TODO: use "active" class to highlight current page
-// TODO switch to logout instead of org page if logged in?
+// TODO switch to logout instead of events if logged in?
 const MobileNavbar = () => {
   const { data: session, status } = useSession();
   console.log(session);
@@ -18,8 +18,8 @@ const MobileNavbar = () => {
         <span className="btm-nav-label">Data</span>
       </Link>
       {session
-        ? <Link href="/events/organization" className="hover:brightness-125 hover:bg-accent/10 transition-all">
-          Org Events
+        ? <Link href="/events" className="hover:brightness-125 hover:bg-accent/10 transition-all">
+          Events
         </Link>
         : <Link href="/auth/credentials-signin">
           <span className="btm-nav-label">Login</span>

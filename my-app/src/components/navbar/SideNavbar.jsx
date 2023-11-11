@@ -4,7 +4,6 @@ import {
   PlusCircleIcon,
   ChartPieIcon,
   RectangleGroupIcon,
-  RectangleStackIcon,
   BuildingOfficeIcon,
   BuildingOffice2Icon,
   ArrowLeftCircleIcon,
@@ -39,12 +38,7 @@ const SideNavbar = () => {
   const orgMemberNav = [
     ...publicNav,
     { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
-    {
-      label: "Organization Events",
-      icon: RectangleGroupIcon,
-      link: "/events/organization",
-    },
-    { label: "All Events", icon: RectangleStackIcon, link: "/events/all" },
+    { label: "Events", icon: RectangleGroupIcon, link: "/events?organization=true" },
   ];
 
   const orgAdminNav = [

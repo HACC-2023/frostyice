@@ -63,9 +63,10 @@ export const config = {
      */
     "/((?!api/uploadthing|).*)",
     "/admin/:path*",
-    "/events/:path*",
+    "/events",
+    "/event/:path*",
     "/home",
-    "/organization",
+    // "/organization",
     "/data-insights",
     "/thread",
     "/threads",

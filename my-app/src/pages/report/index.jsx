@@ -143,7 +143,11 @@ const ReportForm = () => {
 
   return (
     <div className="px-5 bg-white min-h-screen pb-32">
-      {isLoading && <Loading />}
+      {isLoading
+        && <div className="fixed w-full h-full top-0 left-0 right-0 bottom-0 flex align-middle justify-center m-0 bg-[#00000088]" style={{ zIndex: 1000 }}>
+          <Loading />
+        </div>
+      }
       <div className=" bg-white py-3">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           Report Marine Debris

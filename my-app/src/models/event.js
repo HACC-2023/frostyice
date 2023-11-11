@@ -130,6 +130,9 @@ const eventSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  threadId: {
+    type: mongoose.Schema.Types.ObjectId,
+  }
 });
 
 const Event = mongoose.models.Event || mongoose.model("Event", eventSchema);

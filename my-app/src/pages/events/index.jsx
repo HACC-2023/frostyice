@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import DashboardTable from "@/components/events/events-dashboard/DashboardTable";
-import { useSession } from "next-auth/react";
-import {toast} from "react-toastify";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -11,35 +13,73 @@ const Dashboard = () => {
   const [selectedEvents, setSelectedEvents] = useState([]); // events selected for multievent shipment
   const [shipmentDate, setShipmentDate] = useState('');
   const [fromNode, setFromNode] = useState(''); // org's associatedNode
+  const [isLoading, setIsLoading] = useState(true);
+  const [reload, setReload] = useState(true);
+  const [orgFilter, setOrgFilter] = useState(true);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const eventsResponse = await fetch(`/api/mongo/event/all`);
-        if (eventsResponse.ok) {
-          const data = await eventsResponse.json();
-          setEvents(data);
-          if (session?.user?.role === "admin") {
-            // display all events that have status 'Removal and Storage'
-            setStoredEvents(data.filter((event) => event.status === 'Removal and Storage'));
-            setFromNode('CMDR Hub'); // todo change
-          } else if (session?.user?.role === "org_admin") {
-            // display all events that have status 'Removal and Storage' and tempStorage is the org's associatedNode
-            const orgResponse = await fetch(`/api/mongo/organization/id/${session?.user?.orgId}`);
-            const orgData = await orgResponse.json();
-            setStoredEvents(data.filter((event) => event.status === 'Removal and Storage' && event.tempStorage === orgData.associatedNode));
-            setFromNode(orgData.associatedNode);
-          }
-        } else {
-          console.error("Error fetching data");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    if (reload && session) {
+      setReload(false);
+      fetchData();
+    }
+    if (searchParams.has('organization') && !orgFilter) {
+      setOrgFilter(true);
+      setReload(true);
+    } else if (!searchParams.has('organization') && orgFilter) {
+      setOrgFilter(false);
+      setReload(true);
+    }
+  }, [searchParams, reload, session]);
 
-    fetchData();
-  }, [session]);
+  async function fetchData() {
+    try {
+      setIsLoading(true);
+      const eventsResponse = searchParams.has('organization')
+        ? await fetch(`/api/mongo/event/removal-org-id/${session?.user?.orgId}`)
+        : await fetch('/api/mongo/event/all');
+      if (eventsResponse.ok) {
+        const data = await eventsResponse.json();
+        setEvents(data);
+        if (session?.user?.role === "admin") {
+          // display all events that have status 'Removal and Storage'
+          setStoredEvents(data.filter((event) => event.status === 'Removal and Storage'));
+          setFromNode('CMDR Hub'); // todo change
+        } else if (session?.user?.role === "org_admin") {
+          // display all events that have status 'Removal and Storage' and tempStorage is the org's associatedNode
+          const orgResponse = await fetch(`/api/mongo/organization/id/${session?.user?.orgId}`);
+          const orgData = await orgResponse.json();
+          setStoredEvents(data.filter((event) => event.status === 'Removal and Storage' && event.tempStorage === orgData.associatedNode));
+          setFromNode(orgData.associatedNode);
+        }
+      } else {
+        console.error("Error fetching data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    setIsLoading(false);
+  }
+
+  function updateSearchParams(key, value) {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+
+    if (!value) {
+      current.delete(key);
+    } else {
+      current.set(key, value);
+    }
+
+    // cast to string
+    const search = current.toString();
+    // or const query = `${'?'.repeat(search.length && 1)}${search}`;
+    const query = search ? `?${search}` : "";
+
+    router.push(`${pathname}${query}`);
+  }
 
   async function addToMultiEventTransport() {
     try {
@@ -69,10 +109,22 @@ const Dashboard = () => {
 
   return (
     <div className="justify-center items-center">
-      <div className="mt-2 bg-white p-14">
-        <h3 className="text-2xl font-semibold text-gray-600 mb-2">All Events</h3>
+      <div>
+        <h3 className="text-3xl font-semibold pt-8 text-center">
+          {searchParams.has('organization') ? 'Organization Events' : 'All Events'}
+        </h3>
+        <div className="text-center">
+          <button
+            className="hover:opacity-70 text-grey-700 transition-all"
+            onClick={() => {
+              updateSearchParams('organization', searchParams.has('organization') ? null : true);
+            }}
+          >
+            {searchParams.has('organization') ? 'See all events' : 'See organization events'}
+          </button>
+        </div>
         <hr />
-        <div className="p-8 shadow bg-white">
+        <div className="px-8">
           {(session?.user?.role === "admin" || session?.user.role === "org_admin")
           && <button
             className="flex flex-row pb-3 hover:brightness-150 transition-all"
@@ -86,7 +138,7 @@ const Dashboard = () => {
             </h6>
           </button>
           }
-          <DashboardTable events={events} />
+          <DashboardTable events={events} isLoading={isLoading} />
         </div>
       </div>
       <dialog id="multieventModal" className="modal">
