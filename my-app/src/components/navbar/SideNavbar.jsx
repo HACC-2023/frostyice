@@ -41,7 +41,7 @@ const SideNavbar = () => {
   const orgMemberNav = [
     ...publicNav,
     { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
-    { label: "Events", icon: RectangleGroupIcon, link: "/events" },
+    { label: "Events", icon: RectangleGroupIcon, link: "/events?organization=true" },
     { label: "Threads", icon: RectangleStackIcon, link: "/threads" },
   ];
 

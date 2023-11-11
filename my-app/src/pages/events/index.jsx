@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import DashboardTable from "@/components/events/events-dashboard/DashboardTable";
-import { useSession } from "next-auth/react";
-import {toast} from "react-toastify";
+import { useSearchParams } from "next/navigation";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -12,34 +13,41 @@ const Dashboard = () => {
   const [shipmentDate, setShipmentDate] = useState('');
   const [fromNode, setFromNode] = useState(''); // org's associatedNode
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const eventsResponse = await fetch(`/api/mongo/event/all`);
-        if (eventsResponse.ok) {
-          const data = await eventsResponse.json();
-          setEvents(data);
-          if (session?.user?.role === "admin") {
-            // display all events that have status 'Removal and Storage'
-            setStoredEvents(data.filter((event) => event.status === 'Removal and Storage'));
-            setFromNode('CMDR Hub'); // todo change
-          } else if (session?.user?.role === "org_admin") {
-            // display all events that have status 'Removal and Storage' and tempStorage is the org's associatedNode
-            const orgResponse = await fetch(`/api/mongo/organization/id/${session?.user?.orgId}`);
-            const orgData = await orgResponse.json();
-            setStoredEvents(data.filter((event) => event.status === 'Removal and Storage' && event.tempStorage === orgData.associatedNode));
-            setFromNode(orgData.associatedNode);
-          }
-        } else {
-          console.error("Error fetching data");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const searchParams = useSearchParams();
 
-    fetchData();
-  }, [session]);
+  useEffect(() => {
+    if (searchParams && session && !events.length) {
+      console.log('calling fetch')
+      fetchData();
+    }
+  }, [searchParams, session]);
+
+  async function fetchData() {
+    try {
+      const eventsResponse = searchParams.has('organization')
+        ? await fetch(`/api/mongo/event/removal-org-id/${session?.user?.orgId}`)
+        : await fetch('/api/mongo/event/all');
+      if (eventsResponse.ok) {
+        const data = await eventsResponse.json();
+        setEvents(data);
+        if (session?.user?.role === "admin") {
+          // display all events that have status 'Removal and Storage'
+          setStoredEvents(data.filter((event) => event.status === 'Removal and Storage'));
+          setFromNode('CMDR Hub'); // todo change
+        } else if (session?.user?.role === "org_admin") {
+          // display all events that have status 'Removal and Storage' and tempStorage is the org's associatedNode
+          const orgResponse = await fetch(`/api/mongo/organization/id/${session?.user?.orgId}`);
+          const orgData = await orgResponse.json();
+          setStoredEvents(data.filter((event) => event.status === 'Removal and Storage' && event.tempStorage === orgData.associatedNode));
+          setFromNode(orgData.associatedNode);
+        }
+      } else {
+        console.error("Error fetching data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   async function addToMultiEventTransport() {
     try {
@@ -69,10 +77,12 @@ const Dashboard = () => {
 
   return (
     <div className="justify-center items-center">
-      <div className="mt-2 bg-white p-14">
-        <h3 className="text-2xl font-semibold text-gray-600 mb-2">All Events</h3>
+      <div>
+        <h3 className="text-3xl font-semibold pt-8 text-center">
+          {searchParams.has('organization') ? 'Organization Events' : 'All Events'}
+        </h3>
         <hr />
-        <div className="p-8 shadow bg-white">
+        <div className="px-8">
           {(session?.user?.role === "admin" || session?.user.role === "org_admin")
           && <button
             className="flex flex-row pb-3 hover:brightness-150 transition-all"

@@ -1,23 +1,24 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import {ArrowTopRightOnSquareIcon} from "@heroicons/react/24/outline";
-import {prettyHstDate} from "@/utils/dateConverter";
-import {ISLANDS} from "@/constants/constants";
-import {usePathname, useSearchParams} from "next/navigation";
-import {useRouter} from "next/router";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { prettyHstDate } from "@/utils/dateConverter";
+import { ISLANDS } from "@/constants/constants";
+
 
 const DashboardTable = ({ events }) => {
   const [islandFilter, setIslandFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [sort, setSort] = useState("newest");
+  const [removalOrgs, setRemovalOrgs] = useState(null);
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    console.log('hehe')
     if (searchParams.has('status')) {
       setStatusFilter(searchParams.get('status'));
     }
@@ -26,6 +27,13 @@ const DashboardTable = ({ events }) => {
     }
     if (searchParams.has('island')) {
       setIslandFilter(searchParams.get('island'));
+    }
+    if (!removalOrgs) {
+      const fetchData = async () => {
+        const res = await fetch('/api/mongo/organization/get-organizations');
+        setRemovalOrgs(await res.json());
+      };
+      fetchData();
     }
   }, [searchParams]);
 
@@ -74,13 +82,20 @@ const DashboardTable = ({ events }) => {
     }
   });
 
+  const removalOrgName = (id) => {
+    if (!id) return 'None Assigned';
+    if (removalOrgs) {
+      return removalOrgs.find((org) => org._id === id).name;
+    }
+  }
+
   return (
     <div className="overflow-x-auto">
       <div className="flex justify-end space-x-8 mb-6">
         <div className="flex items-center">
           <label className="text-gray-600 pr-2">Status:</label>
           <select
-            className="select text-gray-500"
+            className="select text-gray-500 bg-gray-100"
             name="status"
             value={statusFilter}
             onChange={(e) => {
@@ -100,7 +115,7 @@ const DashboardTable = ({ events }) => {
         <div className="flex items-center">
           <label className="text-gray-600 pr-2">Sort by:</label>
           <select
-            className="select text-gray-500"
+            className="select text-gray-500 bg-gray-100"
             name="sort"
             value={sort}
             onChange={(e) => {
@@ -116,7 +131,7 @@ const DashboardTable = ({ events }) => {
         <div className="flex items-center">
           <label className="text-gray-600 pr-2">Island:</label>
           <select
-            className="select text-gray-500"
+            className="select text-gray-500 bg-gray-100"
             name="island"
             value={islandFilter}
             onChange={(e) => {
@@ -133,7 +148,7 @@ const DashboardTable = ({ events }) => {
       <section className="flex flex-col gap-3 py-4 px-3 border border-neutral rounded-xl bg-base-200 min-h-[400px]">
         {filteredEvents.map((event) => (
           <div key={event._id} className="card card-bordered border-neutral bg-base-100">
-            <Link href={`/event/${event._id}`} className="cursor-pointer hover:opacity-60 transition-all">
+            <Link href={`/event/${event._id}`} className="cursor-pointer hover:opacity-70 transition-all">
               <div className="card-body px-8 py-5">
                 <div className="flex justify-between">
                   <div>
@@ -144,8 +159,15 @@ const DashboardTable = ({ events }) => {
                     <div className="text-sm md:text-md">
                       <time className="my-3">{prettyHstDate(event.reportedDate)}</time>
                       <div className="pt-2">
-                        {event.publicLocationDesc}<br/>
-                        {event.publicDebrisEnvDesc === 'Other' ? event.publicDebrisEnvAdditionalDesc : event.publicDebrisEnvDesc}
+                        <div>
+                          <span className="font-semibold">Description:</span> {event.publicLocationDesc}
+                        </div>
+                        <div>
+                          <span className="font-semibold">Removal Org:</span> {removalOrgName(event.removalOrgId)}
+                        </div>
+                        <div>
+                          <span className="font-semibold">Current Location:</span> {event.tempStorage}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -154,6 +176,7 @@ const DashboardTable = ({ events }) => {
                   >
                     {event.status}
                   </div>
+                  <Link href={`/thread/${event.threadId}`}></Link>
                 </div>
               </div>
             </Link>
