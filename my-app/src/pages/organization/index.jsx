@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import OrgMemberTable from "@/components/organization/OrgMemberTable";
 import AddMemberModal from "@/components/manage-org/modals/AddMemberModal";
+import { ROLES } from "@/roles/roles";
 
 const MyOrganization = () => {
   const { data: session, status } = useSession();
@@ -60,7 +61,7 @@ const MyOrganization = () => {
         <br />
 
         <div className="p-8 shadow">
-          {session?.user.role != "org_member" && (
+          {session?.user.role != ROLES.ORG_MEMBER && (
             <div className="flex flex-row justify-end">
               <button
                 className="btn btn-sm md:btn-md btn-primary"
