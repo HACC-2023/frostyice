@@ -49,7 +49,7 @@ const ManageOrganizations = () => {
         {users ? (
           <div className="w-full md:w-3/4 mb-12">
             <h1 className="font-bold px-2 py-3">Members</h1>
-            <div className="h-96 overflow-auto border">
+            <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">
                 <table className="table table-zebra">
                   <thead>
@@ -75,7 +75,7 @@ const ManageOrganizations = () => {
         {data ? (
           <div className="w-full md:w-3/4">
             <h1 className="font-bold px-2 py-3">Organizations</h1>
-            <div className="h-96 overflow-auto border">
+            <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">
                 <table className="table table-zebra">
                   <thead>

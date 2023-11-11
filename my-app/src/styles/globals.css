@@ -9,3 +9,19 @@
 .table :where(thead){
   @apply text-slate-600
 }
+
+.input-bordered, .select-bordered {
+  @apply border border-gray-200 rounded-md
+}
+
+.divider {
+  @apply border-t border-gray-300
+}
+/* .tab-bordered {
+  @apply border-slate-300
+} */
+
+/* .tab-active {
+  @apply border-primary !important
+} */
+
