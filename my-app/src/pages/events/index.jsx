@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import DashboardTable from "@/components/events/events-dashboard/DashboardTable";
-import Loading from "@/components/Loading";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -23,9 +22,8 @@ const Dashboard = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // mom's spaghetti
     if (reload && session) {
-      setReload(false)
+      setReload(false);
       fetchData();
     }
     if (searchParams.has('organization') && !orgFilter) {

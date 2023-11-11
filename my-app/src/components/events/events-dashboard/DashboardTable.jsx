@@ -16,12 +16,31 @@ const DashboardTable = ({ events, isLoading }) => {
   const [sort, setSort] = useState("newest");
   const [removalOrgs, setRemovalOrgs] = useState(null);
   const [updatedEvents, setUpdatedEvents] = useState([]);
+  const [prevEventsLength, setPrevEventsLength] = useState(0);
+  const [localIsLoading, setLocalIsLoading] = useState(true);
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    if (isLoading) {
+      setLocalIsLoading(true);
+    }
+    const fetchOrgs = async () => {
+      const orgRes = await fetch('/api/mongo/organization/get-organizations');
+      setRemovalOrgs(await orgRes.json());
+    };
+    const fetchThreads = async () => {
+      const threadRes = await fetch('/api/mongo/thread/threads');
+      const threads = await threadRes.json();
+      for (const event of events) {
+        const thread = threads.find((thread) => thread._id === event.threadId);
+        event.threadCount = thread?.messages?.length || 0;
+      }
+      setUpdatedEvents(events);
+      setLocalIsLoading(false);
+    };
     if (searchParams.has('status')) {
       setStatusFilter(searchParams.get('status'));
     }
@@ -31,22 +50,15 @@ const DashboardTable = ({ events, isLoading }) => {
     if (searchParams.has('island')) {
       setIslandFilter(searchParams.get('island'));
     }
-    if (!removalOrgs && events.length) {
-      const fetchData = async () => {
-        const orgRes = await fetch('/api/mongo/organization/get-organizations');
-        setRemovalOrgs(await orgRes.json());
-        const threadRes = await fetch('/api/mongo/thread/threads');
-        const threads = await threadRes.json();
-        for (const event of events) {
-          const thread = threads.find((thread) => thread._id === event.threadId);
-          console.log(thread);
-          event.threadCount = thread?.messages?.length || 0;
-        }
-        setUpdatedEvents(events);
-      };
-      fetchData();
+    if (events.length && prevEventsLength !== events.length) {
+      setLocalIsLoading(true);
+      setPrevEventsLength(events.length);
+      fetchThreads();
     }
-  }, [searchParams, events]);
+    if (events.length && !removalOrgs) {
+      fetchOrgs();
+    }
+  }, [searchParams, events, isLoading]);
 
   // Create pill color for status
   function getStatusColor(status) {
@@ -157,7 +169,7 @@ const DashboardTable = ({ events, isLoading }) => {
       </div>
 
       <section className="flex flex-col gap-3 py-4 px-3 border border-neutral rounded-xl bg-base-200 min-h-[400px]">
-        {isLoading
+        {localIsLoading || isLoading
           ? <div className="pt-32">
             <Loading />
           </div>
@@ -213,6 +225,7 @@ const DashboardTable = ({ events, isLoading }) => {
 
 DashboardTable.propTypes = {
   events: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default DashboardTable;
