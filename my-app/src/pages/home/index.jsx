@@ -38,7 +38,7 @@ const Home = () => {
               <div className="card-body px-8 py-5">
                 <div className="flex justify-between">
                   <div>
-                    <Link href={`/events/${event._id}`} className="flex cursor-pointer hover:text-neutral-300">
+                    <Link href={`/event/${event._id}`} className="flex cursor-pointer hover:text-neutral-300">
                       <h1 className="text-md md:text-xl font-bold">{event.closestIsland || 'Other'} : {event.publicType}</h1>
                       <ArrowTopRightOnSquareIcon className="w-4 h-4 md:w-6 md:h-6 ml-2 pt-1" />
                     </Link>

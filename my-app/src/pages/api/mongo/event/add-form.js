@@ -89,7 +89,7 @@ export default async function handler(req, res) {
         <b>Reporter Phone:</b> ${phoneNumber}<br/>
         <b>Report Method:</b> Online Form<br/>
         <br/>
-        <a href="https://frostyice-0792b9c3-fc67-493a-b39a-69ae6658ba1e.vercel.app/events/${created._id}">See more details</a>
+        <a href="https://frostyice-0792b9c3-fc67-493a-b39a-69ae6658ba1e.vercel.app/event/${created._id}">See more details</a>
         <br/><br/>
         Mahalo!<br/><br/>
         Center for Marine Debris Research
