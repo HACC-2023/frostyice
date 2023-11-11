@@ -66,7 +66,7 @@ export const config = {
     "/events",
     "/event/:path*",
     "/home",
-    "/organization",
+    // "/organization",
     "/data-insights",
     "/thread",
     "/threads",
