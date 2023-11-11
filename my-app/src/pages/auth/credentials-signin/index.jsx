@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Error from "@/components/Error";
 
 const SignIn = () => {
   const [error, setError] = useState(false);

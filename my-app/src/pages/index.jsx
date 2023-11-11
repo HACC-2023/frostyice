@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
+import Error from '@/components/Error';
 
 const LocationAggregatorMap = dynamic(
   () => import('@/components/map/LocationAggregatorMap'),
@@ -12,6 +13,7 @@ const LocationAggregatorMap = dynamic(
 // TODO: download the image instead of using the url
 
 const Home = () => {
+  const [error, setError] = useState(true);
   const [coordinates, setCoordinates] = useState([]);
 
   useEffect(() => {
@@ -28,6 +30,7 @@ const Home = () => {
 
   return (
     <div className='min-h-screen'>
+      {error ? <Error /> : null}
       <div
         className='relative bg-cover bg-center h-[85vh] border-b border-gray-800'
         style={{
