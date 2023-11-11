@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import OrgMemberTable from "@/components/organization/OrgMemberTable";
-import AddMemberModal from "@/components/manage-org/modals/AddMemberModal";
-
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import OrgMemberTable from '@/components/organization/OrgMemberTable';
+import AddMemberModal from '@/components/manage-org/modals/AddMemberModal';
+import Error from '@/components/Error';
 const MyOrganization = () => {
   const { data: session, status } = useSession();
+  const [serverError, setServerError] = useState(false);
   const [orgMembers, setOrgMembers] = useState([]);
   const [organization, setOrganization] = useState([]);
 
@@ -13,25 +14,25 @@ const MyOrganization = () => {
       try {
         if (session) {
           // Fetch user data
-          const userResponse = await fetch("/api/mongo/user/get-users");
+          const userResponse = await fetch('/api/mongo/user/get-users');
           if (userResponse.ok) {
             const userData = await userResponse.json();
             const sameOrgMembers = userData.filter(
               (user) =>
                 user.orgId === session.user.orgId &&
-                user.email !== session.user.email
+                user.email !== session.user.email,
             );
             setOrgMembers(sameOrgMembers);
           } else {
-            console.error("Error fetching user data");
+            setServerError(true);
           }
 
           // Fetch organization data
           const organizationResponse = await fetch(
             `/api/mongo/organization/id/${session.user.orgId}`,
             {
-              method: "GET",
-            }
+              method: 'GET',
+            },
           );
 
           if (organizationResponse.ok) {
@@ -39,11 +40,12 @@ const MyOrganization = () => {
             console.log(organizationData);
             setOrganization([organizationData]);
           } else {
-            console.error("Error fetching organization data");
+            console.error('Error fetching organization data');
           }
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
+        setServerError(true);
       }
     };
 
@@ -51,26 +53,26 @@ const MyOrganization = () => {
   }, [session]);
 
   return (
-    <div className="justify-center items-center">
-      <div className="mt-2 p-14">
-        <h3 className="text-2xl font-semibold text-gray-600 mb-2">
+    <div className='justify-center items-center'>
+      {error ? <Error /> : null}
+      <div className='mt-2 p-14'>
+        <h3 className='text-2xl font-semibold text-gray-600 mb-2'>
           My Organization
         </h3>
         <hr />
         <br />
 
-        <div className="p-8 shadow">
-          {session?.user.role != "org_member" && (
-            <div className="flex flex-row justify-end">
+        <div className='p-8 shadow'>
+          {session?.user.role != 'org_member' && (
+            <div className='flex flex-row justify-end'>
               <button
-                className="btn btn-sm md:btn-md btn-primary"
+                className='btn btn-sm md:btn-md btn-primary'
                 onClick={() =>
-                  document.getElementById("add_member_modal_1").showModal()
-                }
-              >
+                  document.getElementById('add_member_modal_1').showModal()
+                }>
                 Add Member
               </button>
-              <AddMemberModal id="add_member_modal_1" orgs={organization} />
+              <AddMemberModal id='add_member_modal_1' orgs={organization} />
             </div>
           )}
           <OrgMemberTable members={orgMembers} />
