@@ -84,19 +84,19 @@ const DataInsights = () => {
       </div>
     </div>,
 
-    <div key="tab2">
-      <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow">
-        <div className="w-full">
+    <div key="tab2" className="bg-base-200 rounded-xl p-8 mt-3">
+      <div className="p-8 bg-neutral rounded-xl">
+        <div className="w-full flex flex-col items-center justify-center">
           <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
             Flow of Marine Debris: From Islands to Disposal
           </h6>
           <SankeyChart events={events} sortedMaterials={sortedMaterials} />
         </div>
       </div>
-      <div className="flex flex-row justify-between pt-6 p-8 mt-6 shadow">
+      <div className="flex p-8 bg-neutral rounded-xl mt-4">
         <div className="w-full mb-10">
-          <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
-            Components
+          <h6 className="block text-secondary text-xl font-bold mb-4">
+            Component Breakdown
           </h6>
           <DoughnutChart events={events} sortedMaterials={sortedMaterials} />
         </div>
