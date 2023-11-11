@@ -1,5 +1,5 @@
 import SideNavbar from "@/components/navbar/SideNavbar";
-import MobileNavbar from "@/components/navbar/MobileNavbar";
+// import MobileNavbar from "@/components/navbar/MobileNavbar";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import DialogflowChatWidget from "@/components/chatbot/DialogflowChatWidget";

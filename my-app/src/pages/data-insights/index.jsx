@@ -2,12 +2,19 @@ import { useState, useEffect } from "react";
 import IslandBarChart from "@/components/visualizations/IslandBarChart";
 import IslandPieChart from "@/components/visualizations/IslandPieChart";
 import DoughnutChart from "@/components/visualizations/DoughnutChart";
-import SankeyChart from "@/components/visualizations/SankeyChart";
+// import SankeyChart from "@/components/visualizations/SankeyChart";
 import dynamic from "next/dynamic";
 
 const LocationAggregatorMap = dynamic(
   () => import("@/components/map/LocationAggregatorMap"),
   { ssr: false }
+);
+
+const SankeyChart = dynamic(
+  () => import("@/components/visualizations/SankeyChart"),
+  {
+    ssr: false,
+  }
 );
 
 const DataInsights = () => {
@@ -43,8 +50,6 @@ const DataInsights = () => {
     getSortedData().then((r) => console.log("Fetched sorted materials data."));
   }, []);
 
-  console.log("coordinates", coordinates);
-
   const tabContent = [
     <div key="tab1">
       <div className="flex flex-row justify-between p-8 mt-2 shadow">
@@ -77,11 +82,11 @@ const DataInsights = () => {
     <div key="tab2">
       {" "}
       <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow">
-        <div className="w-1/1">
-          <h6 className="text-lg font-semibold text-gray-600 mb-2">
+        <div className="w-full">
+          <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
             Flow of Marine Debris: From Islands to Disposal
           </h6>
-          <SankeyChart />
+          <SankeyChart events={events} sortedMaterials={sortedMaterials} />
         </div>
       </div>
       <div className="flex flex-row justify-between pt-6 p-8 mt-6 shadow">
