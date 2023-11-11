@@ -1,4 +1,4 @@
-export default function Custom500() {
+const Custom500 = () => {
   return (
     <div className='flex min-h-full flex-1 flex-col justify-center lg:px-8'>
       <img className='mx-auto h-24 w-auto' src='/logo.png' alt='CMDR' />
@@ -10,4 +10,6 @@ export default function Custom500() {
       </p>
     </div>
   );
-}
+};
+
+export default Custom500;
