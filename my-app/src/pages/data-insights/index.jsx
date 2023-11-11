@@ -4,6 +4,7 @@ import IslandPieChart from "@/components/visualizations/IslandPieChart";
 import DoughnutChart from "@/components/visualizations/DoughnutChart";
 // import SankeyChart from "@/components/visualizations/SankeyChart";
 import dynamic from "next/dynamic";
+import Container from "@/components/Container";
 
 const LocationAggregatorMap = dynamic(
   () => import("@/components/map/LocationAggregatorMap"),
@@ -51,8 +52,8 @@ const DataInsights = () => {
   }, []);
 
   const tabContent = [
-    <div key="tab1">
-      <div className="flex flex-row justify-between p-8 mt-2 shadow">
+    <div key="tab1" className="bg-base-200 rounded-xl p-8 mt-3">
+      <div className="flex flex-row justify-between mt-2 rounded-xl bg-base-200">
         <div className="w-full">
           <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
             Current Events Location
@@ -61,26 +62,29 @@ const DataInsights = () => {
           <LocationAggregatorMap data={coordinates} />
         </div>
       </div>
-      <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow">
-        <div className="w-2/4">
-          <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
-            Events By Islands
-          </h6>
-          <h6 className="block uppercase text-secondary text-xs font-bold mb-10">
-            Events Status
-          </h6>
-          <IslandBarChart data={events} />
-        </div>
-        <div className="w-2/4">
-          <h6 className="block uppercase text-secondary text-xs font-bold mb-8 mt-8">
-            Events Percentage
-          </h6>
-          <IslandPieChart data={events} />
+      <div className="divider my-4" />
+      <div>
+        <h6 className="block text-secondary text-lg font-bold mb-4">
+          Events By Islands
+        </h6>
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-3">
+          <div className="flex flex-col justify-between h-80 bg-neutral p-4 rounded-xl w-full lg:w-1/2 items-center">
+            <h6 className="block text-secondary text-xs font-bold">
+              Events Status
+            </h6>
+            <IslandBarChart data={events} />
+          </div>
+          <div className="flex flex-col justify-between h-80 bg-neutral p-4 rounded-xl w-full lg:w-1/2 items-center">
+            <h6 className="block text-secondary text-xs font-bold">
+              Events Percentage
+            </h6>
+            <IslandPieChart data={events} />
+          </div>
         </div>
       </div>
     </div>,
+
     <div key="tab2">
-      {" "}
       <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow">
         <div className="w-full">
           <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
@@ -103,18 +107,18 @@ const DataInsights = () => {
   const tabNames = ["Reports", "Sorting & Disposal"];
 
   return (
-    <div className="justify-center items-center">
+    <Container>
       <div className="mt-2 p-8">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           Data Insights
         </h3>
         <hr />
         <br />
-        <div className="tabs">
+        <div className="tabs tabs-boxed">
           {tabContent.map((content, index) => (
             <a
               key={index}
-              className={`tab tab-bordered text-gray-600 ${
+              className={`tab text-gray-500 ${
                 activeTab === index ? "tab-active" : ""
               }`}
               onClick={() => setActiveTab(index)}
@@ -123,9 +127,9 @@ const DataInsights = () => {
             </a>
           ))}
         </div>
-        <div className="tab-content p-4">{tabContent[activeTab]}</div>
+        <div className="tab-content">{tabContent[activeTab]}</div>
       </div>
-    </div>
+    </Container>
   );
 };
 

@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import OrgMemberTable from '@/components/organization/OrgMemberTable';
-import AddMemberModal from '@/components/manage-org/modals/AddMemberModal';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import OrgMemberTable from "@/components/organization/OrgMemberTable";
+import AddMemberModal from "@/components/manage-org/modals/AddMemberModal";
+import { ROLES } from "@/roles/roles";
+import Container from "@/components/Container";
 import Error from '@/components/Error';
+
 const MyOrganization = () => {
   const { data: session, status } = useSession();
   const [serverError, setServerError] = useState(false);
@@ -53,7 +56,7 @@ const MyOrganization = () => {
   }, [session]);
 
   return (
-    <div className='justify-center items-center'>
+    <Container>
       {error ? <Error /> : null}
       <div className='mt-2 p-14'>
         <h3 className='text-2xl font-semibold text-gray-600 mb-2'>
@@ -78,7 +81,7 @@ const MyOrganization = () => {
           <OrgMemberTable members={orgMembers} />
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

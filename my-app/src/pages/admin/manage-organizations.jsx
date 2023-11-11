@@ -5,6 +5,7 @@ import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 import Loading from "@/components/Loading";
 import UsersTableRow from "@/components/manage-org/table/UsersTableRow";
+import Container from "@/components/Container";
 
 const ManageOrganizations = () => {
   const { data, error, isLoading } = useSWR(
@@ -20,7 +21,7 @@ const ManageOrganizations = () => {
 
   console.log(data, error, isLoading);
   return (
-    <div className="min-h-screen p-3">
+    <Container>
       <div className="flex flex-col items-center mb-12">
         <h1 className="w-full md:w-3/4 px-4 py-3 text-4xl font-bold">
           Manage Organizations
@@ -48,7 +49,7 @@ const ManageOrganizations = () => {
         {users ? (
           <div className="w-full md:w-3/4 mb-12">
             <h1 className="font-bold px-2 py-3">Members</h1>
-            <div className="h-96 overflow-auto border">
+            <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">
                 <table className="table table-zebra">
                   <thead>
@@ -74,7 +75,7 @@ const ManageOrganizations = () => {
         {data ? (
           <div className="w-full md:w-3/4">
             <h1 className="font-bold px-2 py-3">Organizations</h1>
-            <div className="h-96 overflow-auto border">
+            <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">
                 <table className="table table-zebra">
                   <thead>
@@ -95,11 +96,11 @@ const ManageOrganizations = () => {
           </div>
         ) : (
           <div className="overflow-x-auto w-full md:w-3/4 flex items-center rounded-xl py-3">
-            <table className="table table-zebra">
+            <table className="table table-zebra text-slate-800">
               <thead>
                 <tr>
                   <th />
-                  <th>Organization Name</th>
+                  <th className="text-slate-800">Organization Name</th>
                   <th />
                 </tr>
               </thead>
@@ -161,7 +162,7 @@ const ManageOrganizations = () => {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 };
 
