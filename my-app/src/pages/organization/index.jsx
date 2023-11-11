@@ -57,7 +57,7 @@ const MyOrganization = () => {
 
   return (
     <Container>
-      {error ? <Error /> : null}
+      {serverError ? <Error /> : null}
       <div className='mt-2 p-14'>
         <h3 className='text-2xl font-semibold text-gray-600 mb-2'>
           My Organization
@@ -66,7 +66,7 @@ const MyOrganization = () => {
         <br />
 
         <div className='p-8 shadow'>
-          {session?.user.role != ROLES.ORG_MEMBER && (
+          {session?.user.role !== ROLES.ORG_MEMBER && (
             <div className='flex flex-row justify-end'>
               <button
                 className='btn btn-sm md:btn-md btn-primary'
