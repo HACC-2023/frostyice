@@ -205,7 +205,7 @@ const DashboardTable = ({ events, isLoading }) => {
                   </div>
                   <div className="ms-auto flex flex-1 flex-col justify-between">
                     <div
-                      className={`ms-auto mt-3 h-min w-min rounded-full px-2.5 py-0.5 text-xs text-white text-center font-semibold ${getStatusColor(event.status)}`}
+                      className={`ms-auto mt-3 h-min rounded-full px-2.5 py-0.5 text-xs text-white text-center font-semibold ${getStatusColor(event.status)}`}
                     >
                       {event.status}
                     </div>
