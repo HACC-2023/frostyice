@@ -57,7 +57,6 @@ const OrgMemberTable = ({ members }) => {
       <table className="table mt-6 text-gray-600">
         <thead>
           <tr className="text-gray-600">
-
             <th>First Name</th>
             <th>Last Name</th>
             <td>Email</td>
@@ -68,18 +67,15 @@ const OrgMemberTable = ({ members }) => {
         <tbody>
           {members.map((member, index) => (
             <tr key={member._id}>
-
               <th>{member.firstName}</th>
               <th>{member.lastName}</th>
               <td>{member.email}</td>
-
               <td>
                 {session?.user.role !== ROLES.ORG_MEMBER ? (
                   editingRole.index === index ? (
                     <div className="flex-col items-center">
-                      <input
-                        type="text"
-                        className="text-gray-500 bg-white border-2 border-gray-200 rounded-md p-1 w-28 focus:outline-none focus:border-blue"
+                      <select
+                        className="select select-sm select-bordered mb-2"
                         value={editingRole.role}
                         onChange={(e) =>
                           setEditingRole({
@@ -87,26 +83,31 @@ const OrgMemberTable = ({ members }) => {
                             role: e.target.value,
                           })
                         }
-                      />
+                      >
+                        {Object.values(ROLES).map((role, index) => (
+                          <option value={role} key={index}>
+                            {role}
+                          </option>
+                        ))}
+                      </select>
 
                       <div className="flex-row mt-1">
                         <button
                           onClick={() => saveRole(member._id, editingRole.role)}
-                          className="bg-blue-600 text-white hover:bg-blue-500 px-2 py-0.3 rounded"
+                          className="px-2 py-0.3 rounded btn btn-sm btn-primary text-xs"
                         >
                           Save
                         </button>
 
                         <button
                           onClick={cancelEdit}
-                          className="bg-red-600 text-white hover:bg-red-500 px-2 py-0.3 rounded ml-2"
+                          className="px-2 py-0.3 rounded ml-2 btn btn-sm btn-outline text-xs"
                         >
                           Cancel
                         </button>
                       </div>
                     </div>
                   ) : (
-                    // Render role as text with PencilIcon when not editing
                     <div className="relative">
                       {member.role}
                       {editingRole.index !== index && (
@@ -118,7 +119,6 @@ const OrgMemberTable = ({ members }) => {
                     </div>
                   )
                 ) : (
-                  // Render only the role as text when the user is an org member
                   <div>{member.role}</div>
                 )}
               </td>
