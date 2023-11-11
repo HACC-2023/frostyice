@@ -5,14 +5,15 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import DashboardTable from "@/components/events/events-dashboard/DashboardTable";
+import Container from "@/components/Container";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
   const [events, setEvents] = useState([]);
   const [storedEvents, setStoredEvents] = useState([]); // events with status 'Removal and Storage'
   const [selectedEvents, setSelectedEvents] = useState([]); // events selected for multievent shipment
-  const [shipmentDate, setShipmentDate] = useState('');
-  const [fromNode, setFromNode] = useState(''); // org's associatedNode
+  const [shipmentDate, setShipmentDate] = useState("");
+  const [fromNode, setFromNode] = useState(""); // org's associatedNode
   const [isLoading, setIsLoading] = useState(true);
   const [reload, setReload] = useState(true);
   const [orgFilter, setOrgFilter] = useState(true);
@@ -26,10 +27,10 @@ const Dashboard = () => {
       setReload(false);
       fetchData();
     }
-    if (searchParams.has('organization') && !orgFilter) {
+    if (searchParams.has("organization") && !orgFilter) {
       setOrgFilter(true);
       setReload(true);
-    } else if (!searchParams.has('organization') && orgFilter) {
+    } else if (!searchParams.has("organization") && orgFilter) {
       setOrgFilter(false);
       setReload(true);
     }
@@ -38,21 +39,31 @@ const Dashboard = () => {
   async function fetchData() {
     try {
       setIsLoading(true);
-      const eventsResponse = searchParams.has('organization')
+      const eventsResponse = searchParams.has("organization")
         ? await fetch(`/api/mongo/event/removal-org-id/${session?.user?.orgId}`)
-        : await fetch('/api/mongo/event/all');
+        : await fetch("/api/mongo/event/all");
       if (eventsResponse.ok) {
         const data = await eventsResponse.json();
         setEvents(data);
         if (session?.user?.role === "admin") {
           // display all events that have status 'Removal and Storage'
-          setStoredEvents(data.filter((event) => event.status === 'Removal and Storage'));
-          setFromNode('CMDR Hub'); // todo change
+          setStoredEvents(
+            data.filter((event) => event.status === "Removal and Storage")
+          );
+          setFromNode("CMDR Hub"); // todo change
         } else if (session?.user?.role === "org_admin") {
           // display all events that have status 'Removal and Storage' and tempStorage is the org's associatedNode
-          const orgResponse = await fetch(`/api/mongo/organization/id/${session?.user?.orgId}`);
+          const orgResponse = await fetch(
+            `/api/mongo/organization/id/${session?.user?.orgId}`
+          );
           const orgData = await orgResponse.json();
-          setStoredEvents(data.filter((event) => event.status === 'Removal and Storage' && event.tempStorage === orgData.associatedNode));
+          setStoredEvents(
+            data.filter(
+              (event) =>
+                event.status === "Removal and Storage" &&
+                event.tempStorage === orgData.associatedNode
+            )
+          );
           setFromNode(orgData.associatedNode);
         }
       } else {
@@ -83,61 +94,72 @@ const Dashboard = () => {
 
   async function addToMultiEventTransport() {
     try {
-      const res = await fetch('/api/mongo/event/transport/add', {
-        method: 'POST',
+      const res = await fetch("/api/mongo/event/transport/add", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           shipmentDate: shipmentDate,
-          status: 'Scheduled',
+          status: "Scheduled",
           eventIds: selectedEvents,
           fromNode: fromNode,
         }),
       });
       if (res.ok) {
-        toast.success('Added events to shipment');
-        document.getElementById('multieventModal').close();
+        toast.success("Added events to shipment");
+        document.getElementById("multieventModal").close();
       } else {
-        toast.error('Error adding events to shipment');
+        toast.error("Error adding events to shipment");
       }
     } catch (error) {
       console.error(error);
-      toast.error('Error adding events to shipment');
+      toast.error("Error adding events to shipment");
     }
   }
 
   return (
-    <div className="justify-center items-center">
+    <Container>
       <div>
         <h3 className="text-3xl font-semibold pt-8 text-center">
-          {searchParams.has('organization') ? 'Organization Events' : 'All Events'}
+          {searchParams.has("organization")
+            ? "Organization Events"
+            : "All Events"}
         </h3>
         <div className="text-center">
           <button
             className="hover:opacity-70 text-grey-700 transition-all"
             onClick={() => {
-              updateSearchParams('organization', searchParams.has('organization') ? null : true);
+              updateSearchParams(
+                "organization",
+                searchParams.has("organization") ? null : true
+              );
             }}
           >
-            {searchParams.has('organization') ? 'See all events' : 'See organization events'}
+            {searchParams.has("organization")
+              ? "See all events"
+              : "See organization events"}
           </button>
         </div>
         <hr />
         <div className="px-8">
-          {(session?.user?.role === "admin" || session?.user.role === "org_admin")
-          && <button
-            className="flex flex-row pb-3 hover:brightness-150 transition-all"
-            onClick={() => {
-              document.getElementById('multieventModal').showModal();
-            }}
-          >
-            <PlusCircleIcon className="h-5 w-5 text-gray-600" style={{ marginTop: '2px' }} />
-            <h6 className="text-gray-600 pl-1 font-semibold text-md">
-              Multievent Shipment
-            </h6>
-          </button>
-          }
+          {(session?.user?.role === "admin" ||
+            session?.user.role === "org_admin") && (
+            <button
+              className="flex flex-row pb-3 hover:brightness-150 transition-all"
+              onClick={() => {
+                document.getElementById("multieventModal").showModal();
+              }}
+            >
+              <PlusCircleIcon
+                className="h-5 w-5 text-gray-600"
+                style={{ marginTop: "2px" }}
+              />
+              <h6 className="text-gray-600 pl-1 font-semibold text-md">
+                Multievent Shipment
+              </h6>
+            </button>
+          )}
           <DashboardTable events={events} isLoading={isLoading} />
         </div>
       </div>
@@ -154,14 +176,17 @@ const Dashboard = () => {
           <select
             className="select select-bordered w-full bg-white text-gray-600 p-2"
             multiple
-            style={{ height: '200px' }}
+            style={{ height: "200px" }}
             onChange={(e) => {
-              setSelectedEvents([...e.target.selectedOptions].map(o => o.value));
+              setSelectedEvents(
+                [...e.target.selectedOptions].map((o) => o.value)
+              );
             }}
           >
             {storedEvents.map((event) => (
               <option key={event._id} value={event._id}>
-                {event.closestIsland} ({event.reportedDate.split("T")[0]})&nbsp;-&nbsp;{event.publicType}
+                {event.closestIsland} ({event.reportedDate.split("T")[0]}
+                )&nbsp;-&nbsp;{event.publicType}
               </option>
             ))}
           </select>
@@ -174,13 +199,17 @@ const Dashboard = () => {
               <input
                 type="date"
                 className="input input-bordered bg-white text-gray-600 mb-2"
-                onChange={(e) => { setShipmentDate(e.target.value) }}
+                onChange={(e) => {
+                  setShipmentDate(e.target.value);
+                }}
               />
             </div>
           </div>
           <div className="mt-4 flex justify-end">
             <form method="dialog">
-              <button className="text-gray-900 bg-white hover:bg-gray-50 rounded-md px-4 py-2 text-sm font-semibold shadow-sm">Close</button>
+              <button className="text-gray-900 bg-white hover:bg-gray-50 rounded-md px-4 py-2 text-sm font-semibold shadow-sm">
+                Close
+              </button>
             </form>
             <button
               className="ml-3 text-white bg-blue-600 hover:bg-red-500 rounded-md px-3 py-2 text-sm font-semibold shadow-sm"
@@ -194,7 +223,7 @@ const Dashboard = () => {
           <button className="cursor-default">close</button>
         </form>
       </dialog>
-    </div>
+    </Container>
   );
 };
 

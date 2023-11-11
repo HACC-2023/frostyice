@@ -5,6 +5,7 @@ import ClickableMap from "@/components/map/ClickableMap/ClickableMap";
 import { useSession } from "next-auth/react";
 import Loading from "@/components/Loading";
 import { uploadFiles } from "@/utils/uploadthing";
+import Container from "@/components/Container";
 
 const ReportForm = () => {
   const { data: session, status } = useSession();
@@ -142,7 +143,7 @@ const ReportForm = () => {
   }
 
   return (
-    <div className="px-5 bg-white min-h-screen pb-32">
+    <Container>
       {isLoading
         && <div className="fixed w-full h-full top-0 left-0 right-0 bottom-0 flex align-middle justify-center m-0 bg-[#00000088]" style={{ zIndex: 1000 }}>
           <Loading />
@@ -811,7 +812,7 @@ const ReportForm = () => {
           </button>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

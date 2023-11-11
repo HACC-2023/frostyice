@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import OrgMemberTable from "@/components/organization/OrgMemberTable";
 import AddMemberModal from "@/components/manage-org/modals/AddMemberModal";
 import { ROLES } from "@/roles/roles";
+import Container from "@/components/Container";
 
 const MyOrganization = () => {
   const { data: session, status } = useSession();
@@ -52,7 +53,7 @@ const MyOrganization = () => {
   }, [session]);
 
   return (
-    <div className="justify-center items-center">
+    <Container>
       <div className="mt-2 p-14">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           My Organization
@@ -77,7 +78,7 @@ const MyOrganization = () => {
           <OrgMemberTable members={orgMembers} />
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

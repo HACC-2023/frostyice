@@ -4,6 +4,7 @@ import IslandPieChart from "@/components/visualizations/IslandPieChart";
 import DoughnutChart from "@/components/visualizations/DoughnutChart";
 // import SankeyChart from "@/components/visualizations/SankeyChart";
 import dynamic from "next/dynamic";
+import Container from "@/components/Container";
 
 const LocationAggregatorMap = dynamic(
   () => import("@/components/map/LocationAggregatorMap"),
@@ -103,7 +104,7 @@ const DataInsights = () => {
   const tabNames = ["Reports", "Sorting & Disposal"];
 
   return (
-    <div className="justify-center items-center">
+    <Container>
       <div className="mt-2 p-8">
         <h3 className="text-2xl font-semibold text-gray-600 mb-2">
           Data Insights
@@ -125,7 +126,7 @@ const DataInsights = () => {
         </div>
         <div className="tab-content p-4">{tabContent[activeTab]}</div>
       </div>
-    </div>
+    </Container>
   );
 };
 
