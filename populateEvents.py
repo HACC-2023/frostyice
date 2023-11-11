@@ -78,6 +78,19 @@ lastNames = [
     'White',
     'Harris',
 ]
+plastic_beach_img_urls = [
+    'https://utfs.io/f/5503c87f-86ec-4499-a3fd-2853d7992919-phtxy1.jpeg',
+    'https://utfs.io/f/901de128-d12d-4824-9dc2-cb77870441ef-phtxy2.jpeg',
+    'https://utfs.io/f/f4a7486c-eac0-493f-9a06-bd06da01b72a-phtxxz.jpeg',
+    'https://utfs.io/f/b51a841c-9e83-41ca-a42e-596a7ae1feed-phtxy0.jpg',
+]
+plastic_ocean_img_url = 'https://i.imgur.com/V06WroJ.png'
+container_sea_img_url = 'https://utfs.io/f/ba685b21-79f8-44b1-ba6b-2bf88c8eb938-b63ylq.com_.jpeg'
+container_beach_img_url = 'https://utfs.io/f/65b8d15c-e4c9-4c14-ab8d-49e83130c92f-hzyc3l.png'
+boat_beach_img_url = 'https://i.imgur.com/Rqx0zmr.png'
+boat_sea_img_url = 'https://i.imgur.com/lfTjY3J.png'
+fishing_gear_beach_img_url = 'https://i.imgur.com/8art0d8.png'
+fishing_gear_ocean_img_url = 'https://i.imgur.com/7mNlJ1R.png'
 
 for location in locations:
     container_fullness = None
@@ -85,17 +98,39 @@ for location in locations:
     removal_start_date = None
     removal_end_date = None
     temp_storage = None
+    img_url = None
 
     first_name = choice(firstNames)
     last_name = choice(lastNames)
     email = f'{first_name.lower()}.{last_name.lower()}@fakeemail.com'
     phone_number = f'({choice(range(100, 999))}) {choice(range(100, 999))}-{choice(range(1000, 9999))}'
 
+    public_location_desc = choice(location_descriptions)
+
     _type = choice(eventTypes)
-    if _type == 'Abandoned/derelict boat':
-        claim_boat = choice(['Yes', 'No'])
-    if _type == 'Container/drum/cylinder':
-        container_fullness = choice(['Full', 'Partially filled', 'Empty'])
+    match _type:
+        case 'Abandoned/derelict boat':
+            claim_boat = choice(['Yes', 'No'])
+            if 'sea' in public_location_desc:
+                img_url = boat_sea_img_url
+            else:
+                img_url = boat_beach_img_url
+        case 'Container/drum/cylinder':
+            container_fullness = choice(['Full', 'Partially filled', 'Empty'])
+            if 'sea' in public_location_desc:
+                img_url = container_sea_img_url
+            else:
+                img_url = container_beach_img_url
+        case 'Mass of netting/fishing gear':
+            if 'sea' in public_location_desc:
+                img_url = fishing_gear_ocean_img_url
+            else:
+                img_url = fishing_gear_beach_img_url
+        case _:
+            if 'sea' in public_location_desc:
+                img_url = plastic_ocean_img_url
+            else:
+                img_url = choice(plastic_beach_img_urls)
 
     status = choice(statuses)
     if status != 'Reported':
@@ -112,7 +147,7 @@ for location in locations:
         'publicType': _type,
         'publicContainerFullness': container_fullness,
         'publicClaimBoat': claim_boat,
-        'publicLocationDesc': choice(location_descriptions),
+        'publicLocationDesc': public_location_desc,
         'publicBiofoulingRating': choice(range(1, 10)),
         'publicDebrisEnvDesc': choice(env_descriptions),
         'mapLat': location['latitude'],
@@ -122,5 +157,6 @@ for location in locations:
         'debrisSize': choice(range(1, 20)),
         'debrisMass': choice(range(10, 50)),
         'tempStorage': temp_storage,
+        'imageUrl': img_url,
     }) as req:
         print(req.status_code)
