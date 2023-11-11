@@ -54,7 +54,7 @@ export default async function handler(req, res) {
         publicDebrisEnvDesc,
         mapLat,
         mapLong,
-        removalOrgId: matchingOrgs[Math.floor(Math.random() * matchingOrgs.length)]._id,
+        removalOrgId: status === 'Reported' ? null : matchingOrgs[Math.floor(Math.random() * matchingOrgs.length)]._id,
         closestIsland: derivedClosetIsland,
         imageUrl,
         removalStartDate: removalStartDate ? new Date(removalStartDate) : null,

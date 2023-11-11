@@ -8,7 +8,6 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { STATUS } from "@/constants/constants";
 
 const EventPage = () => {
   const router = useRouter();
@@ -35,8 +34,10 @@ const EventPage = () => {
         setCurrentStep(2);
         break;
       case "Disposal":
-      case "Complete":
         setCurrentStep(3);
+        break;
+      case "Complete":
+        setCurrentStep(4);
         break;
       default:
         setCurrentStep(0);
@@ -45,14 +46,11 @@ const EventPage = () => {
     }
   }, [data]);
 
-  console.log(data?.status);
-  console.log(currentStep)
-
   if (data && session) {
     return (
       <div className="w-full min-h-full flex justify-center">
         <div className="min-h-screen p-5 w-full md:max-w-7xl flex flex-col gap-5">
-          <ProgressBar status={data.status} />
+          <ProgressBar status={data.status} setCurrentChecked={setCurrentStep} />
           <div className="flex flex-col gap-2">
             <EventRemoval event={data} checked={currentStep === 0} setCurrentChecked={setCurrentStep} />
             <RemovalAndStorage event={data} userOrgId={session?.user.orgId} checked={currentStep === 1} setCurrentChecked={setCurrentStep} />

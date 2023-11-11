@@ -17,16 +17,6 @@ const Sorting = ({ event, userOrgId, checked, setCurrentChecked }) => {
     { refreshInterval: 1000 }
   );
 
-  // const sortedMaterial = {
-  //   material: "Nets",
-  //   island: "Oahu",
-  //   mass: 32,
-  //   polymers: "Nylon",
-  //   eventId: "abcd1234",
-  //   disposalDate: new Date(1709143329284),
-  //   disposalMechanism: "Recycled",
-  // };
-  console.log("data in sorting", data);
   return (
     <EventCollapse title="Sorting" checked={checked} setCurrentChecked={setCurrentChecked} index={2}>
       {STATUS.indexOf(event.status) > 1 ? (
