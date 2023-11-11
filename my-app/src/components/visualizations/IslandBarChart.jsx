@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,7 +12,6 @@ import {
 } from "chart.js";
 import { graphIsland } from "@/utils/graphIsland";
 import { getRandomColor } from "@/utils/color";
-import { get } from "mongoose";
 
 ChartJS.register(
   CategoryScale,
@@ -48,6 +47,11 @@ export const options = {
   },
 };
 
+/**
+ * Island Bar Chart
+ * @param {Array} data
+ * @returns {JSX.Element}
+ */
 const IslandBarChart = ({ data }) => {
   const [graphReady, setGraphReady] = useState(false);
 
@@ -97,6 +101,10 @@ const IslandBarChart = ({ data }) => {
       )}
     </div>
   );
+};
+
+IslandBarChart.propTypes = {
+  data: PropTypes.array.isRequired,
 };
 
 export default IslandBarChart;

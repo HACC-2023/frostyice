@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import IslandBarChart from "@/components/visualizations/IslandBarChart";
 import IslandPieChart from "@/components/visualizations/IslandPieChart";
-import ComponentsPieChart from "@/components/visualizations/ComponentsPieChart";
-import DisposalBarChart from "@/components/visualizations/DisposalBarChart";
+import DoughnutChart from "@/components/visualizations/DoughnutChart";
 import SankeyChart from "@/components/visualizations/SankeyChart";
 import dynamic from "next/dynamic";
 
@@ -15,6 +14,7 @@ const DataInsights = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [coordinates, setCoordinates] = useState([]);
   const [events, setEvents] = useState([]);
+  const [sortedMaterials, setSortedMaterials] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -27,6 +27,20 @@ const DataInsights = () => {
       setEvents(data);
     };
     getData().then((r) => console.log("Fetched locations"));
+  }, []);
+
+  useEffect(() => {
+    const getSortedData = async () => {
+      const res = await fetch(" /api/mongo/sorted-material/sorted-materials");
+      const data = await res.json();
+
+      if (data) {
+        setSortedMaterials(data);
+      } else {
+        console.log("Failed to load sorted materials data.");
+      }
+    };
+    getSortedData().then((r) => console.log("Fetched sorted materials data."));
   }, []);
 
   console.log("coordinates", coordinates);
@@ -53,7 +67,6 @@ const DataInsights = () => {
           <IslandBarChart data={events} />
         </div>
         <div className="w-2/4">
-
           <h6 className="block uppercase text-secondary text-xs font-bold mb-8 mt-8">
             Events Percentage
           </h6>
@@ -63,26 +76,20 @@ const DataInsights = () => {
     </div>,
     <div key="tab2">
       {" "}
-      <div className="flex pt-6 flex-row justify-between bg-white p-8 mt-4 shadow">
-        <div className="w-2/5">
-          <h6 className="text-lg font-semibold text-gray-600 mb-2">
-            Components
-          </h6>
-          <ComponentsPieChart />
-        </div>
-        <div className="w-3/6 pl-12">
-          <h6 className="text-lg font-semibold text-gray-600 mb-4">
-            Disposal Method By Mass
-          </h6>
-          <DisposalBarChart />
-        </div>
-      </div>
-      <div className="flex flex-row justify-between bg-white pt-6 p-8 mt-4 shadow">
+      <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow">
         <div className="w-1/1">
           <h6 className="text-lg font-semibold text-gray-600 mb-2">
             Flow of Marine Debris: From Islands to Disposal
           </h6>
           <SankeyChart />
+        </div>
+      </div>
+      <div className="flex flex-row justify-between pt-6 p-8 mt-6 shadow">
+        <div className="w-full mb-10">
+          <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
+            Components
+          </h6>
+          <DoughnutChart events={events} sortedMaterials={sortedMaterials} />
         </div>
       </div>
     </div>,
