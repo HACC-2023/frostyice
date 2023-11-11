@@ -65,8 +65,8 @@ const SideNavbar = () => {
     },
   ];
 
-  const NavContainer = () => (
-    <ul className="menu p-5 w-72 min-h-screen sticky top-0 bg-base-100 pt-10 font-medium border-r border-solid border-gray-300">
+  const NavContainer = ({ background }) => (
+    <ul className={`menu ${background} p-5 w-72 min-h-screen sticky top-0 pt-10 font-medium text-white`}>
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
@@ -132,8 +132,9 @@ const SideNavbar = () => {
 
     return (
       <li className="m-1">
-        <Link href={link} className={`${isLinkActive(link) ? "font-extrabold" : ""}`}>
+        <Link href={link} className={`${isLinkActive(link) ? "font-extrabold" : ""} hover:text-white focus:text-white relative`}>
           {icon && <IconElement height={ICON_HEIGHT} />}
+          <div className={`absolute w-full h-full rounded-md opacity-20 hover:bg-white ${isLinkActive(link) ? "bg-white" : ""}`}/>
           <span>{label}</span>
         </Link>
       </li>
@@ -171,13 +172,13 @@ const SideNavbar = () => {
             </div>
           </div>
         </div>
-        <div className="drawer-side">
+        <div className="drawer-side z-10">
           <label
             htmlFor="my-drawer-3"
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          {status !== "loading" && <NavContainer />}
+          {status !== "loading" && <NavContainer background="bg-gradient-to-br from-slate-800 via-cyan-900 to-sky-950" />}
         </div>
       </div>
     </>

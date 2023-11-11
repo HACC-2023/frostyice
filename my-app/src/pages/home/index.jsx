@@ -18,9 +18,9 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="p-5 flex flex-col gap-3">
+    <div className="p-10 flex flex-col gap-3 bg-base-100 m-3 rounded-3xl text-primary">
       <header className="mb-5">
-        <h1 className="text-3xl md:text-5xl font-bold mb-2">
+        <h1 className="text-3xl md:text-[2.75rem] font-bold mb-2">
           Welcome to the Marine Debris Reporting Portal
         </h1>
         <p>
@@ -32,10 +32,10 @@ const Home = () => {
         <h1 className="text-xl md:text-3xl font-bold p-2">
           Newly Reported Events
         </h1>
-        <section className="flex flex-col gap-3 py-4 px-3 border border-neutral rounded-xl bg-base-200 min-h-[400px]">
+        <section className="flex flex-col gap-3 p-3 border rounded-xl bg-base-200 min-h-[400px]">
           {reportedEvents.map((event) => (
-            <div key={event._id} className="card card-bordered border-neutral bg-base-100">
-              <div className="card-body px-8 py-5">
+            <div key={event._id} className="card card-bordered bg-base-100">
+              <div className="card-body p-4">
                 <div className="flex justify-between">
                   <div>
                     <Link href={`/events/${event._id}`} className="flex cursor-pointer hover:text-neutral-300">
