@@ -6,8 +6,9 @@ import UndoStepBtn from "./common/UndoStepBtn";
 import DisposalRow from "./disposal/DisposalRow";
 import { STATUS } from "@/constants/constants";
 import { fetcher } from "@/utils/fetcher";
+import PropTypes from "prop-types";
 
-const Disposal = ({ event, userOrgId }) => {
+const Disposal = ({ event, userOrgId, checked, setCurrentChecked }) => {
   const _id = event._id;
   const { data } = useSWR(
     _id ? `/api/mongo/sorted-material/get-all-by-event-id/${event._id}` : null,
@@ -24,7 +25,7 @@ const Disposal = ({ event, userOrgId }) => {
   //   disposalMechanism: "Burned",
   // };
   return (
-    <EventCollapse title="Disposal">
+    <EventCollapse title="Disposal" checked={checked} setCurrentChecked={setCurrentChecked} index={3}>
       {STATUS.indexOf(event.status) > 2 ? (
         <div className="flex flex-col gap-3 my-3 py-6 px-3 bg-base-100 rounded-xl">
           <div className="overflow-x-auto w-full flex items-start rounded-xl p-3 h-96 border border-neutral">
@@ -68,5 +69,12 @@ const Disposal = ({ event, userOrgId }) => {
     </EventCollapse>
   );
 };
+
+Disposal.propTypes = {
+  event: PropTypes.object,
+  userOrgId: PropTypes.string,
+  checked: PropTypes.bool.isRequired,
+  setCurrentChecked: PropTypes.func.isRequired,
+}
 
 export default Disposal;

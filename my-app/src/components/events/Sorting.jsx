@@ -7,8 +7,9 @@ import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
 import UndoStepBtn from "./common/UndoStepBtn";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
+import PropTypes from "prop-types";
 
-const Sorting = ({ event, userOrgId }) => {
+const Sorting = ({ event, userOrgId, checked, setCurrentChecked }) => {
   const _id = event._id;
   const { data } = useSWR(
     _id ? `/api/mongo/sorted-material/get-all-by-event-id/${event._id}` : null,
@@ -27,7 +28,7 @@ const Sorting = ({ event, userOrgId }) => {
   // };
   console.log("data in sorting", data);
   return (
-    <EventCollapse title="Sorting">
+    <EventCollapse title="Sorting" checked={checked} setCurrentChecked={setCurrentChecked} index={2}>
       {STATUS.indexOf(event.status) > 1 ? (
         <>
           {userOrgId === event.removalOrgId && (
@@ -87,5 +88,12 @@ const Sorting = ({ event, userOrgId }) => {
     </EventCollapse>
   );
 };
+
+Sorting.propTypes = {
+  event: PropTypes.object,
+  userOrgId: PropTypes.string,
+  checked: PropTypes.bool.isRequired,
+  setCurrentChecked: PropTypes.func.isRequired,
+}
 
 export default Sorting;

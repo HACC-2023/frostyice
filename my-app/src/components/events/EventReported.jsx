@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import PropTypes from "prop-types";
 import EventCollapse from "./common/EventCollapse";
 import DispatchTeamBtn from "./event-reported/DispatchTeamBtn";
 import DismissBtn from "./event-reported/DismissBtn";
@@ -6,11 +7,11 @@ import StaticMap from "../map/StaticLocationMap/StaticMap";
 import { prettyHstDate } from "@/utils/dateConverter";
 import Image from "next/image";
 
-const EventRemoval = ({ event }) => {
+const EventRemoval = ({ event, checked, setCurrentChecked }) => {
   const { data: session } = useSession();
 
   return (
-    <EventCollapse title="Reported">
+    <EventCollapse title="Reported" checked={checked} setCurrentChecked={setCurrentChecked} index={0}>
       <div className="p-3 bg-base-100 rounded-xl">
         <header>
           <div className="flex flex-col md:flex-row justify-between">
@@ -109,6 +110,12 @@ const EventRemoval = ({ event }) => {
       )}
     </EventCollapse>
   );
+};
+
+EventRemoval.propTypes = {
+  event: PropTypes.object.isRequired,
+  checked: PropTypes.bool.isRequired,
+  setCurrentChecked: PropTypes.func.isRequired,
 };
 
 export default EventRemoval;

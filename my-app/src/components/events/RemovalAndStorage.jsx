@@ -5,10 +5,11 @@ import MultiEventRow from "./removal-and-storage/MultiEventRow";
 import CompletionWarning from "./common/CompletionWarning";
 import MarkAsCompleteBtn from "./common/MarkAsCompleteBtn";
 import UndoStepBtn from "./common/UndoStepBtn";
+import PropTypes from "prop-types";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 
-const RemovalAndStorage = ({ event, userOrgId }) => {
+const RemovalAndStorage = ({ event, userOrgId, checked, setCurrentChecked }) => {
   const { data: organization } = useSWR(
     event.removalOrgId ? `/api/mongo/organization/id/${event.removalOrgId}` : null,
     event.removalOrgId ? fetcher : null
@@ -19,7 +20,7 @@ const RemovalAndStorage = ({ event, userOrgId }) => {
 
   // userOrgId === event.removalOrgId checks for permissions
   return (
-    <EventCollapse title="Removal and Storage">
+    <EventCollapse title="Removal and Storage" checked={checked} setCurrentChecked={setCurrentChecked} index={1} >
       {STATUS.indexOf(event.status) > 0 ? (
         <div>
           {userOrgId === event.removalOrgId && (
@@ -154,6 +155,13 @@ const RemovalAndStorage = ({ event, userOrgId }) => {
       )}
     </EventCollapse>
   );
+};
+
+RemovalAndStorage.propTypes = {
+  event: PropTypes.object,
+  userOrgId: PropTypes.string,
+  checked: PropTypes.bool.isRequired,
+  setCurrentChecked: PropTypes.func.isRequired,
 };
 
 export default RemovalAndStorage;
