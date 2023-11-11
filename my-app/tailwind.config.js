@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      mono: ['ui-monospace', 'SFMono-Regular'],
+      mono: ["ui-monospace", "SFMono-Regular"],
     },
   },
   daisyui: {
@@ -19,6 +19,7 @@ module.exports = {
           secondary: "#025373",
           accent: "#50A0BF",
           neutral: "#FFF",
+          "neutral-300": "#155e75",
           "base-100": "#FFF",
           "base-content": "#FFF",
           info: "#3abff8",

@@ -18,7 +18,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="p-10 flex flex-col gap-3 bg-base-100 m-3 rounded-3xl text-primary">
+    <div className="p-10 flex flex-col gap-3 bg-base-100 md:m-3 md:rounded-3xl text-primary">
       <header className="mb-5">
         <h1 className="text-3xl md:text-[2.75rem] font-bold mb-2">
           Welcome to the Marine Debris Reporting Portal
@@ -38,7 +38,7 @@ const Home = () => {
               <div className="card-body p-4">
                 <div className="flex justify-between">
                   <div>
-                    <Link href={`/events/${event._id}`} className="flex cursor-pointer hover:text-neutral-300">
+                    <Link href={`/events/${event._id}`} className="flex cursor-pointer hover:text-cyan-700">
                       <h1 className="text-md md:text-xl font-bold">{event.closestIsland || 'Other'} : {event.publicType}</h1>
                       <ArrowTopRightOnSquareIcon className="w-4 h-4 md:w-6 md:h-6 ml-2 pt-1" />
                     </Link>
@@ -53,8 +53,8 @@ const Home = () => {
                   <div className="mt-auto">
                     <p className="text-right text-sm md:text-md">
                       {event.publicContact.firstName} {event.publicContact.lastName}<br/>
-                      <a className="hover:text-neutral-300" href={`tel:${event.publicContact.phoneNumber}`}>{event.publicContact.phoneNumber}</a><br/>
-                      <a className="hover:text-neutral-300" href={`mailto:${event.publicContact.email}`}>{event.publicContact.email}</a>
+                      <a className="hover:text-cyan-700" href={`tel:${event.publicContact.phoneNumber}`}>{event.publicContact.phoneNumber}</a><br/>
+                      <a className="hover:text-cyan-700" href={`mailto:${event.publicContact.email}`}>{event.publicContact.email}</a>
                     </p>
                   </div>
                 </div>
