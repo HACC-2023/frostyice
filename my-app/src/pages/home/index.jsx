@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { prettyHstDate } from "@/utils/dateConverter";
+import Container from "@/components/Container";
 
 const Home = () => {
   const [reportedEvents, setReportedEvents] = useState([]);
@@ -18,7 +19,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="p-10 flex flex-col gap-3 bg-base-100 md:m-3 md:rounded-3xl text-primary">
+    <Container>
       <header className="mb-5">
         <h1 className="text-3xl md:text-[2.75rem] font-bold mb-2">
           Welcome to the Marine Debris Reporting Portal
@@ -63,7 +64,7 @@ const Home = () => {
           ))}
         </section>
       </main>
-    </div>
+    </Container>
   );
 };
 
