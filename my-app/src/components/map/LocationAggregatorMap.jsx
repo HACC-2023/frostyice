@@ -126,9 +126,9 @@ const LocationAggregatorMap = ({
           </div>
         )}
       </div>
-      <div className="flex py-2 gap-3">
+      <div className="flex py-2 gap-3 mt-4">
         <div>
-          <h1 className="font-bold text-sm">Select Island</h1>
+          <h1 className="font-bold text-sm text-secondary">Select Island</h1>
           <select
             className="select select-bordered my-1 select-sm"
             onChange={(e) => {
@@ -149,7 +149,7 @@ const LocationAggregatorMap = ({
           </select>
         </div>
         <div>
-          <h1 className="font-bold text-sm"> Select Data Visualization </h1>
+          <h1 className="font-bold text-sm text-secondary"> Select Data Visualization </h1>
           <select
             className="select select-bordered my-1 select-sm"
             onChange={(e) => {

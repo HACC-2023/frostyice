@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
-// import CityMap from "@/components/visualizations/CityMapBox";
 import IslandBarChart from "@/components/visualizations/IslandBarChart";
-import PieChart from "@/components/visualizations/PieChart";
-import ReportTimesSeries from "@/components/visualizations/ReportTimeSeries";
-import OrganizationFunnel from "@/components/visualizations/OrganizationFunnel";
+import IslandPieChart from "@/components/visualizations/IslandPieChart";
 import ComponentsPieChart from "@/components/visualizations/ComponentsPieChart";
 import DisposalBarChart from "@/components/visualizations/DisposalBarChart";
 import SankeyChart from "@/components/visualizations/SankeyChart";
@@ -17,6 +14,7 @@ const LocationAggregatorMap = dynamic(
 const DataInsights = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [coordinates, setCoordinates] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -26,55 +24,47 @@ const DataInsights = () => {
         return { COORDINATES: [item.mapLong, item.mapLat] };
       });
       setCoordinates(coords);
+      setEvents(data);
     };
     getData().then((r) => console.log("Fetched locations"));
   }, []);
 
   console.log("coordinates", coordinates);
+
   const tabContent = [
     <div key="tab1">
-      <div className="flex flex-row justify-between bg-white p-8 mt-2 shadow">
-        <div className="w-3/6">
-          <h6 className="text-lg font-semibold text-gray-600 mb-2">
-            Aggregated Reports By City
+      <div className="flex flex-row justify-between p-8 mt-2 shadow">
+        <div className="w-full">
+          <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
+            Current Events Location
           </h6>
           {/* <CityMap /> */}
           <LocationAggregatorMap data={coordinates} />
         </div>
-        <div className="w-2/4 pl-4">
-          <h6 className="text-lg font-semibold text-gray-600 mb-4">
-            Reports By Island
-          </h6>
-          <h8 className="text-sm font-semibold text-gray-600 mb-2">
-            Status of Reports
-          </h8>
-          <IslandBarChart />
-          <br />
-          <h8 className="text-sm font-semibold text-gray-600 mb-2">
-            Percentage of Reports
-          </h8>
-          <PieChart />
-        </div>
       </div>
-      <div className="flex pt-6 flex-row justify-between bg-white p-8 mt-4 shadow">
+      <div className="flex pt-6 flex-row justify-between p-8 mt-4 shadow">
         <div className="w-2/4">
-          <h6 className="text-lg font-semibold text-gray-600 mb-2">
-            Reports Solved by Organization Over Time
+          <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
+            Events By Islands
           </h6>
-          <ReportTimesSeries />
+          <h6 className="block uppercase text-secondary text-xs font-bold mb-10">
+            Events Status
+          </h6>
+          <IslandBarChart data={events} />
         </div>
-        <div className="w-3/6 pl-4">
-          <h6 className="text-lg font-semibold text-gray-600 mb-2">
-            Percetange of Reports Solved by Organization
+        <div className="w-2/4">
+
+          <h6 className="block uppercase text-secondary text-xs font-bold mb-8 mt-8">
+            Events Percentage
           </h6>
-          <OrganizationFunnel />
+          <IslandPieChart data={events} />
         </div>
       </div>
     </div>,
     <div key="tab2">
       {" "}
       <div className="flex pt-6 flex-row justify-between bg-white p-8 mt-4 shadow">
-        <div className="w-3/6">
+        <div className="w-2/5">
           <h6 className="text-lg font-semibold text-gray-600 mb-2">
             Components
           </h6>

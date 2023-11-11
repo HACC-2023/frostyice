@@ -1,72 +1,92 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { graphIsland } from "@/utils/graphIsland";
+import { getRandomColor } from "@/utils/color";
+import { get } from "mongoose";
 
-const IslandBarChart = () => {
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+export const options = {
+  plugins: {
+    title: {
+      display: false,
+      text: "",
+    },
+  },
+  responsive: true,
+  interaction: {
+    mode: "index",
+    intersect: false,
+  },
+  scales: {
+    x: {
+      stacked: true,
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      stacked: true,
+    },
+  },
+};
+
+const IslandBarChart = ({ data }) => {
   const [graphReady, setGraphReady] = useState(false);
+
+  const { islands, completedEvents, notCompletedEvents } = graphIsland(data);
+
   useEffect(() => {
-    import("plotly.js-dist").then((Plotly) => {
-      const xValues = [
-        "Big Island",
-        "Kauai",
-        "Lanai",
-        "Maui",
-        "Molokai",
-        "Oahu",
-      ];
-      const yTrace1 = [20, 14, 23, 34, 5, 20];
-      const yTrace2 = [2, 4, 7, 6, 2, 10];
+    const fetchData = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    };
 
-      const trace1Color = "rgb(50, 130, 180)";
-      const trace2Color = "rgb(200, 100, 0)";
-
-      const trace1 = {
-        x: xValues,
-        y: yTrace1,
-        name: "Solved",
-        type: "bar",
-        marker: { color: trace1Color },
-      };
-
-      const trace2 = {
-        x: xValues,
-        y: yTrace2,
-        name: "Not Solved",
-        type: "bar",
-        marker: { color: trace2Color },
-      };
-
-      const data = [trace1, trace2];
-
-      const layout = {
-        barmode: "group",
-        margin: { r: 12, t: 10, b: 20, l: 20 },
-        height: 220,
-        width: 450,
-      };
-
-      Plotly.newPlot(
-        "islandBarChart",
-        data,
-        layout,
-        { displayModeBar: false },
-        (config) => {
-          setGraphReady(true);
-        }
-      );
+    fetchData().then(() => {
+      setGraphReady(true);
     });
   }, []);
 
-  useEffect(() => {
-    const checkGraphReady = setInterval(() => {
-      if (document.querySelector(".main-svg")) {
-        clearInterval(checkGraphReady);
-        setGraphReady(true);
-      }
-    }, 100);
-  }, []);
+  const trace1Color = getRandomColor();
+  const trace2Color = getRandomColor();
+
+  const dataPlot = {
+    labels: islands,
+    datasets: [
+      {
+        label: "Solved",
+        data: completedEvents,
+        backgroundColor: trace1Color,
+        stack: "Stack 0",
+      },
+      {
+        label: "Not Solved",
+        data: notCompletedEvents,
+        backgroundColor: trace2Color,
+        stack: "Stack 0",
+      },
+    ],
+  };
 
   return (
     <div>
-      <div id="islandBarChart" />
+      <Bar options={options} data={dataPlot} />
 
       {graphReady ? (
         <></>
