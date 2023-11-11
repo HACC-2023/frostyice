@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
+import Organization from "@/models/organization";
 
 // TODO: need to add MongoDB for user accounts. Temporarily using process.env
 export const options = {
@@ -27,11 +28,15 @@ export const options = {
           await connectDB();
           console.log("email", email);
           const user = await User.findOne({ email: email });
-          const users = await User.find({});
-          console.log("all users:", users);
+          const userOrganization = await Organization.findById(user.orgId);
+          // console.log("userOrganization:", userOrganization);
+          console.log("user", user);
           console.log("user:", user);
+          console.log("userOrganization", userOrganization.name);
+          const authorizedUser = { ...user._doc, orgName: userOrganization.name };
+          console.log("authorizedUser:", authorizedUser);
 
-          if (!user) {
+          if (!user || !userOrganization) {
             return null;
           }
 
@@ -42,7 +47,7 @@ export const options = {
             return null;
           }
 
-          return user;
+          return authorizedUser;
         } catch (error) {
           console.log("Error: ", error);
         }
@@ -58,7 +63,7 @@ export const options = {
         token.image = user.image;
         token.role = user.role;
         token.orgId = user.orgId;
-        
+        token.orgName = user.orgName;
       }
       return token;
     },
@@ -70,14 +75,14 @@ export const options = {
         session.user.image = token.image;
         session.user.role = token.role;
         session.user.orgId = token.orgId;
-        
+        session.user.orgName = token.orgName;
       }
       return session;
     },
   },
   pages: {
     signIn: "/auth/credentials-signin",
-    error: "/auth/signin"
+    error: "/auth/signin",
     // error: "/auth/error",
     // Error code passed in query string as ?error=
   },

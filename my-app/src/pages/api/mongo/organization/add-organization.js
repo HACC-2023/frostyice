@@ -2,9 +2,9 @@ import connectDB from "@/lib/mongodb";
 import Organization from "@/models/organization";
 
 export default async function handler(req, res) {
-  try {
-    if (req.method === "POST") {
-      const { name, location } = await req.body;
+  if (req.method === "POST") {
+    try {
+      const {name, location} = await req.body;
       const associatedNode = () => {
         switch (location) {
         case "Big Island":
@@ -26,11 +26,14 @@ export default async function handler(req, res) {
         associatedNode: associatedNode(),
       });
       res.status(200).json({msg: "Organization added successfully"});
-    } else {
-      res.status(405).json({ error: "Method not allowed" });
+    } catch (error) {
+      if (error.code === 11000) {
+        res.status(409).json({ error: "Organization already exists" });
+      } else {
+        res.status(500).json({ error: "Unable to add organization" });
+      }
     }
-  } catch (error) {
-    console.log("error", error);
-    res.status(500).json({ error: "Unable to add organization" });
+  } else {
+    res.status(405).json({ error: "Method not allowed" });
   }
 }

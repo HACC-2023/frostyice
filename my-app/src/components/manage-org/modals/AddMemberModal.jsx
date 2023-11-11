@@ -2,12 +2,11 @@ import { ROLES } from "@/roles/roles";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import "react-toastify/dist/ReactToastify.min.css";
+import { toast } from "react-toastify";
 
 const AddMemberModal = ({ id, orgs }) => {
   const { register, handleSubmit, reset } = useForm();
   const [status, setStatus] = useState(null);
-  const [selectedOrgId, setSelectedOrgId] = useState("");
 
   useEffect(() => {
     if (status && (status.msg === "success" || status.msg === "error")) {
@@ -31,27 +30,23 @@ const AddMemberModal = ({ id, orgs }) => {
           ...user,
         }),
       });
-
-      if (res.status === 200) {
-        setStatus({
-          msg: "success",
-          body: "Successfully added user ✅",
-        });
+      if (res.ok) {
+        toast.success("Added user");
         reset();
-        console.log("Successfully added user");
+      } else if (res.status === 409) {
+        toast.error('User with entered email already exists');
       } else {
-        throw new Error("Failed to add user.");
+        toast.error('Error adding user');
       }
+      setStatus(null);
+      document.getElementById(id).close();
     } catch (err) {
-      setStatus({
-        msg: "error",
-        body: " Failed to add users. User may already exist. ❌",
-      });
+      setStatus(null);
+      toast.error('Error adding user');
     }
   }
 
   function onSubmit(data) {
-    console.log(data);
     registerUser(data);
   }
 
@@ -96,12 +91,12 @@ const AddMemberModal = ({ id, orgs }) => {
           </div>
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">User Role</span>
+              <span className="label-text">Role</span>
             </label>
             <select
               {...register("role", { required: true })}
               className="select select-bordered"
-              placeholder="Choose user's role"
+              placeholder="Select user's role"
             >
               <option disabled>Choose user&apos;s role</option>
               <option>{ROLES.ADMIN}</option>
@@ -111,13 +106,12 @@ const AddMemberModal = ({ id, orgs }) => {
           </div>
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">User&apos;s Organization</span>
+              <span className="label-text">Organization</span>
             </label>
             <select
               {...register("orgId", { required: true })}
               className="select select-bordered"
-              placeholder="Choose user's organization"
-              onChange={(e) => setSelectedOrgId(e.target.value)}
+              placeholder="Select user's organization"
             >
               <option disabled>Choose user&apos;s organization</option>
               {orgs &&
@@ -129,6 +123,14 @@ const AddMemberModal = ({ id, orgs }) => {
             </select>
           </div>
           <div className="modal-action">
+            {status && status.msg === "loading" && (
+              <div className="my-auto me-auto">
+                <div className="flex items-center gap-2">
+                  <span className="loading loading-spinner" />
+                  {status.body}
+                </div>
+              </div>
+            )}
             <button
               className="btn btn-outline"
               type="button"
@@ -141,17 +143,9 @@ const AddMemberModal = ({ id, orgs }) => {
             </button>
           </div>
         </form>
-        {status && status.msg === "success" && <div>{status.body}</div>}
-        {status && status.msg === "error" && <div>{status.body}</div>}
-        {status && status.msg === "loading" && (
-          <div className="flex items-center gap-2">
-            <span className="loading loading-spinner" />
-            {status.body}
-          </div>
-        )}
       </div>
       <form method="dialog" className="modal-backdrop">
-        <button>close</button>
+        <button className="cursor-default">close</button>
       </form>
     </dialog>
   );

@@ -53,7 +53,6 @@ const Thread = ({ thread }) => {
   if (error) return <div>failed to load</div>;
   if (!event) return <Loading />;
 
-  console.log("events data!", event);
   return (
     <Link href={`/thread/${thread._id}`}>
       <div className="px-3 py-5 border-solid border-gray-300 border-b">
