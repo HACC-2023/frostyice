@@ -10,6 +10,12 @@ const nextConfig = {
         port: '',
         pathname: '/f/**'
       },
+      { // temporary, for image links on imgur
+        protocol: 'https',
+        hostname: 'i.imgur.com',
+        port: '',
+        pathname: "/**"
+      },
       {
         protocol: 'https',
         hostname: 'placehold.co',

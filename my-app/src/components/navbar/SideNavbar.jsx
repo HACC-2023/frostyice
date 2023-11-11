@@ -4,7 +4,6 @@ import {
   PlusCircleIcon,
   ChartPieIcon,
   RectangleGroupIcon,
-  RectangleStackIcon,
   BuildingOfficeIcon,
   BuildingOffice2Icon,
   ArrowLeftCircleIcon,

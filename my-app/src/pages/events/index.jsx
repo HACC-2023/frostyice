@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import DashboardTable from "@/components/events/events-dashboard/DashboardTable";
-import { useSearchParams } from "next/navigation";
+import Loading from "@/components/Loading";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -12,18 +14,32 @@ const Dashboard = () => {
   const [selectedEvents, setSelectedEvents] = useState([]); // events selected for multievent shipment
   const [shipmentDate, setShipmentDate] = useState('');
   const [fromNode, setFromNode] = useState(''); // org's associatedNode
+  const [isLoading, setIsLoading] = useState(true);
+  const [reload, setReload] = useState(true);
+  const [orgFilter, setOrgFilter] = useState(true);
 
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams && session && !events.length) {
-      console.log('calling fetch')
+    // mom's spaghetti
+    if (reload && session) {
+      setReload(false)
       fetchData();
     }
-  }, [searchParams, session]);
+    if (searchParams.has('organization') && !orgFilter) {
+      setOrgFilter(true);
+      setReload(true);
+    } else if (!searchParams.has('organization') && orgFilter) {
+      setOrgFilter(false);
+      setReload(true);
+    }
+  }, [searchParams, reload, session]);
 
   async function fetchData() {
     try {
+      setIsLoading(true);
       const eventsResponse = searchParams.has('organization')
         ? await fetch(`/api/mongo/event/removal-org-id/${session?.user?.orgId}`)
         : await fetch('/api/mongo/event/all');
@@ -47,6 +63,24 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+    setIsLoading(false);
+  }
+
+  function updateSearchParams(key, value) {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+
+    if (!value) {
+      current.delete(key);
+    } else {
+      current.set(key, value);
+    }
+
+    // cast to string
+    const search = current.toString();
+    // or const query = `${'?'.repeat(search.length && 1)}${search}`;
+    const query = search ? `?${search}` : "";
+
+    router.push(`${pathname}${query}`);
   }
 
   async function addToMultiEventTransport() {
@@ -81,6 +115,16 @@ const Dashboard = () => {
         <h3 className="text-3xl font-semibold pt-8 text-center">
           {searchParams.has('organization') ? 'Organization Events' : 'All Events'}
         </h3>
+        <div className="text-center">
+          <button
+            className="hover:opacity-70 text-grey-700 transition-all"
+            onClick={() => {
+              updateSearchParams('organization', searchParams.has('organization') ? null : true);
+            }}
+          >
+            {searchParams.has('organization') ? 'See all events' : 'See organization events'}
+          </button>
+        </div>
         <hr />
         <div className="px-8">
           {(session?.user?.role === "admin" || session?.user.role === "org_admin")
@@ -96,7 +140,7 @@ const Dashboard = () => {
             </h6>
           </button>
           }
-          <DashboardTable events={events} />
+          <DashboardTable events={events} isLoading={isLoading} />
         </div>
       </div>
       <dialog id="multieventModal" className="modal">
