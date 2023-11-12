@@ -30,20 +30,20 @@ const EventPage = () => {
     if (loaded) return;
     if (data) {
       switch (data.status) {
-        case "Removal and Storage":
-          setCurrentStep(1);
-          break;
-        case "Sorting":
-          setCurrentStep(2);
-          break;
-        case "Disposal":
-          setCurrentStep(3);
-          break;
-        case "Complete":
-          setCurrentStep(4);
-          break;
-        default:
-          setCurrentStep(0);
+      case "Removal and Storage":
+        setCurrentStep(1);
+        break;
+      case "Sorting":
+        setCurrentStep(2);
+        break;
+      case "Disposal":
+        setCurrentStep(3);
+        break;
+      case "Complete":
+        setCurrentStep(4);
+        break;
+      default:
+        setCurrentStep(0);
       }
       setLoaded(true);
     }
