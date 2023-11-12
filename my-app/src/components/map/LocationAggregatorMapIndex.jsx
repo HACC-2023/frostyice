@@ -102,7 +102,7 @@ const LocationAggregatorMap = ({
         <div>
           <h1 className="font-semibold text-xs ms-2 text-gray-100">Select Island</h1>
           <select
-            className="select my-1 select-sm bg-[#292929] text-gray-100"
+            className="select my-1 select-sm bg-[#1f3347] text-gray-100"
             onChange={(e) => {
               const mapInfo = JSON.parse(e.target.value);
               onSelectIsland({
@@ -123,7 +123,7 @@ const LocationAggregatorMap = ({
         <div>
           <h1 className="font-semibold text-xs ms-2 text-gray-100">Select Data Visualization</h1>
           <select
-            className="select my-1 select-sm bg-[#292929] text-gray-100"
+            className="select my-1 select-sm bg-[#1f3347] text-gray-100"
             onChange={(e) => {
               const vis = e.target.value;
               setLayers(mapVisLayers[vis]);
@@ -149,7 +149,7 @@ const LocationAggregatorMap = ({
             style={{ width: "100%", height: "100%" }}
             controller={true}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-            mapStyle="mapbox://styles/mapbox/dark-v11"
+            mapStyle="mapbox://styles/giorgio808/cloro3xca005y01pq4dkc11ib"
             onLoad={() => setDoneLoading(true)}
           />
         </DeckGL>
