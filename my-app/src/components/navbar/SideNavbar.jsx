@@ -130,7 +130,7 @@ const SideNavbar = () => {
     session && (
       <>
         <div className="hidden lg:block w-min">{status !== "loading" && <NavContainer />}</div>
-        <div className="drawer hidden md:block lg:hidden">
+        <div className="drawer lg:hidden">
           <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
             {/* SideNavbar */}
