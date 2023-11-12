@@ -98,7 +98,7 @@ const DataInsights = () => {
           <h6 className="block text-secondary text-xl font-bold mb-4">
             Component Breakdown
           </h6>
-          <DoughnutChart events={events} sortedMaterials={sortedMaterials} />
+          <DoughnutChart events={events} sortedMaterials={sortedMaterials} className="w-min" />
         </div>
       </div>
     </div>,

@@ -1,7 +1,6 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import PropTypes from "prop-types";
-import { getRandomColor } from "@/utils/color";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -69,13 +68,75 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
   const disposalMtd = Object.keys(disposalOccurr);
   const disposalMtdQnts = Object.values(disposalOccurr);
 
+  const htmlLegendPlugin = (legendContainerId) => {
+    return {
+      id: 'htmlLegend',
+      afterUpdate(chart, args, options) {
+        const ul = getOrCreateLegendList(chart, legendContainerId);
+
+        // Remove old legend items
+        while (ul.firstChild) {
+          ul.firstChild.remove();
+        }
+
+        // Reuse the built-in legendItems generator
+        const items = chart.options.plugins.legend.labels.generateLabels(chart);
+
+        items.forEach(item => {
+          const li = document.createElement('li');
+          li.style.alignItems = 'center';
+          li.style.cursor = 'pointer';
+          li.style.display = 'flex';
+          li.style.flexDirection = 'row';
+          li.style.marginLeft = '10px';
+
+          li.onclick = () => {
+            const {type} = chart.config;
+            if (type === 'pie' || type === 'doughnut') {
+              // Pie and doughnut charts only have a single dataset and visibility is per item
+              chart.toggleDataVisibility(item.index);
+            } else {
+              chart.setDatasetVisibility(item.datasetIndex, !chart.isDatasetVisible(item.datasetIndex));
+            }
+            chart.update();
+          };
+
+          // Color box
+          const boxSpan = document.createElement('span');
+          boxSpan.style.background = item.fillStyle;
+          boxSpan.style.borderColor = item.strokeStyle;
+          boxSpan.style.borderWidth = item.lineWidth + 'px';
+          boxSpan.style.display = 'inline-block';
+          boxSpan.style.flexShrink = 0;
+          boxSpan.style.height = '20px';
+          boxSpan.style.marginRight = '10px';
+          boxSpan.style.width = '20px';
+
+          // Text
+          const textContainer = document.createElement('p');
+          textContainer.style.color = item.fontColor;
+          textContainer.style.margin = 0;
+          textContainer.style.padding = 0;
+          textContainer.style.textDecoration = item.hidden ? 'line-through' : '';
+
+          const text = document.createTextNode(item.text);
+          textContainer.appendChild(text);
+
+          li.appendChild(boxSpan);
+          li.appendChild(textContainer);
+          ul.appendChild(li);
+        });
+      }
+    }
+  };
+
   const dataPltPolymers = {
     labels: polymers,
     datasets: [
       {
         label: "Polymers",
         data: polQnts,
-        backgroundColor: polymers.map(() => getRandomColor()),
+        backgroundColor: ['#22d3ee', '#06b6d4', '#06b6d4', '#0e7490', '#155e75', '#164e63', '#083344'],
         borderWidth: 1,
         hoverOffset: 4,
         legend: {
@@ -91,7 +152,7 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
       {
         label: "Biofouling Rating",
         data: bioQnts,
-        backgroundColor: bioRatings.map(() => getRandomColor()),
+        backgroundColor: ['#4ade80', '#22c55e', '#16a34a', '#15803d', '#166534', '#14532d', '#052e16'],
         borderWidth: 1,
         hoverOffset: 4,
         legend: {
@@ -107,7 +168,7 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
       {
         label: "Disposal Method",
         data: disposalMtdQnts,
-        backgroundColor: disposalMtd.map(() => getRandomColor()),
+        backgroundColor: ['#fed7aa', '#fdba74', '#fb923c', '#f97316', '#ea580c', '#c2410c', '#9a3412', '#7c2d12', '#431407'],
         borderWidth: 1,
         hoverOffset: 4,
         legend: {
@@ -123,34 +184,59 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
         display: false,
         text: "",
       },
-    },
-    legend: {
-      display: true,
+      legend: {
+        display: false,
+      },
     },
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     cutout: "50%",
   };
 
+  const getOrCreateLegendList = (chart, id) => {
+    const legendContainer = document.getElementById(id);
+    let listContainer = legendContainer.querySelector('ul');
+
+    if (!listContainer) {
+      listContainer = document.createElement('ul');
+      listContainer.style.display = 'inline-block';
+      listContainer.style.columnCount = '2';
+      listContainer.style.flexDirection = 'row';
+      listContainer.style.marginLeft = 'auto';
+      listContainer.style.marginRight = 'auto';
+      listContainer.style.padding = 0;
+      listContainer.style.fontSize = '10px';
+
+      legendContainer.appendChild(listContainer);
+    }
+
+    return listContainer;
+  };
+
   return (
-    <div className="flex justify-between">
-      <div className="h-72">
-        <h6 className="text-secondary text-sm font-bold mt-4 mb-8 text-center">
-          Polymer
-        </h6>
-        <Doughnut data={dataPltPolymers} options={options} />
+    <div className="flex justify-between w-full m-2">
+      <div className="h-fit">
+        <div className="h-52 md:h-52">
+          <h6 className="text-secondary text-sm font-bold mb-4 text-center">
+            Polymer
+          </h6>
+          <Doughnut data={dataPltPolymers} options={options} plugins={[htmlLegendPlugin('polyLegendContainer')]} />
+          <div id="polyLegendContainer" className="expanded"/>
+        </div>
       </div>
-      <div className="h-72">
-        <h6 className="text-secondary text-sm font-bold mt-4 mb-10 text-center">
+      <div className="h-52 md:h-52">
+        <h6 className="text-secondary text-sm font-bold mb-4 text-center">
           Bio Fouling Rating
         </h6>
-        <Doughnut data={dataPltBio} options={options} />
+        <Doughnut data={dataPltBio} options={options} plugins={[htmlLegendPlugin('bioLegendContainer')]} />
+        <div id="bioLegendContainer" />
       </div>
-      <div className="h-80">
-        <h6 className="text-secondary text-sm font-bold mt-4 mb-3 text-center">
+      <div className="h-52 md:h-52">
+        <h6 className="text-secondary text-sm font-bold mb-4 text-center">
           Disposal Method
         </h6>
-        <Doughnut data={dataPltDisposal} options={options} />
+        <Doughnut data={dataPltDisposal} options={options} plugins={[htmlLegendPlugin('disposalLegendContainer')]} />
+        <div id="disposalLegendContainer" />
       </div>
     </div>
   );
