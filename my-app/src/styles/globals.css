@@ -7,13 +7,26 @@
 }
 
 .table :where(thead){
-  @apply text-slate-600
+  @apply text-slate-600;
 }
 
 .input-bordered, .select-bordered {
-  @apply border border-gray-200 rounded-md
+  @apply border border-gray-200 rounded-md;
 }
 
+.label-text {
+  @apply text-slate-600;
+}
+
+.btn-outline {
+  @apply border-primary;
+  @apply text-primary
+}
+
+.btn-outline:hover {
+  @apply bg-primary;
+  @apply text-white;
+}
 /* .divider {
   @apply text-slate-200
 } */
