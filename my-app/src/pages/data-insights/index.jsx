@@ -108,12 +108,10 @@ const DataInsights = () => {
 
   return (
     <Container>
-      <div className="mt-2 p-8">
-        <h3 className="text-2xl font-semibold text-gray-600 mb-2">
+      <div>
+        <h1 className="w-full text-4xl font-bold mb-12">
           Data Insights
-        </h3>
-        <hr />
-        <br />
+        </h1>
         <div className="tabs tabs-boxed">
           {tabContent.map((content, index) => (
             <a

@@ -14,9 +14,13 @@ const MyOrganization = () => {
   // const [orgMembers, setOrgMembers] = useState([]);
   // const [organization, setOrganization] = useState([]);
 
-  const { data: orgMembers, error } = useSWR(session ? `/api/mongo/user/get-users-org-id/${session?.user.orgId}` : null, session ? fetcher : null, {
-    refreshInterval: 1000,
-  });
+  const { data: orgMembers, error } = useSWR(
+    session ? `/api/mongo/user/get-users-org-id/${session?.user.orgId}` : null,
+    session ? fetcher : null,
+    {
+      refreshInterval: 1000,
+    }
+  );
 
   console.log("orgmembers", orgMembers);
 
@@ -67,11 +71,9 @@ const MyOrganization = () => {
     <Container>
       {error ? <Error /> : null}
       <div>
-        <h3 className="text-2xl font-semibold text-primary mb-2">
+        <h1 className="w-full text-4xl font-bold mb-12">
           My Organization
-        </h3>
-        <hr />
-        <br />
+        </h1>
 
         <div>
           {session?.user.role !== ROLES.ORG_MEMBER && (
@@ -84,7 +86,10 @@ const MyOrganization = () => {
               >
                 Add Member
               </button>
-              <AddOrgMemberModal id="add_member_modal_1" orgId={session?.user.orgId} />
+              <AddOrgMemberModal
+                id="add_member_modal_1"
+                orgId={session?.user.orgId}
+              />
             </div>
           )}
           <div className="w-full mb-12">
@@ -101,9 +106,14 @@ const MyOrganization = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    { orgMembers && orgMembers.map((user, index) => (
-                      <UserOrgTableRow user={user} index={index} key={index} />
-                    ))}
+                    {orgMembers &&
+                      orgMembers.map((user, index) => (
+                        <UserOrgTableRow
+                          user={user}
+                          index={index}
+                          key={index}
+                        />
+                      ))}
                   </tbody>
                 </table>
               </div>
