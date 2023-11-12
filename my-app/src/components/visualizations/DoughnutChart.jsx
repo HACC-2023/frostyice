@@ -133,21 +133,21 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <div style={{ width: "300px", height: "180px" }}>
-        <h6 className="block uppercase text-secondary text-xs font-bold mt-4 mb-8">
+    <div className="flex justify-between">
+      <div className="h-72">
+        <h6 className="text-secondary text-sm font-bold mt-4 mb-8 text-center">
           Polymer
         </h6>
         <Doughnut data={dataPltPolymers} options={options} />
       </div>
-      <div style={{ width: "220px", height: "180px" }}>
-        <h6 className="block uppercase text-secondary text-xs font-bold mt-4 mb-10">
+      <div className="h-72">
+        <h6 className="text-secondary text-sm font-bold mt-4 mb-10 text-center">
           Bio Fouling Rating
         </h6>
         <Doughnut data={dataPltBio} options={options} />
       </div>
-      <div style={{ width: "320px", height: "200px" }}>
-        <h6 className="block uppercase text-secondary text-xs font-bold mt-4 mb-3">
+      <div className="h-80">
+        <h6 className="text-secondary text-sm font-bold mt-4 mb-3 text-center">
           Disposal Method
         </h6>
         <Doughnut data={dataPltDisposal} options={options} />

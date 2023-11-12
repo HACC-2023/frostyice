@@ -9,34 +9,14 @@ import {
   ArrowLeftCircleIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const SideNavbar = () => {
   const { data: session, status } = useSession();
-  const [orgName, setOrgName] = useState("");
-
-  useEffect(() => {
-    const fetchOrgName = async () => {
-      const res = await fetch("/api/mongo/organization/id/" + session.user.orgId);
-      const data = await res.json();
-      if (data) {
-        setOrgName(data.name);
-      }
-    };
-
-    if (session) {
-      fetchOrgName();
-    }
-  }, [session]);
-
-  const publicNav = [
-    { label: "Home", icon: HomeIcon, link: "/home" },
-    { label: "Report Event", icon: PlusCircleIcon, link: "/report" },
-  ];
 
   const orgMemberNav = [
-    ...publicNav,
+    { label: "Home", icon: HomeIcon, link: "/home" },
+    { label: "Report Event", icon: PlusCircleIcon, link: "/report" },
     { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
     { label: "Events", icon: RectangleGroupIcon, link: "/events?organization=true" },
   ];
@@ -59,8 +39,10 @@ const SideNavbar = () => {
     },
   ];
 
-  const NavContainer = () => (
-    <ul className="menu p-5 w-72 min-h-screen sticky top-0 pt-10 font-medium text-white backdrop-blur-3xl">
+  const NavContainer = ({ background }) => (
+    <ul
+      className={`menu ${background} p-5 w-72 min-h-screen sticky top-0 pt-10 font-medium text-white backdrop-blur-3xl`}
+    >
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
@@ -90,7 +72,7 @@ const SideNavbar = () => {
             <div className="font-bold">
               {session.user.firstName} {session.user.lastName}
             </div>
-            <div className="text-xs">{orgName}</div>
+            <div className="text-xs">{session.user.orgName}</div>
           </div>
         </div>
       ) : (
@@ -126,9 +108,18 @@ const SideNavbar = () => {
 
     return (
       <li className="m-1">
-        <Link href={link} className={`${isLinkActive(link) ? "font-semibold" : ""} hover:text-white focus:text-white relative`}>
+        <Link
+          href={link}
+          className={`${
+            isLinkActive(link) ? "font-semibold" : ""
+          } hover:text-white focus:text-white relative`}
+        >
           {icon && <IconElement height={ICON_HEIGHT} />}
-          <div className={`absolute w-full h-full rounded-md opacity-20 hover:bg-white ${isLinkActive(link) ? "bg-white" : ""}`}/>
+          <div
+            className={`absolute w-full h-full rounded-md opacity-20 hover:bg-white ${
+              isLinkActive(link) ? "bg-white" : ""
+            }`}
+          />
           <span>{label}</span>
         </Link>
       </li>
@@ -136,46 +127,50 @@ const SideNavbar = () => {
   };
 
   return (
-    <>
-      <div className="hidden lg:block w-min">{status !== "loading" && <NavContainer />}</div>
-      <div className="drawer hidden md:block lg:hidden">
-        <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col">
-          {/* SideNavbar */}
-          <div className="w-full navbar">
-            <div className="flex-none lg:hidden">
-              <label
-                htmlFor="my-drawer-3"
-                aria-label="open sidebar"
-                className="btn btn-square btn-ghost text-white"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="inline-block w-6 h-6 stroke-current"
+    session && (
+      <>
+        <div className="hidden lg:block w-min">{status !== "loading" && <NavContainer />}</div>
+        <div className="drawer lg:hidden">
+          <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content flex flex-col">
+            {/* SideNavbar */}
+            <div className="w-full navbar">
+              <div className="flex-none lg:hidden">
+                <label
+                  htmlFor="my-drawer-3"
+                  aria-label="open sidebar"
+                  className="btn btn-square btn-ghost text-white"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  ></path>
-                </svg>
-              </label>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="inline-block w-6 h-6 stroke-current"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    ></path>
+                  </svg>
+                </label>
+              </div>
             </div>
           </div>
+          <div className="drawer-side z-10">
+            <label
+              htmlFor="my-drawer-3"
+              aria-label="close sidebar"
+              className="drawer-overlay"
+            ></label>
+            {status !== "loading" && (
+              <NavContainer background="bg-gradient-to-br from-slate-800 via-cyan-900 to-sky-950" />
+            )}
+          </div>
         </div>
-        <div className="drawer-side z-10">
-          <label
-            htmlFor="my-drawer-3"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
-          {status !== "loading" && <NavContainer />}
-        </div>
-      </div>
-    </>
+      </>
+    )
   );
 };
 

@@ -77,15 +77,7 @@ const ThreadPage = () => {
 
     const authorName = `${session.user.firstName} ${session.user.lastName}`;
     const authorEmail = session.user.email;
-    const orgId = session.user.orgId;
-    let authorOrganization = "";
-
-    try {
-      const org = await fetch(`/api/mongo/organization/id/${orgId}`).then((res) => res.json());
-      authorOrganization = org.name;
-    } catch (e) {
-      console.log("error fetching org", e);
-    }
+    const authorOrganization = session.user.orgName;
     const timestamp = new Date().toISOString();
 
     try {
