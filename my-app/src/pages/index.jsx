@@ -54,7 +54,7 @@ const Home = () => {
         style={{ backgroundImage: `url(${bg.src})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-[#00000000] via-[#00000000] to-[#11111188]" />
-        <div className="z-20 w-full flex justify-end pt-3">
+        <div className="w-full flex justify-end pt-3">
           <Link
             href="/auth/credentials-signin"
             className="text-white text-sm font-bold rounded-xl backdrop-blur hover:bg-sky-400 hover:bg-opacity-30 transition-all tracking-wide px-5 py-2 flex align-center justify-center"
@@ -89,7 +89,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="text-gray-100 text-sm font-semibold tracking-wide absolute bottom-5 left-0 right-0 z-30">
+        <div className="text-gray-100 text-sm font-semibold tracking-wide absolute bottom-5 left-0 right-0">
           <div
             className="flex flex-col justify-center gap-3 items-center opacity-60 hover:opacity-90 transition-all cursor-pointer w-fit mx-auto tracking-wider"
             onClick={() => {
