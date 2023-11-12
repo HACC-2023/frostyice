@@ -59,8 +59,8 @@ const SideNavbar = () => {
     },
   ];
 
-  const NavContainer = ({ background }) => (
-    <ul className={`menu ${background} p-5 w-72 min-h-screen sticky top-0 pt-10 font-medium text-white`}>
+  const NavContainer = () => (
+    <ul className="menu p-5 w-72 min-h-screen sticky top-0 pt-10 font-medium text-white backdrop-blur-3xl">
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
@@ -73,7 +73,7 @@ const SideNavbar = () => {
   const router = useRouter();
 
   const isLinkActive = (href) => {
-    return router.pathname === href;
+    return router.pathname === href.split('?')[0];
   };
 
   const AccountInfo = () => (
@@ -126,7 +126,7 @@ const SideNavbar = () => {
 
     return (
       <li className="m-1">
-        <Link href={link} className={`${isLinkActive(link) ? "font-extrabold" : ""} hover:text-white focus:text-white relative`}>
+        <Link href={link} className={`${isLinkActive(link) ? "font-semibold" : ""} hover:text-white focus:text-white relative`}>
           {icon && <IconElement height={ICON_HEIGHT} />}
           <div className={`absolute w-full h-full rounded-md opacity-20 hover:bg-white ${isLinkActive(link) ? "bg-white" : ""}`}/>
           <span>{label}</span>
@@ -172,7 +172,7 @@ const SideNavbar = () => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          {status !== "loading" && <NavContainer background="bg-gradient-to-br from-slate-800 via-cyan-900 to-sky-950" />}
+          {status !== "loading" && <NavContainer />}
         </div>
       </div>
     </>
