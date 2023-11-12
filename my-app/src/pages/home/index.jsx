@@ -13,6 +13,7 @@ const Home = () => {
   const [orgEventNumbers, setOrgEventNumbers] = useState(null);
   const [orgKgRemoved, setOrgKgRemoved] = useState(null);
   const [orgLastRemovalDate, setOrgLastRemovalDate] = useState(null);
+  const [orgRemovalsThisMonth, setOrgRemovalsThisMonth] = useState(null);
   const [chartData, setChartData] = useState(null);
 
   const { data: session } = useSession();
@@ -105,6 +106,7 @@ const Home = () => {
       setOrgEventNumbers(counts);
       setOrgLastRemovalDate(mostRecentRemovalDate);
       setOrgKgRemoved(kgRemoved);
+      setOrgRemovalsThisMonth(tempChartData.datasets[1].data[5]);
       setChartData(tempChartData);
     };
     if (!reportedEvents) {
@@ -122,7 +124,7 @@ const Home = () => {
           Welcome to Makai
         </h1>
         <p>
-          CMDR's AI-assisted platform that manages marine debris
+          CMDR&apos;s AI-assisted platform that manages marine debris
           reports, dispatches, and documentation
         </p>
       </header>
@@ -131,27 +133,25 @@ const Home = () => {
           {session ? session.user.orgName : ''}
         </h2>
       </header>
-      <div className="flex">
+      <div className="flex border rounded-xl bg-base-200 py-4">
         <section className="ms-2 text-center w-full">
-          <header className="pb-2 text-center">
+          <header className="text-center">
             <h2 className="text-lg md:text-xl font-bold w-full">
               Organization Statistics
             </h2>
           </header>
-          <div className="flex flex-col p-3 border rounded-xl bg-base-200 px-8 py-4">
+          <div className="flex flex-col p-3 rounded-xl px-8">
             <div className="text-4xl font-bold mt-2">{orgKgRemoved ? orgKgRemoved : '0'} KG</div>
             <div>Debris removed from environment</div>
-
-            {chartData ? <OrgChart data={chartData} className="mt-3" /> : <Loading />}
-
+            {chartData ? <OrgChart data={chartData} className="mt-3" /> : <div className="mt-5"><Loading /></div>}
             <div className="flex mt-4 justify-center w-full">
               <div className="w-full">
                 <div className="text-xl font-bold">{orgLastRemovalDate ? prettyHstDate(orgLastRemovalDate) : '...'}</div>
                 <div>Last debris removal date</div>
               </div>
               <div className="w-full">
-                <div className="text-xl font-bold">{chartData ? chartData.datasets[1].data[5] : 0}</div>
-                <div>Removals this month</div>
+                <div className="text-xl font-bold">{orgRemovalsThisMonth ? orgRemovalsThisMonth : 0}</div>
+                <div>Removal{orgRemovalsThisMonth && orgRemovalsThisMonth !== 1 ? 's' : ''} this month</div>
               </div>
             </div>
           </div>
@@ -167,7 +167,7 @@ const Home = () => {
               </h2>
             </header>
           </Link>
-          <div className="flex flex-col gap-2 p-3 border rounded-xl bg-base-200">
+          <div className="flex flex-col gap-2 p-3 rounded-xl flex-grow">
             <Link
               href="/events?organization=true&status=Removal+and+Storage"
               className="hover:brightness-150 transition-all"
@@ -250,7 +250,7 @@ const Home = () => {
           href="/events?status=Reported"
           className="hover:opacity-80 transition-all"
         >
-          <header className="flex p-2 justify-center">
+          <header className="flex p-2 justify-center my-2">
             {reportedEvents && reportedEvents.length
               ? <div className="bg-red-600 rounded-full w-10 h-10 mt-[-5px] text-white text-xl align-middle flex">
                 <div className="h-min m-auto pb-px font-semibold">{reportedEvents.length}</div>
