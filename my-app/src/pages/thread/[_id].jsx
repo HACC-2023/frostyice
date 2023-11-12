@@ -129,7 +129,7 @@ const ThreadPage = () => {
     return (
       <div className="my-4">
         <div className="flex gap-2 items-center">
-          <div className="font-semibold text-base tooltip" data-tip={message.authorOrganization}>{message.authorName}</div>
+          <div className="font-semibold tooltip tooltip-right tooltip-primary cursor-default" data-tip={message.authorOrganization}>{message.authorName}</div>
           <time className="text-xs opacity-50">{prettyHstDateTime(message.timestamp)}</time>
         </div>
         <div>{message.content}</div>
