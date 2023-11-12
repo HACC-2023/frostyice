@@ -83,6 +83,7 @@ const ClickableMap = ({ setCoordinates }) => {
             });
           }}
           showUserLocation={false}
+          position="bottom-right"
         />
       </Map>
     </div>
