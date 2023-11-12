@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Link from "next/link";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/solid";
-import { prettyHstDate } from "@/utils/dateConverter";
+import { prettyHstDateTime } from "@/utils/dateConverter";
 import { ISLANDS } from "@/constants/constants";
 import Loading from "@/components/Loading";
 
@@ -184,7 +184,7 @@ const DashboardTable = ({ events, isLoading }) => {
                         <ArrowTopRightOnSquareIcon className="w-4 h-4 md:w-6 md:h-6 ml-2 pt-1" />
                       </div>
                       <div className="text-sm md:text-md">
-                        <time className="my-3">{prettyHstDate(event.reportedDate)}</time>
+                        <time className="my-3">{prettyHstDateTime(event.reportedDate)}</time>
                         <div className="pt-2">
                           <div>
                             <span className="font-semibold">Description:</span> {event.publicLocationDesc}

@@ -4,7 +4,7 @@ import EventCollapse from "./common/EventCollapse";
 import DispatchTeamBtn from "./event-reported/DispatchTeamBtn";
 import DismissBtn from "./event-reported/DismissBtn";
 import StaticMap from "../map/StaticLocationMap/StaticMap";
-import { prettyHstDate } from "@/utils/dateConverter";
+import { prettyHstDateTime } from "@/utils/dateConverter";
 import Image from "next/image";
 
 const EventRemoval = ({ event, checked, setCurrentChecked }) => {
@@ -18,7 +18,7 @@ const EventRemoval = ({ event, checked, setCurrentChecked }) => {
             <div className="w-full md:w-1/2">
               <h2 className="md:text-2xl font-bold mb-2">Information</h2>
               <div>
-                <span className="font-semibold">Date Reported:</span> {prettyHstDate(event.reportedDate)}
+                <span className="font-semibold">Date Reported:</span> {prettyHstDateTime(event.reportedDate)}
                 <p className="break-words mt-2"><span className="font-semibold">Type:</span> {event.publicType}</p>
                 {event.publicTypeDesc !== 'No additional description provided' && <p className="break-words">{event.publicTypeDesc}</p>}
                 <p className="break-words mt-2"><span className="font-semibold">Location Description:</span> {event.publicLocationDesc}</p>

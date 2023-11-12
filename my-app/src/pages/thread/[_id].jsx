@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 import Loading from "@/components/Loading";
-import { prettyHstDate } from "@/utils/dateConverter";
+import { prettyHstDateTime } from "@/utils/dateConverter";
 
 function getStatusColor(status) {
   const statusColors = {
@@ -44,7 +44,7 @@ const EventInfo = ({ thread }) => {
             : event.publicDebrisEnvDesc}
         </div>
         <div className="flex gap-2 flex-wrap">
-          <InfoItem label={prettyHstDate(event.reportedDate)}></InfoItem>
+          <InfoItem label={prettyHstDateTime(event.reportedDate)}></InfoItem>
           <InfoItem label={event.closestIsland}></InfoItem>
         </div>
       </div>
@@ -108,7 +108,7 @@ const ThreadPage = () => {
       <div className="my-4">
         <div className="flex gap-2 items-center">
           <div className="font-semibold text-base">{message.authorName}</div>
-          <time className="text-xs opacity-50">{prettyHstDate(message.timestamp)}</time>
+          <time className="text-xs opacity-50">{prettyHstDateTime(message.timestamp)}</time>
         </div>
         <div className="text-gray-800">{message.content}</div>
       </div>

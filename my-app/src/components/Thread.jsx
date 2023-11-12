@@ -2,7 +2,7 @@ import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 import Link from "next/link";
 import Loading from "./Loading";
-import { prettyHstDate } from "@/utils/dateConverter";
+import { prettyHstDateTime } from "@/utils/dateConverter";
 
 function getStatusColor(status) {
   const statusColors = {
@@ -41,7 +41,7 @@ const EventInfo = ({ thread }) => {
           : event.publicDebrisEnvDesc}
       </div>
       <div className="flex gap-2 flex-wrap">
-        <InfoItem label={prettyHstDate(event.reportedDate)}></InfoItem>
+        <InfoItem label={prettyHstDateTime(event.reportedDate)}></InfoItem>
         <InfoItem label={event.closestIsland}></InfoItem>
       </div>
     </div>
