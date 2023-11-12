@@ -50,8 +50,8 @@ const Home = () => {
         className="relative bg-cover bg-center h-screen bg-fixed"
         style={{ backgroundImage: `url(${bg.src})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-[#00000000] via-[#00000000] to-[#0d1d24]" />
-        <div className="text-right fixed top-10 right-3 z-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#00000000] via-[#00000000] to-[#11111188]" />
+        <div className="text-right fixed top-2 md:top-10 right-1 md:right-3 z-20">
           <Link href="/auth/credentials-signin">
             <span className="text-white text-sm font-bold px-6 py-3 rounded-xl backdrop-blur hover:bg-sky-400 hover:bg-opacity-30 transition-all tracking-wide">
               SIGN IN
@@ -96,7 +96,7 @@ const Home = () => {
 
         </div>
       </div>
-      <div id="mapSection" className="bg-gradient-to-bl from-[#0d1d24] via-[#142329] to-[#0d1d24] px-5 md:px-10 h-screen z-20">
+      <div id="mapSection" className="bg-gradient-to-bl from-[#0d1d24] via-[#142329] to-[#0d1d24] md:px-10 h-screen z-20">
         <section className="rounded-lg px-5 md:px-20 py-10 backdrop-blur-2xl shadow">
           <LocationAggregatorMap data={coordinates} />
         </section>
