@@ -135,7 +135,7 @@ const LocationAggregatorMap = ({
           </select>
         </div>
       </div>
-      <div className="h-[85vh] w-full relative">
+      <div className="h-[70vh] w-full relative">
         <DeckGL
           style={{ width: "100%", height: "100%" }}
           layers={layers ?? mapVisLayers.heatmapLayer}
