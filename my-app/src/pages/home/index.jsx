@@ -133,14 +133,14 @@ const Home = () => {
           {session ? session.user.orgName : ''}
         </h2>
       </header>
-      <div className="flex border rounded-xl bg-base-200 py-4">
+      <div className="flex border rounded-xl bg-base-200 py-4 flex-col md:flex-row">
         <section className="ms-2 text-center w-full">
           <header className="text-center">
             <h2 className="text-lg md:text-xl font-bold w-full">
               Organization Statistics
             </h2>
           </header>
-          <div className="flex flex-col p-3 rounded-xl px-8">
+          <div className="flex flex-col p-3 rounded-xl">
             <div className="text-4xl font-bold mt-2">{orgKgRemoved ? orgKgRemoved : '0'} KG</div>
             <div>Debris removed from environment</div>
             {chartData ? <OrgChart data={chartData} className="mt-3" /> : <div className="mt-5"><Loading /></div>}
