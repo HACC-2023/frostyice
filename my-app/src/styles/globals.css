@@ -11,7 +11,7 @@
 }
 
 .input-bordered, .select-bordered {
-  @apply border border-gray-200 rounded-md;
+  @apply border border-gray-200;
 }
 
 .label-text {
