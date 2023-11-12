@@ -15,9 +15,7 @@ const ReportForm = () => {
   const [debrisType, setDebrisType] = useState(
     '"Mass of netting/fishing gear"'
   );
-  const [debrisTypeOther, setDebrisTypeOther] = useState(
-    "No additional description"
-  );
+  const [debrisTypeOther, setDebrisTypeOther] = useState('');
   const [containerFullness, setContainerFullness] = useState(null);
   const [claimBoat, setClaimBoat] = useState(null);
   const [biofoulingRating, setBiofoulingRating] = useState(
@@ -326,6 +324,7 @@ const ReportForm = () => {
             className="input input-bordered w-full bg-white text-primary mb-2"
             onChange={(event) => setDebrisTypeOther(event.target.value)}
             value={debrisTypeOther}
+            placeholder="Optional"
           />
           {debrisType === "Container/drum/cylinder" && (
             <span>
@@ -649,6 +648,7 @@ const ReportForm = () => {
             className="input input-bordered w-full bg-white text-primary mb-2"
             onChange={(event) => setDebrisTrappedOther(event.target.value)}
             value={debrisTrappedOther}
+            placeholder="Optional"
           />
 
           <p className="text-primary mt-4 mb-4">
