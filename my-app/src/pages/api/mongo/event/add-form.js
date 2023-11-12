@@ -72,7 +72,7 @@ export default async function handler(req, res) {
       const emailMessage = `
         Aloha,
         <br/><br/>
-        We recieved a new debris report! Details:
+        We received a new debris report! Details:
         <br/><br/>
         <b>Type:</b> ${publicType !== 'Other' ? publicType : `Other - ${publicTypeDesc}`}<br/>
         ${containerFullness}

@@ -22,7 +22,7 @@ const SankeyDiagram = ({ data }) => (
     linkContract={3}
     enableLinkGradient={true}
     labelPosition="outside"
-    labelOrientation="vertical"
+    labelOrientation="horizontal"
     labelPadding={16}
     labelTextColor={{
       from: "color",
@@ -123,7 +123,7 @@ const SankeyChart = ({ events, sortedMaterials }) => {
   const sankeyData = { nodes: nodesArray, links: uniqueLinks };
 
   return (
-    <div style={{ height: 300, width: 1000 }}>
+    <div className="h-72 w-full">
       <SankeyDiagram data={sankeyData} />
     </div>
   );
