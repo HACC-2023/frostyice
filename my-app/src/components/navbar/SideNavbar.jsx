@@ -39,9 +39,9 @@ const SideNavbar = () => {
     },
   ];
 
-  const NavContainer = ({ background }) => (
+  const NavContainer = () => (
     <ul
-      className={`menu ${background} p-5 w-72 min-h-screen sticky top-0 pt-10 font-medium text-white backdrop-blur-3xl`}
+      className="menu p-5 w-72 min-h-screen sticky top-0 pt-10 font-medium text-white backdrop-blur-3xl"
     >
       {!session && <NavContent nav={publicNav} />}
       {session && session.user.role === "org_member" && <NavContent nav={orgMemberNav} />}
@@ -165,7 +165,7 @@ const SideNavbar = () => {
               className="drawer-overlay"
             ></label>
             {status !== "loading" && (
-              <NavContainer background="bg-gradient-to-br from-slate-800 via-cyan-900 to-sky-950" />
+              <NavContainer />
             )}
           </div>
         </div>
