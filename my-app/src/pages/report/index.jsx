@@ -675,7 +675,7 @@ const ReportForm = () => {
                     {...getRootProps()}
                     className="h-36 bg-gray-200 text-slate-500 rounded-lg"
                   >
-                    <input {...getInputProps()} />
+                    <input {...getInputProps()} capture />
                     <div className="text-center">
                       <svg
                         className="mx-auto h-38 w-20 text-gray-300"
