@@ -107,7 +107,7 @@ const Home = () => {
       </div>
       <div id="mapSection" className="bg-black bg-opacity-60">
         <section className="rounded-lg px-5 md:px-20 py-10">
-          <h1 className="font-extrabold text-neutral text-center text-2xl md:text-5xl mt-4 mb-8 md:mt-12 md:mb-16 opacity-70">
+          <h1 className="font-extrabold text-neutral text-center text-2xl md:text-5xl mt-4 mb-8 md:mt-12 md:mb-16 opacity-90">
             See where debris has been reported.
           </h1>
           <LocationAggregatorMap data={coordinates} />
