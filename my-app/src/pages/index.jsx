@@ -97,7 +97,7 @@ const Home = () => {
         </div>
       </div>
       <div id="mapSection" className="bg-gradient-to-bl from-[#0d1d24] via-[#142329] to-[#0d1d24] px-5 md:px-10 h-screen z-20">
-        <section className="rounded-lg px-20 py-10 backdrop-blur-2xl shadow">
+        <section className="rounded-lg px-5 md:px-20 py-10 backdrop-blur-2xl shadow">
           <LocationAggregatorMap data={coordinates} />
         </section>
       </div>

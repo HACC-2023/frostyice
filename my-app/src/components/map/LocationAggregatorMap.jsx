@@ -126,7 +126,7 @@ const LocationAggregatorMap = ({
           </div>
         )}
       </div>
-      <div className="flex py-2 gap-3 mt-4">
+      <div className="flex py-2 gap-3 mt-4 flex-wrap">
         <div>
           <h1 className="font-bold text-sm text-secondary">Select Island</h1>
           <select
