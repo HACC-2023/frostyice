@@ -14,9 +14,9 @@
   @apply border border-gray-200 rounded-md
 }
 
-.divider {
-  @apply border-t border-gray-300
-}
+/* .divider {
+  @apply text-slate-200
+} */
 /* .tab-bordered {
   @apply border-slate-300
 } */

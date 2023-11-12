@@ -55,7 +55,7 @@ const DataInsights = () => {
     <div key="tab1" className="bg-base-200 rounded-xl p-8 mt-3">
       <div className="flex flex-row justify-between mt-2 rounded-xl bg-base-200">
         <div className="w-full">
-          <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
+          <h6 className="text-secondary text-lg font-bold mb-4">
             Current Events Location
           </h6>
           {/* <CityMap /> */}
@@ -87,7 +87,7 @@ const DataInsights = () => {
     <div key="tab2" className="bg-base-200 rounded-xl p-8 mt-3">
       <div className="p-8 bg-neutral rounded-xl">
         <div className="w-full flex flex-col items-center justify-center">
-          <h6 className="block uppercase text-secondary text-sm font-bold mb-4">
+          <h6 className="text-secondary text-lg font-bold mb-4">
             Flow of Marine Debris: From Islands to Disposal
           </h6>
           <SankeyChart events={events} sortedMaterials={sortedMaterials} />

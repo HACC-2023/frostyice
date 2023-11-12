@@ -57,7 +57,7 @@ const MyOrganization = () => {
 
   return (
     <Container>
-      {error ? <Error /> : null}
+      {serverError ? <Error /> : null}
       <div className='mt-2 p-14'>
         <h3 className='text-2xl font-semibold text-gray-600 mb-2'>
           My Organization
