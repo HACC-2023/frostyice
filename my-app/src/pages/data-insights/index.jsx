@@ -52,23 +52,22 @@ const DataInsights = () => {
   }, []);
 
   const tabContent = [
-    <div key="tab1" className="bg-base-200 rounded-xl p-8 mt-3">
-      <div className="flex flex-row justify-between mt-2 rounded-xl bg-base-200">
+    <div key="tab1" className="bg-base-200 rounded-xl px-8 py-5 mt-3">
+      <div className="flex flex-row justify-between rounded-xl bg-base-200">
         <div className="w-full">
           <h6 className="text-secondary text-lg font-bold mb-4">
-            Current Events Location
+            Debris Report Locations
           </h6>
           {/* <CityMap /> */}
           <LocationAggregatorMap data={coordinates} />
         </div>
       </div>
-      <div className="divider my-4" />
-      <div>
+      <div className="mt-5">
         <h6 className="block text-secondary text-lg font-bold mb-4">
           Debris Reports by Island
         </h6>
         <div className="flex flex-col lg:flex-row justify-between items-start gap-3">
-          <div className="h-80 bg-neutral p-4 justify-between flex flex-col rounded-xl w-full lg:w-1/2 items-center">
+          <div className="h-80 bg-neutral p-4 rounded-xl w-full lg:w-1/2 items-center">
             <h6 className="block text-secondary text-sm font-bold text-center">
               Status
             </h6>
@@ -109,7 +108,7 @@ const DataInsights = () => {
   return (
     <Container>
       <div>
-        <h1 className="w-full text-4xl font-bold mb-12">
+        <h1 className="w-full text-4xl font-bold mb-6">
           Data Insights
         </h1>
         <div className="tabs tabs-boxed">

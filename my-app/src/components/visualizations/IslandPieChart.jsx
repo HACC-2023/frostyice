@@ -23,7 +23,7 @@ const IslandPieChart = ({ data }) => {
       {
         label: "% of Events",
         data: totalEvents,
-        backgroundColor: islands.map(() => getRandomColor()),
+        backgroundColor: ['#22c55e', '#16a34a', '#15803d', '#166534', '#14532d', '#052e16'],
         borderWidth: 1,
       },
     ],
@@ -35,17 +35,16 @@ const IslandPieChart = ({ data }) => {
         display: false,
         text: "",
       },
-    },
-    legend: {
-      display: true,
-      position: "bottom",
+      legend: {
+        position: "bottom",
+      },
     },
     responsive: true,
     maintainAspectRatio: false,
   };
 
   return (
-    <div style={{ width: "460px", height: "260px" }}>
+    <div className="h-full py-4">
       <Pie data={dataPlot} options={options} />
     </div>
   );

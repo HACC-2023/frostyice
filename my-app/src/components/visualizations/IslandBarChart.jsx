@@ -31,7 +31,6 @@ export const options = {
       position: "bottom",
     },
   },
-  responsive: true,
   interaction: {
     mode: "index",
     intersect: false,
@@ -76,21 +75,21 @@ const IslandBarChart = ({ data }) => {
       {
         label: "Complete",
         data: completedEvents,
-        backgroundColor: '#06b6d4',
+        backgroundColor: '#0e7490',
         stack: "Stack 0",
       },
       {
         label: "In Progress",
         data: notCompletedEvents,
-        backgroundColor: '#164e63',
+        backgroundColor: '#06b6d4',
         stack: "Stack 0",
       },
     ],
   };
 
   return (
-    <div>
-      <Bar options={options} data={dataPlot} className="h-full" />
+    <div className="h-full flex flex-col">
+      <Bar options={options} data={dataPlot} className="my-auto" />
 
       {graphReady ? (
         <></>
