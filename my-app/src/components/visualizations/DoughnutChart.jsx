@@ -86,9 +86,10 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
           const li = document.createElement('li');
           li.style.alignItems = 'center';
           li.style.cursor = 'pointer';
-          li.style.display = 'flex';
+          li.style.display = 'inline-flex';
           li.style.flexDirection = 'row';
           li.style.marginLeft = '10px';
+          li.style.whiteSpace = 'nowrap';
 
           li.onclick = () => {
             const {type} = chart.config;
@@ -188,7 +189,6 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
         display: false,
       },
     },
-    responsive: true,
     maintainAspectRatio: true,
     cutout: "50%",
   };
@@ -200,12 +200,13 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
     if (!listContainer) {
       listContainer = document.createElement('ul');
       listContainer.style.display = 'inline-block';
-      listContainer.style.columnCount = '2';
+      listContainer.style.columnCount = id === 'disposalLegendContainer' ? '1' : '2';
       listContainer.style.flexDirection = 'row';
       listContainer.style.marginLeft = 'auto';
       listContainer.style.marginRight = 'auto';
+      listContainer.style.marginTop = '5px';
       listContainer.style.padding = 0;
-      listContainer.style.fontSize = '10px';
+      listContainer.style.fontSize = '11px';
 
       legendContainer.appendChild(listContainer);
     }
@@ -214,29 +215,33 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
   };
 
   return (
-    <div className="flex justify-between w-full m-2">
-      <div className="h-fit">
-        <div className="h-52 md:h-52">
+    <div className="row grid grid-cols-3 w-full m-2">
+      <div className="h-fit col">
+        <div className="h-72 md:h-[22rem] px-5">
           <h6 className="text-secondary text-sm font-bold mb-4 text-center">
             Polymer
           </h6>
-          <Doughnut data={dataPltPolymers} options={options} plugins={[htmlLegendPlugin('polyLegendContainer')]} />
-          <div id="polyLegendContainer" className="expanded"/>
+          <Doughnut data={dataPltPolymers} options={options} plugins={[htmlLegendPlugin('polyLegendContainer')]} className="mx-auto" />
+          <div id="polyLegendContainer" className="mt-2"/>
         </div>
       </div>
-      <div className="h-52 md:h-52">
-        <h6 className="text-secondary text-sm font-bold mb-4 text-center">
-          Bio Fouling Rating
-        </h6>
-        <Doughnut data={dataPltBio} options={options} plugins={[htmlLegendPlugin('bioLegendContainer')]} />
-        <div id="bioLegendContainer" />
+      <div className="h-fit col">
+        <div className="h-72 md:h-[22rem] px-5">
+          <h6 className="text-secondary text-sm font-bold mb-4 text-center">
+            Bio Fouling Rating
+          </h6>
+          <Doughnut data={dataPltBio} options={options} plugins={[htmlLegendPlugin('bioLegendContainer')]} className="mx-auto" />
+          <div id="bioLegendContainer" className="mt-2" />
+        </div>
       </div>
-      <div className="h-52 md:h-52">
-        <h6 className="text-secondary text-sm font-bold mb-4 text-center">
-          Disposal Method
-        </h6>
-        <Doughnut data={dataPltDisposal} options={options} plugins={[htmlLegendPlugin('disposalLegendContainer')]} />
-        <div id="disposalLegendContainer" />
+      <div className="h-72 col">
+        <div className="h-64 md:h-[22rem] px-5">
+          <h6 className="text-secondary text-sm font-bold mb-4 text-center">
+            Disposal Method
+          </h6>
+          <Doughnut data={dataPltDisposal} options={options} plugins={[htmlLegendPlugin('disposalLegendContainer')]} className="mx-auto" />
+          <div id="disposalLegendContainer" className="mt-2" />
+        </div>
       </div>
     </div>
   );
