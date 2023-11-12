@@ -98,7 +98,7 @@ const LocationAggregatorMap = ({
 
   return (
     <div className="relative">
-      <div className="flex py-2 gap-3 mt-4 ms-8 absolute top-0 left-0 z-50">
+      <div className="md:flex md:py-2 gap-3 mt-2 md:mt-4 ms-3 md:ms-8 absolute top-0 left-0 z-50">
         <div>
           <h1 className="font-semibold text-xs ms-2 text-gray-100">Select Island</h1>
           <select
