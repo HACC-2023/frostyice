@@ -9,34 +9,14 @@ import {
   ArrowLeftCircleIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const SideNavbar = () => {
   const { data: session, status } = useSession();
-  const [orgName, setOrgName] = useState("");
-
-  useEffect(() => {
-    const fetchOrgName = async () => {
-      const res = await fetch("/api/mongo/organization/id/" + session.user.orgId);
-      const data = await res.json();
-      if (data) {
-        setOrgName(data.name);
-      }
-    };
-
-    if (session) {
-      fetchOrgName();
-    }
-  }, [session]);
-
-  const publicNav = [
-    { label: "Home", icon: HomeIcon, link: "/home" },
-    { label: "Report Event", icon: PlusCircleIcon, link: "/report" },
-  ];
 
   const orgMemberNav = [
-    ...publicNav,
+    { label: "Home", icon: HomeIcon, link: "/home" },
+    { label: "Report Event", icon: PlusCircleIcon, link: "/report" },
     { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
     { label: "Events", icon: RectangleGroupIcon, link: "/events?organization=true" },
   ];
@@ -92,7 +72,7 @@ const SideNavbar = () => {
             <div className="font-bold">
               {session.user.firstName} {session.user.lastName}
             </div>
-            <div className="text-xs">{orgName}</div>
+            <div className="text-xs">{session.user.orgName}</div>
           </div>
         </div>
       ) : (
