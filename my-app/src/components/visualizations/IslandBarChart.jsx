@@ -11,7 +11,6 @@ import {
   Legend,
 } from "chart.js";
 import { graphIsland } from "@/utils/graphIsland";
-import { getRandomColor } from "@/utils/color";
 
 ChartJS.register(
   CategoryScale,
@@ -27,6 +26,9 @@ export const options = {
     title: {
       display: false,
       text: "",
+    },
+    legend: {
+      position: "bottom",
     },
   },
   responsive: true,
@@ -67,22 +69,20 @@ const IslandBarChart = ({ data }) => {
     });
   }, []);
 
-  const trace1Color = getRandomColor();
-  const trace2Color = getRandomColor();
 
   const dataPlot = {
     labels: islands,
     datasets: [
       {
-        label: "Solved",
+        label: "Complete",
         data: completedEvents,
-        backgroundColor: trace1Color,
+        backgroundColor: '#06b6d4',
         stack: "Stack 0",
       },
       {
-        label: "Not Solved",
+        label: "In Progress",
         data: notCompletedEvents,
-        backgroundColor: trace2Color,
+        backgroundColor: '#164e63',
         stack: "Stack 0",
       },
     ],
@@ -90,7 +90,7 @@ const IslandBarChart = ({ data }) => {
 
   return (
     <div>
-      <Bar options={options} data={dataPlot} />
+      <Bar options={options} data={dataPlot} className="h-full" />
 
       {graphReady ? (
         <></>

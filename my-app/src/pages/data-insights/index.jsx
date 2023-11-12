@@ -65,18 +65,18 @@ const DataInsights = () => {
       <div className="divider my-4" />
       <div>
         <h6 className="block text-secondary text-lg font-bold mb-4">
-          Events By Islands
+          Debris Reports by Island
         </h6>
         <div className="flex flex-col lg:flex-row justify-between items-start gap-3">
-          <div className="flex flex-col justify-between h-80 bg-neutral p-4 rounded-xl w-full lg:w-1/2 items-center">
-            <h6 className="block text-secondary text-xs font-bold">
-              Events Status
+          <div className="h-80 bg-neutral p-4 justify-between flex flex-col rounded-xl w-full lg:w-1/2 items-center">
+            <h6 className="block text-secondary text-sm font-bold text-center">
+              Status
             </h6>
-            <IslandBarChart data={events} />
+            <IslandBarChart data={events} className="w-full h-full expanded"/>
           </div>
           <div className="flex flex-col justify-between h-80 bg-neutral p-4 rounded-xl w-full lg:w-1/2 items-center">
-            <h6 className="block text-secondary text-xs font-bold">
-              Events Percentage
+            <h6 className="block text-secondary text-sm font-bold">
+              Percentage
             </h6>
             <IslandPieChart data={events} />
           </div>

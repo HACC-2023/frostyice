@@ -7,9 +7,9 @@ const SankeyDiagram = ({ data }) => (
     margin={{ top: 40, right: 160, bottom: 40, left: 50 }}
     align="justify"
     colors={{ scheme: "category10" }}
-    nodeOpacity={1}
-    nodeHoverOthersOpacity={0.35}
-    nodeThickness={18}
+    nodeOpacity={0.9}
+    nodeHoverOthersOpacity={0.5}
+    nodeThickness={14}
     nodeSpacing={24}
     nodeBorderWidth={0}
     nodeBorderColor={{
@@ -17,8 +17,8 @@ const SankeyDiagram = ({ data }) => (
       modifiers: [["darker", 0.8]],
     }}
     nodeBorderRadius={3}
-    linkOpacity={0.5}
-    linkHoverOthersOpacity={0.1}
+    linkOpacity={0.6}
+    linkHoverOthersOpacity={0.3}
     linkContract={3}
     enableLinkGradient={true}
     labelPosition="outside"

@@ -11,10 +11,10 @@ export const graphIsland = (data) => {
   // Calculate completed and not completed events for each island
   uniqueIslands.forEach((island) => {
     const islandCompletedEvents = data.filter(
-      (obj) => obj.closestIsland === island && obj.status === "Completed"
+      (obj) => obj.closestIsland === island && obj.status === "Complete"
     ).length;
     const islandNotCompletedEvents = data.filter(
-      (obj) => obj.closestIsland === island && obj.status !== "Completed"
+      (obj) => obj.closestIsland === island && obj.status !== "Complete"
     ).length;
 
     islands.push(island);
