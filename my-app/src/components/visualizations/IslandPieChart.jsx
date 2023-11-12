@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { graphIsland } from "@/utils/graphIsland";
-import { getRandomColor } from "@/utils/color";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
