@@ -23,10 +23,10 @@ const ManageOrganizations = () => {
   return (
     <Container>
       <div className="flex flex-col items-center mb-12">
-        <h1 className="w-full md:w-3/4 px-4 py-3 text-4xl font-bold">
+        <h1 className="w-full text-4xl font-bold mb-12">
           Manage Organizations
         </h1>
-        <div className="w-full md:w-3/4 px-4 py-3 flex gap-3 justify-end">
+        <div className="w-full flex gap-3 justify-end">
           <button
             className="btn btn-sm md:btn-md btn-primary"
             onClick={() =>
@@ -47,7 +47,7 @@ const ManageOrganizations = () => {
           <AddMemberModal id="add_member_modal_1" orgs={data} />
         </div>
         {users ? (
-          <div className="w-full md:w-3/4 mb-12">
+          <div className="w-full  mb-12">
             <h1 className="font-bold px-2 py-3">Members</h1>
             <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">
@@ -73,7 +73,7 @@ const ManageOrganizations = () => {
           <Loading />
         )}
         {data ? (
-          <div className="w-full md:w-3/4">
+          <div className="w-full ">
             <h1 className="font-bold px-2 py-3">Organizations</h1>
             <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">
@@ -95,7 +95,7 @@ const ManageOrganizations = () => {
             </div>
           </div>
         ) : (
-          <div className="overflow-x-auto w-full md:w-3/4 flex items-center rounded-xl py-3">
+          <div className="overflow-x-auto w-full  flex items-center rounded-xl py-3">
             <table className="table table-zebra text-slate-800">
               <thead>
                 <tr>
