@@ -170,7 +170,7 @@ const ThreadPage = () => {
     return (
       <Container>
         <div className="m-auto w-full min-h-screen my-10">
-          <h1 className="text-4xl font-semibold text-gray-800 mb-10">Discussion</h1>
+          <h1 className="text-4xl font-semibold mb-10">Discussion</h1>
           <main className="flex flex-col gap-16">
             <EventInfo thread={thread} />
             <MessagesContainer messages={thread.messages} />
