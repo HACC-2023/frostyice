@@ -9,6 +9,8 @@ import { fetcher } from "@/utils/fetcher";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Container from "@/components/Container";
+import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const EventPage = () => {
   const router = useRouter();
@@ -28,20 +30,20 @@ const EventPage = () => {
     if (loaded) return;
     if (data) {
       switch (data.status) {
-      case "Removal and Storage":
-        setCurrentStep(1);
-        break;
-      case "Sorting":
-        setCurrentStep(2);
-        break;
-      case "Disposal":
-        setCurrentStep(3);
-        break;
-      case "Complete":
-        setCurrentStep(4);
-        break;
-      default:
-        setCurrentStep(0);
+        case "Removal and Storage":
+          setCurrentStep(1);
+          break;
+        case "Sorting":
+          setCurrentStep(2);
+          break;
+        case "Disposal":
+          setCurrentStep(3);
+          break;
+        case "Complete":
+          setCurrentStep(4);
+          break;
+        default:
+          setCurrentStep(0);
       }
       setLoaded(true);
     }
@@ -56,6 +58,10 @@ const EventPage = () => {
               status={data.status}
               setCurrentChecked={setCurrentStep}
             />
+            <Link href={`/thread/${data.threadId}`} className="btn btn-primary w-56 self-center mb-5">
+              <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
+              Discussion
+            </Link>
             <div className="flex flex-col gap-2">
               <EventRemoval
                 event={data}

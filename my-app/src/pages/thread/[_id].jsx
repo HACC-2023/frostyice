@@ -4,6 +4,8 @@ import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 import Loading from "@/components/Loading";
 import { prettyHstDateTime } from "@/utils/dateConverter";
+import Container from "@/components/Container";
+import Link from "next/link";
 
 function getStatusColor(status) {
   const statusColors = {
@@ -18,17 +20,32 @@ function getStatusColor(status) {
 }
 
 const InfoItem = ({ label }) => {
-  return <div className="bg-gray-300 text-gray-800 px-6 py-1 rounded-full text-xs">{label}</div>;
+  return (
+    <div className="bg-gray-300 text-gray-800 px-6 py-1 rounded-full text-xs">
+      {label}
+    </div>
+  );
 };
 
 const EventInfo = ({ thread }) => {
-  const { data: event, error } = useSWR(`/api/mongo/event/id/${thread.eventId}`, fetcher);
+  const { data: event, error } = useSWR(
+    `/api/mongo/event/id/${thread.eventId}`,
+    fetcher
+  );
   if (error) return <div>failed to load</div>;
   if (!event) return <Loading />;
 
   return (
-    <div className="bg-base-100 py-8 relative shadow-md px-6 rounded-lg">
-      <h2 className="text-xl font-semibold text-gray-800 mb-2">Event Info</h2>
+    <div className="bg-base-100 py-8 relative border px-6 rounded-lg">
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-semibold">Event Info</h2>
+        <Link
+          href={`/event/${event._id}`}
+          className="flex gap-1 pr-2 justify-center items-center text-sm underline text-secondary"
+        >
+          Go to event &rarr;
+        </Link>
+      </div>
       <div className="relative">
         <div
           className={`${getStatusColor(
@@ -58,9 +75,13 @@ const ThreadPage = () => {
 
   const _id = router.query._id;
 
-  const { data: thread, error } = useSWR(`/api/mongo/thread/id/${_id}`, fetcher, {
-    refreshInterval: 100,
-  });
+  const { data: thread, error } = useSWR(
+    `/api/mongo/thread/id/${_id}`,
+    fetcher,
+    {
+      refreshInterval: 100,
+    }
+  );
   if (error) return <div>failed to load</div>;
   if (!thread) return <Loading />;
 
@@ -81,15 +102,24 @@ const ThreadPage = () => {
     const timestamp = new Date().toISOString();
 
     try {
-      const response = await fetch(`/api/mongo/thread/send-message/${threadId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: { authorName, authorEmail, authorOrganization, content, timestamp },
-        }),
-      });
+      const response = await fetch(
+        `/api/mongo/thread/send-message/${threadId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: {
+              authorName,
+              authorEmail,
+              authorOrganization,
+              content,
+              timestamp,
+            },
+          }),
+        }
+      );
     } catch (error) {
       console.error("Error sending data to API:", error);
     }
@@ -100,9 +130,11 @@ const ThreadPage = () => {
       <div className="my-4">
         <div className="flex gap-2 items-center">
           <div className="font-semibold text-base">{message.authorName}</div>
-          <time className="text-xs opacity-50">{prettyHstDateTime(message.timestamp)}</time>
+          <time className="text-xs opacity-50">
+            {prettyHstDateTime(message.timestamp)}
+          </time>
         </div>
-        <div className="text-gray-800">{message.content}</div>
+        <div>{message.content}</div>
       </div>
     );
   };
@@ -112,21 +144,31 @@ const ThreadPage = () => {
       return <Loading />;
     }
     return (
-      <div className="shadow-md px-6 py-10 rounded-lg">
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">Messages</h2>
-        {messages.length ? (
-          messages.map((message, index) => <ChatItem key={index} message={message}></ChatItem>)
-        ) : (
-          <div className="mb-4">There are currently no messages</div>
-        )}
-        <form onSubmit={(e) => handleSubmit(e, _id)}>
-          <div className="flex gap-4 w-full">
+      <div className="border p-5 rounded-lg bg-base-200">
+        <h2 className="text-xl font-semibold mb-2">Messages</h2>
+        <div className="min-h-[300px] max-h-[500px] bg-neutral rounded-t-xl p-3 border border-b-0 overflow-auto flex flex-col-reverse">
+          {messages.length ? (
+            <div className="flex flex-col">
+              {messages.map((message, index) => (
+                <ChatItem key={index} message={message}></ChatItem>
+              ))}
+            </div>
+          ) : (
+            <div className="mb-4">There are currently no messages</div>
+          )}
+        </div>
+        <form onSubmit={(e) => handleSubmit(e, _id)} className="w-full">
+          <div className="join w-full">
             <input
               type="text"
               placeholder="Enter your message here..."
-              className="input input-bordered w-full max-w-lg"
+              className="input input-bordered w-full rounded-r-none rounded-t-none"
             />
-            <input type="submit" value="Post" className="btn btn-primary max-w-lg" />
+            <input
+              type="submit"
+              value="Post"
+              className="btn btn-primary rounded-l-none rounded-t-none"
+            />
           </div>
         </form>
       </div>
@@ -135,13 +177,17 @@ const ThreadPage = () => {
 
   if (session) {
     return (
-      <div className="m-auto max-w-4xl min-h-screen my-10 px-4">
-        <h1 className="text-4xl font-semibold text-gray-800 mb-10">Thread</h1>
-        <main className="flex flex-col gap-16">
-          <EventInfo thread={thread} />
-          <MessagesContainer messages={thread.messages} />
-        </main>
-      </div>
+      <Container>
+        <div className="m-auto w-full min-h-screen my-10">
+          <h1 className="text-4xl font-semibold text-gray-800 mb-10">
+            Discussion
+          </h1>
+          <main className="flex flex-col gap-16">
+            <EventInfo thread={thread} />
+            <MessagesContainer messages={thread.messages} />
+          </main>
+        </div>
+      </Container>
     );
   }
 };

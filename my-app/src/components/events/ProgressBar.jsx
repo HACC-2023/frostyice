@@ -5,7 +5,7 @@ const ProgressBar = ({ status, setCurrentChecked }) => {
   const statusIndex = STATUS.indexOf(status);
   const baseClass = 'step cursor-pointer hover:brightness-110 transition-all';
   return (
-    <div className="flex justify-center py-12">
+    <div className="flex justify-center py-3">
       <ul className="steps steps-horizontal">
         <li
           data-content="✓"
