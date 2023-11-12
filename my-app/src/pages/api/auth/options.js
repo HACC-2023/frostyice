@@ -4,7 +4,6 @@ import User from "@/models/user";
 import bcrypt from "bcryptjs";
 import Organization from "@/models/organization";
 
-// TODO: need to add MongoDB for user accounts. Temporarily using process.env
 export const options = {
   providers: [
     CredentialsProvider({
@@ -26,22 +25,15 @@ export const options = {
 
         try {
           await connectDB();
-          console.log("email", email);
           const user = await User.findOne({ email: email });
           const userOrganization = await Organization.findById(user.orgId);
-          // console.log("userOrganization:", userOrganization);
-          console.log("user", user);
-          console.log("user:", user);
-          console.log("userOrganization", userOrganization.name);
           const authorizedUser = { ...user._doc, orgName: userOrganization.name };
-          console.log("authorizedUser:", authorizedUser);
 
           if (!user || !userOrganization) {
             return null;
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
-          console.log("passwordsMatch:", passwordsMatch);
 
           if (!passwordsMatch) {
             return null;

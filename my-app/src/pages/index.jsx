@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Error from "@/components/Error";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 const LocationAggregatorMap = dynamic(() => import("@/components/map/LocationAggregatorMap"), {
   ssr: false,
@@ -13,9 +15,11 @@ const LocationAggregatorMap = dynamic(() => import("@/components/map/LocationAgg
 
 const Home = () => {
   const [error, setError] = useState(false);
-  const [coordinates, setCoordinates] = useState([]);
+  const [coordinates, setCoordinates] = useState(null);
   const { data: session } = useSession();
   const router = useRouter();
+  const params = useSearchParams();
+  const signedOut = params.get('signedout');
 
   useEffect(() => {
     const getData = async () => {
@@ -30,8 +34,14 @@ const Home = () => {
       // if user is logged in, navigate to home page
       router.push("/home");
     }
-    getData().then((r) => console.log("Fetched locations"));
-  }, [session]);
+    if (!coordinates) {
+      getData().then((r) => console.log("Fetched locations"));
+    }
+    if (signedOut) {
+      router.push('/');
+      toast.success('Successfully signed out', { toastId: 'signedout' });
+    }
+  }, [session, signedOut]);
 
   return (
     <div className="min-h-screen">

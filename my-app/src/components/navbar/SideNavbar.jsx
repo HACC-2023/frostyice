@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import {signOut, useSession} from "next-auth/react";
 import {
   HomeIcon,
   PlusCircleIcon,
@@ -48,7 +48,15 @@ const SideNavbar = () => {
       {session && session.user.role === "org_admin" && <NavContent nav={orgAdminNav} />}
       {session && session.user.role === "admin" && <NavContent nav={adminNav} />}
       {session && <div className="divider m-0" />}
-      {session && <MenuItem label="Sign out" icon={ArrowLeftCircleIcon} link="/api/auth/signout" />}
+      {session && <li className="m-1">
+        <button
+          className="hover:text-white focus:text-white relative"
+          onClick={() => document.getElementById('signOutModal').showModal()}
+        >
+          <ArrowLeftCircleIcon height={20} />
+          <span>Sign out</span>
+        </button>
+      </li>}
     </ul>
   );
 
@@ -116,7 +124,7 @@ const SideNavbar = () => {
         >
           {icon && <IconElement height={ICON_HEIGHT} />}
           <div
-            className={`absolute w-full h-full rounded-md opacity-20 hover:bg-white ${
+            className={`absolute w-full h-full rounded-md opacity-20 ${
               isLinkActive(link) ? "bg-white" : ""
             }`}
           />
@@ -169,6 +177,32 @@ const SideNavbar = () => {
             )}
           </div>
         </div>
+        <dialog id="signOutModal" className="modal">
+          <div className="modal-box bg-white max-w-lg">
+            <h3 className="text-xl mb-4 font-semibold text-gray-700">
+              Sign Out
+            </h3>
+            <div>
+              Are you sure you want to sign out?
+            </div>
+            <div className="mt-4 flex justify-end">
+              <form method="dialog">
+                <button className="btn text-gray-900 bg-white hover:bg-gray-50 rounded-md px-4 py-2 font-semibold shadow-sm">
+                  Cancel
+                </button>
+              </form>
+              <button
+                className="btn ml-3 text-white bg-red-600 hover:bg-red-500 transition-all rounded-md px-3 py-2 font-semibold shadow-sm"
+                onClick={() => signOut({ callbackUrl: '/?signedout=true' })}
+              >
+                Sign out
+              </button>
+            </div>
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button className="cursor-default">close</button>
+          </form>
+        </dialog>
       </>
     )
   );
