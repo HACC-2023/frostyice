@@ -113,7 +113,7 @@ const ThreadPage = () => {
         <h2 className="text-xl font-semibold mb-2">Messages</h2>
 
         {messages.length ? (
-          <div className="min-h-[300px] max-h-[500px] bg-neutral rounded-t-xl p-3 border border-b-0 overflow-auto flex flex-col-reverse">
+          <div className="max-h-[500px] bg-neutral rounded-t-xl p-3 border border-b-0 overflow-auto flex flex-col-reverse">
             <div className="flex flex-col">
               {messages.map((message, index) => (
                 <ChatItem key={index} message={message}></ChatItem>
