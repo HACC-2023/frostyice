@@ -23,45 +23,6 @@ const InfoItem = ({ label }) => {
   return <div className="bg-gray-300 text-gray-800 px-6 py-1 rounded-full text-xs">{label}</div>;
 };
 
-const EventInfo = ({ thread }) => {
-  const { data: event, error } = useSWR(`/api/mongo/event/id/${thread.eventId}`, fetcher);
-  if (error) return <div>failed to load</div>;
-  if (!event) return <Loading />;
-
-  return (
-    <div className="bg-base-100 py-8 relative border px-6 rounded-lg">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Event Info</h2>
-        <Link
-          href={`/event/${event._id}`}
-          className="flex gap-1 pr-2 justify-center items-center text-sm underline text-secondary"
-        >
-          Go to event &rarr;
-        </Link>
-      </div>
-      <div className="relative">
-        <div
-          className={`${getStatusColor(
-            event.status
-          )} rounded-full px-2.5 py-0.5 text-sm font-semibold text-white md:absolute ml-auto mb-3 md:mb-0 top-4 right-2 w-fit`}
-        >
-          {event.status}
-        </div>
-        <div>{event.publicLocationDesc}</div>
-        <div className="mb-3">
-          {event.publicDebrisEnvDesc === "Other"
-            ? event.publicDebrisEnvAdditionalDesc
-            : event.publicDebrisEnvDesc}
-        </div>
-        <div className="flex gap-2 flex-wrap">
-          <InfoItem label={prettyHstDateTime(event.reportedDate)}></InfoItem>
-          <InfoItem label={event.closestIsland}></InfoItem>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const ThreadPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -162,6 +123,45 @@ const ThreadPage = () => {
             />
           </div>
         </form>
+      </div>
+    );
+  };
+
+  const EventInfo = ({ thread }) => {
+    const { data: event, error } = useSWR(`/api/mongo/event/id/${thread.eventId}`, fetcher);
+    if (error) return <div>failed to load</div>;
+    if (!event) return <Loading />;
+
+    return (
+      <div className="bg-base-100 py-8 relative border px-6 rounded-lg">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold">Event Info</h2>
+          <Link
+            href={`/event/${event._id}`}
+            className="flex gap-1 pr-2 justify-center items-center text-sm underline text-secondary"
+          >
+            Go to event &rarr;
+          </Link>
+        </div>
+        <div className="relative">
+          <div
+            className={`${getStatusColor(
+              event.status
+            )} rounded-full px-2.5 py-0.5 text-sm font-semibold text-white md:absolute ml-auto mb-3 md:mb-0 top-4 right-2 w-fit`}
+          >
+            {event.status}
+          </div>
+          <div>{event.publicLocationDesc}</div>
+          <div className="mb-3">
+            {event.publicDebrisEnvDesc === "Other"
+              ? event.publicDebrisEnvAdditionalDesc
+              : event.publicDebrisEnvDesc}
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            <InfoItem label={prettyHstDateTime(event.reportedDate)}></InfoItem>
+            <InfoItem label={event.closestIsland}></InfoItem>
+          </div>
+        </div>
       </div>
     );
   };
