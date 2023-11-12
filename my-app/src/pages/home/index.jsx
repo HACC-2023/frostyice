@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { AdjustmentsHorizontalIcon, CheckIcon } from "@heroicons/react/20/solid";
 import { ArchiveBoxArrowDownIcon } from "@heroicons/react/24/outline"
-import {prettyHstDate, prettyHstDateTime} from "@/utils/dateConverter";
+import { prettyHstDate, prettyHstDateTime } from "@/utils/dateConverter";
 import Container from "@/components/Container";
-import {useSession} from "next-auth/react";
+import OrgChart from "@/components/home/orgChart";
+import Loading from "@/components/Loading";
 
 const Home = () => {
   const [reportedEvents, setReportedEvents] = useState(null);
   const [orgEventNumbers, setOrgEventNumbers] = useState(null);
   const [orgKgRemoved, setOrgKgRemoved] = useState(null);
   const [orgLastRemovalDate, setOrgLastRemovalDate] = useState(null);
+  const [chartData, setChartData] = useState(null);
+
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -26,15 +30,60 @@ const Home = () => {
       const res = await fetch(`/api/mongo/event/removal-org-id/${session?.user.orgId}`);
       const data = await res.json();
       const counts = { removalAndStorage: 0, sorting: 0, disposal: 0, complete: 0 };
+      const thisMonth = new Date().getMonth();
+      const thisYear = new Date().getFullYear();
+      const tempChartData = {
+        labels: ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov"],
+        datasets: [
+          {
+            label: "KG removed",
+            data: [0,0,0,0,0,0],
+            fill: true,
+            backgroundColor: "rgba(75,192,192,0.2)",
+            borderColor: "rgba(75,192,192,1)"
+          },
+          {
+            label: "Number Removals",
+            data: [0,0,0,0,0,0],
+            fill: false,
+            borderColor: "#742774"
+          }
+        ]
+      };
       let mostRecentRemovalDate = new Date('2000-01-01');
       let kgRemoved = 0;
       for (const event of data) {
+        const eventRemovalDate = new Date(event.removalEndDate);
         // get total kg that org has removed
         kgRemoved += event.debrisMass ? event.debrisMass : 0;
 
         // get most recent removal date
-        if (event.removalEndDate && new Date(event.removalEndDate) > mostRecentRemovalDate) {
-          mostRecentRemovalDate = new Date(event.removalEndDate);
+        if (event.removalEndDate && eventRemovalDate > mostRecentRemovalDate) {
+          mostRecentRemovalDate = eventRemovalDate;
+        }
+
+        // add to chart data
+        if (eventRemovalDate.getFullYear() === thisYear) {
+          const month = eventRemovalDate.getMonth();
+          if (month === thisMonth) {
+            tempChartData.datasets[0].data[5] += event.debrisMass ? event.debrisMass : 0;
+            tempChartData.datasets[1].data[5]++;
+          } else if (month === thisMonth - 1) {
+            tempChartData.datasets[0].data[4] += event.debrisMass ? event.debrisMass : 0;
+            tempChartData.datasets[1].data[4]++;
+          } else if (month === thisMonth - 2) {
+            tempChartData.datasets[0].data[3] += event.debrisMass ? event.debrisMass : 0;
+            tempChartData.datasets[1].data[3]++;
+          } else if (month === thisMonth - 3) {
+            tempChartData.datasets[0].data[2] += event.debrisMass ? event.debrisMass : 0;
+            tempChartData.datasets[1].data[2]++;
+          } else if (month === thisMonth - 4) {
+            tempChartData.datasets[0].data[1] += event.debrisMass ? event.debrisMass : 0;
+            tempChartData.datasets[1].data[1]++;
+          } else if (month === thisMonth - 5) {
+            tempChartData.datasets[0].data[0] += event.debrisMass ? event.debrisMass : 0;
+            tempChartData.datasets[1].data[0]++;
+          }
         }
 
         // get current event numbers
@@ -54,8 +103,9 @@ const Home = () => {
         }
       }
       setOrgEventNumbers(counts);
-      setOrgLastRemovalDate(mostRecentRemovalDate)
+      setOrgLastRemovalDate(mostRecentRemovalDate);
       setOrgKgRemoved(kgRemoved);
+      setChartData(tempChartData);
     };
     if (!reportedEvents) {
       getReportedEvents();
@@ -67,44 +117,46 @@ const Home = () => {
 
   return (
     <Container>
-      <header className="mb-5">
+      <header className="mb-2">
         <h1 className="text-3xl md:text-[2.75rem] font-bold mb-2">
           Welcome to Makai
         </h1>
         <p>
-          CMDR's AI-assisted platform designed to help manage large debris marine
-          reporting, dispatching, and documenting
+          CMDR's AI-assisted platform that manages marine debris
+          reports, dispatches, and documentation
         </p>
       </header>
-      <header className="p-2 text-center">
-        <h2 className="text-xl md:text-2xl font-bold">
+      <header className="text-center">
+        <h2 className="text-3xl font-bold">
           {session ? session.user.orgName : ''}
         </h2>
-
       </header>
       <div className="flex">
-        <section className="ms-2 text-center w-full ">
+        <section className="ms-2 text-center w-full">
           <header className="pb-2 text-center">
             <h2 className="text-lg md:text-xl font-bold w-full">
               Organization Statistics
             </h2>
           </header>
-          <div className="flex flex-col p-3 border rounded-xl bg-base-200 px-8">
-            <div className="text-4xl font-bold mt-4">{orgKgRemoved ? orgKgRemoved : '0'} KG</div>
+          <div className="flex flex-col p-3 border rounded-xl bg-base-200 px-8 py-4">
+            <div className="text-4xl font-bold mt-2">{orgKgRemoved ? orgKgRemoved : '0'} KG</div>
             <div>Debris removed from environment</div>
+
+            {chartData ? <OrgChart data={chartData} className="mt-3" /> : <Loading />}
+
             <div className="flex mt-4 justify-center w-full">
               <div className="w-full">
                 <div className="text-xl font-bold">{orgLastRemovalDate ? prettyHstDate(orgLastRemovalDate) : '...'}</div>
                 <div>Last debris removal date</div>
               </div>
               <div className="w-full">
-                <div className="text-xl font-bold">{orgLastRemovalDate ? prettyHstDate(orgLastRemovalDate) : '...'}</div>
-                <div>Last debris removal date</div>
+                <div className="text-xl font-bold">{chartData ? chartData.datasets[1].data[5] : 0}</div>
+                <div>Removals this month</div>
               </div>
             </div>
           </div>
         </section>
-        <section className="me-2 min-w-fit">
+        <section className="me-2 min-w-fit expanded">
           <Link
             href="/events?organization=true"
             className="hover:brightness-150 transition-all"
