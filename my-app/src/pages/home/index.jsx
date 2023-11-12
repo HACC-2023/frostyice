@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { prettyHstDate } from "@/utils/dateConverter";
 import Container from "@/components/Container";
@@ -31,61 +30,62 @@ const Home = () => {
           report, dispatching, and documenting.
         </p>
       </header>
-      <main>
-        <h1 className='text-xl md:text-3xl font-bold p-2'>
-          Newly Reported Events
-        </h1>
-        <section className='flex flex-col gap-3 p-3 border rounded-xl bg-base-200 min-h-[400px]'>
-          {reportedEvents.map((event) => (
-            <div key={event._id} className='card card-bordered bg-base-100'>
-              <div className='card-body p-4'>
-                <div className='flex justify-between'>
-                  <div>
-                    <Link
-                      href={`/events/${event._id}`}
-                      className='flex cursor-pointer hover:text-cyan-700'>
-                      <h1 className='text-md md:text-xl font-bold'>
-                        {event.closestIsland || 'Other'} : {event.publicType}
-                      </h1>
-                      <ArrowTopRightOnSquareIcon className='w-4 h-4 md:w-6 md:h-6 ml-2 pt-1' />
-                    </Link>
-                    <p className='text-sm md:text-md'>
-                      <time className='my-3'>
-                        {prettyHstDate(event.reportedDate)}
-                      </time>
-                      <div className='pt-2'>
-                        {event.publicLocationDesc}
-                        <br />
-                        {event.publicDebrisEnvDesc === 'Other'
-                          ? event.publicDebrisEnvAdditionalDesc
-                          : event.publicDebrisEnvDesc}
-                      </div>
-                    </p>
-                  </div>
-                  <div className='mt-auto'>
-                    <p className='text-right text-sm md:text-md'>
-                      {event.publicContact.firstName}{' '}
-                      {event.publicContact.lastName}
-                      <br />
-                      <a
-                        className='hover:text-cyan-700'
-                        href={`tel:${event.publicContact.phoneNumber}`}>
-                        {event.publicContact.phoneNumber}
-                      </a>
-                      <br />
-                      <a
-                        className='hover:text-cyan-700'
-                        href={`mailto:${event.publicContact.email}`}>
-                        {event.publicContact.email}
-                      </a>
-                    </p>
+      <div class="flex">
+        <section className="w-1/2">
+          <Link
+            href="/events?status=Reported"
+            className="hover:opacity-80 transition-all"
+          >
+            <header className="flex p-2 justify-center">
+              {reportedEvents.length
+                ? <div className="bg-red-600 rounded-full w-10 h-10 mt-[-5px] text-white text-xl align-middle flex">
+                  <div className="h-min m-auto pb-px font-semibold">{reportedEvents.length}</div>
+                </div>
+                : <h2 className='text-xl md:text-2xl font-bold ms-2'>No</h2>
+              }
+              <h2 className='text-xl md:text-2xl font-bold ms-2'>
+                New Debris Reports
+              </h2>
+            </header>
+          </Link>
+          <div className='flex flex-col gap-3 p-3 border rounded-xl bg-base-200 min-h-[100px] max-h-96 overflow-auto'>
+            {reportedEvents.map((event) => (
+              <div key={event._id} className='card card-bordered bg-base-100'>
+                <div className='card-body p-4'>
+                  <div className='flex justify-between'>
+                    <div>
+                      <Link
+                        href={`/event/${event._id}`}
+                        className='flex cursor-pointer hover:text-cyan-700'>
+                        <h1 className='text-md md:text-xl font-bold'>
+                          {event.closestIsland || 'Other'} : {event.publicType}
+                        </h1>
+                      </Link>
+                      <p className='text-sm md:text-md'>
+                        <time className='my-3'>
+                          {prettyHstDate(event.reportedDate)}
+                        </time>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </section>
-      </main>
+        <section className="w-1/2">
+          <Link
+            href="/events?organization=true"
+            className="hover:opacity-80 transition-all"
+          >
+            <header className="p-2 text-center">
+              <h2 className='text-xl md:text-2xl font-bold'>
+                Organization Events
+              </h2>
+            </header>
+          </Link>
+        </section>
+      </div>
     </Container>
   );
 };
