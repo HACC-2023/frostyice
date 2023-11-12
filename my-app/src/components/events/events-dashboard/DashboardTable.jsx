@@ -9,7 +9,6 @@ import { prettyHstDateTime } from "@/utils/dateConverter";
 import { ISLANDS } from "@/constants/constants";
 import Loading from "@/components/Loading";
 
-
 const DashboardTable = ({ events, isLoading }) => {
   const [islandFilter, setIslandFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -28,11 +27,11 @@ const DashboardTable = ({ events, isLoading }) => {
       setLocalIsLoading(true);
     }
     const fetchOrgs = async () => {
-      const orgRes = await fetch('/api/mongo/organization/get-organizations');
+      const orgRes = await fetch("/api/mongo/organization/get-organizations");
       setRemovalOrgs(await orgRes.json());
     };
     const fetchThreads = async () => {
-      const threadRes = await fetch('/api/mongo/thread/threads');
+      const threadRes = await fetch("/api/mongo/thread/threads");
       const threads = await threadRes.json();
       for (const event of events) {
         const thread = threads.find((thread) => thread._id === event.threadId);
@@ -41,14 +40,14 @@ const DashboardTable = ({ events, isLoading }) => {
       setUpdatedEvents(events);
       setLocalIsLoading(false);
     };
-    if (searchParams.has('status')) {
-      setStatusFilter(searchParams.get('status'));
+    if (searchParams.has("status")) {
+      setStatusFilter(searchParams.get("status"));
     }
-    if (searchParams.has('sort')) {
-      setSort(searchParams.get('sort'));
+    if (searchParams.has("sort")) {
+      setSort(searchParams.get("sort"));
     }
-    if (searchParams.has('island')) {
-      setIslandFilter(searchParams.get('island'));
+    if (searchParams.has("island")) {
+      setIslandFilter(searchParams.get("island"));
     }
     if (events.length && prevEventsLength !== events.length) {
       setLocalIsLoading(true);
@@ -90,27 +89,29 @@ const DashboardTable = ({ events, isLoading }) => {
   }
 
   // Filter events based on filter state, date, island
-  const filteredEvents = updatedEvents.filter((event) => {
-    if (statusFilter && event.status !== statusFilter) {
-      return false;
-    }
-    return !(islandFilter && event.closestIsland !== islandFilter);
-  }).sort((a, b) => {
-    if (sort === "oldest") {
-      return new Date(a.reportedDate) - new Date(b.reportedDate);
-    } else if (sort === "newest") {
-      return new Date(b.reportedDate) - new Date(a.reportedDate);
-    } else {
-      return 0;
-    }
-  });
+  const filteredEvents = updatedEvents
+    .filter((event) => {
+      if (statusFilter && event.status !== statusFilter) {
+        return false;
+      }
+      return !(islandFilter && event.closestIsland !== islandFilter);
+    })
+    .sort((a, b) => {
+      if (sort === "oldest") {
+        return new Date(a.reportedDate) - new Date(b.reportedDate);
+      } else if (sort === "newest") {
+        return new Date(b.reportedDate) - new Date(a.reportedDate);
+      } else {
+        return 0;
+      }
+    });
 
   const removalOrgName = (id) => {
-    if (!id) return 'None Assigned';
+    if (!id) return "None Assigned";
     if (removalOrgs) {
       return removalOrgs.find((org) => org._id === id).name;
     }
-  }
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -123,7 +124,7 @@ const DashboardTable = ({ events, isLoading }) => {
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
-              updateSearchParams('status', e.target.value);
+              updateSearchParams("status", e.target.value);
             }}
           >
             <option value="">All</option>
@@ -143,7 +144,7 @@ const DashboardTable = ({ events, isLoading }) => {
             value={sort}
             onChange={(e) => {
               setSort(e.target.value);
-              updateSearchParams('sort', e.target.value);
+              updateSearchParams("sort", e.target.value);
             }}
           >
             <option value="newest">Newest</option>
@@ -159,65 +160,81 @@ const DashboardTable = ({ events, isLoading }) => {
             value={islandFilter}
             onChange={(e) => {
               setIslandFilter(e.target.value);
-              updateSearchParams('island', e.target.value);
+              updateSearchParams("island", e.target.value);
             }}
           >
             <option value="">All</option>
-            {ISLANDS.map((island, index) => <option key={index}>{island}</option>)}
+            {ISLANDS.map((island, index) => (
+              <option key={index}>{island}</option>
+            ))}
           </select>
         </div>
       </div>
 
       <section className="flex flex-col gap-3 py-4 px-3 border border-neutral rounded-xl bg-base-200 min-h-[400px]">
-        {localIsLoading || isLoading
-          ? <div className="pt-32">
+        {localIsLoading || isLoading ? (
+          <div className="pt-32">
             <Loading />
           </div>
-          : filteredEvents.map((event) => (
+        ) : filteredEvents.length ? (
+          filteredEvents.map((event) => (
             <div key={event._id} className="card card-bordered border-neutral bg-base-100">
               <div className="card-body px-8 py-5">
                 <div className="flex justify-between">
                   <div>
-                    <Link href={`/event/${event._id}`} className="cursor-pointer hover:opacity-70 transition-all">
+                    <Link
+                      href={`/event/${event._id}`}
+                      className="cursor-pointer hover:opacity-70 transition-all"
+                    >
                       <div className="flex">
-                        <h1 className="text-md md:text-xl font-bold">{event.closestIsland || 'Other'} : {event.publicType}</h1>
+                        <h1 className="text-md md:text-xl font-bold">
+                          {event.closestIsland || "Other"} : {event.publicType}
+                        </h1>
                         <ArrowTopRightOnSquareIcon className="w-4 h-4 md:w-6 md:h-6 ml-2 pt-1" />
                       </div>
                       <div className="text-sm md:text-md">
                         <time className="my-3">{prettyHstDateTime(event.reportedDate)}</time>
                         <div className="pt-2">
                           <div>
-                            <span className="font-semibold">Description:</span> {event.publicLocationDesc}
+                            <span className="font-semibold">Description:</span>{" "}
+                            {event.publicLocationDesc}
                           </div>
                           <div>
-                            <span className="font-semibold">Removal Org:</span> {removalOrgName(event.removalOrgId)}
+                            <span className="font-semibold">Removal Org:</span>{" "}
+                            {removalOrgName(event.removalOrgId)}
                           </div>
                           <div>
-                            <span className="font-semibold">Current Location:</span> {event.tempStorage}
+                            <span className="font-semibold">Current Location:</span>{" "}
+                            {event.tempStorage}
                           </div>
                         </div>
                       </div>
                     </Link>
-                    <Link href={`/thread/${event.threadId}`} className="cursor-pointer hover:opacity-70 transition-all text-gray-700 flex mt-2 text-sm">
+                    <Link
+                      href={`/thread/${event.threadId}`}
+                      className="cursor-pointer hover:opacity-70 transition-all text-gray-700 flex mt-2 text-sm"
+                    >
                       <ChatBubbleLeftRightIcon className="w-6 h-6 me-1" />
-                      {event.threadCount} message{event.threadCount === 1 ? '' : 's'}
+                      {event.threadCount} message{event.threadCount === 1 ? "" : "s"}
                     </Link>
                   </div>
                   <div className="ms-auto flex flex-1 flex-col justify-between">
                     <div
-                      className={`ms-auto mt-3 h-min rounded-full px-2.5 py-0.5 text-xs text-white text-center font-semibold ${getStatusColor(event.status)}`}
+                      className={`ms-auto mt-3 h-min rounded-full px-2.5 py-0.5 text-xs text-white text-center font-semibold ${getStatusColor(
+                        event.status
+                      )}`}
                     >
                       {event.status}
                     </div>
-                    <div className="ms-auto flex text-sm">
-
-                    </div>
+                    <div className="ms-auto flex text-sm"></div>
                   </div>
                 </div>
               </div>
             </div>
           ))
-        }
+        ) : (
+          <div className="mx-auto">There are no events to show</div>
+        )}
       </section>
     </div>
   );
