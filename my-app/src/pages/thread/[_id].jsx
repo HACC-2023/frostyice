@@ -73,18 +73,33 @@ const ThreadPage = () => {
   };
 
   const ChatItem = ({ message }) => {
+
+    const getAbbreviation = (name) => {
+      const names = name.split(" ");
+      if (names.length === 1) {
+        return name.slice(0, 2).toUpperCase();
+      }
+      return names[0][0] + names[names.length - 1][0];
+    };
+
     return (
-      <div className="my-4">
-        <div className="flex gap-2 items-center">
-          <div
-            className="font-semibold tooltip tooltip-right tooltip-primary cursor-default"
-            data-tip={message.authorOrganization}
-          >
-            {message.authorName}
+      <div className="my-4 mx-4">
+        <div className="flex gap-2 mb-2 justify-between">
+          <div className="flex gap-4">
+            <div className="avatar placeholder">
+              <div className="bg-gray-200 rounded-full w-14 h-min">
+                <span className="text-lg font-semibold">{getAbbreviation(message.authorName)}</span>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <div className="font-semibold">{message.authorName}</div>
+              <div className="text-xs text-gray-500">{message.authorOrganization}</div>
+              <div className="mt-1">{message.content}</div>
+            </div>
           </div>
+
           <time className="text-xs opacity-50">{prettyHstDateTime(message.timestamp)}</time>
         </div>
-        <div>{message.content}</div>
       </div>
     );
   };
