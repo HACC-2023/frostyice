@@ -112,7 +112,7 @@ const DialogflowChatWidget = () => {
         }
       `}
       </style>
-      <div id="chatContainer" className={`fixed ${ scrollDirection === "down" ? "-bottom-24" : "md:bottom-0 bottom-14"} right-4 h-20 transition-all duration-500`}></div>
+      <div id="chatContainer" className={`fixed ${ scrollDirection === "down" ? "-bottom-24" : "bottom-0"} right-4 h-20 transition-all duration-500`}></div>
     </div>
   );
 };
