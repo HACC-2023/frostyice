@@ -7,7 +7,6 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 import AddOrgMemberModal from "@/components/organization/AddOrgMemberModal";
 import UserOrgTableRow from "@/components/organization/UserOrgTableRow";
-import AddMemberModal from "@/components/manage-org/modals/AddMemberModal";
 
 const MyOrganization = () => {
   const { data: session, status } = useSession();
@@ -90,7 +89,7 @@ const MyOrganization = () => {
                   Add Member
                 </button>
               )}
-              <AddMemberModal id="add_member_modal_1" orgId={session?.user.orgId} />
+              <AddOrgMemberModal id="add_member_modal_1" orgId={session?.user.orgId} />
             </div>
             <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">

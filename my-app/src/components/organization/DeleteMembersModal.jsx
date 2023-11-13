@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import {toast} from "react-toastify";
 
 const DeleteMembersModal = ({ id, member }) => {
   async function deleteMember(memberData) {
@@ -8,9 +9,9 @@ const DeleteMembersModal = ({ id, member }) => {
       });
 
       if (response.ok) {
-        console.log("Successfully deleted member.");
+        toast.success("Successfully deleted member");
       } else {
-        throw new Error("Failed to delete member.");
+        toast.error("Failed to delete member");
       }
     } catch (err) {
       console.log(err);
