@@ -18,7 +18,6 @@ const LocationAggregatorMap = ({
   data,
 }) => {
   const [layers, setLayers] = useState(null);
-
   const [doneLoading, setDoneLoading] = useState(false);
 
   const mapVisLayers = {
@@ -114,17 +113,16 @@ const LocationAggregatorMap = ({
             controller={true}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
             mapStyle="mapbox://styles/giorgio808/cloro3xca005y01pq4dkc11ib"
-            onLoad={() => setDoneLoading(true)}
           />
         </DeckGL>
-        {!doneLoading && (
+        {/* {!doneLoading && (
           <div className="h-full w-full absolute bg-primary flex flex-col items-center justify-center">
             <div className="loading loading-ring text-white" />
             <div className="text-white text-xs py-1 italic font-thin">
               Loading map...
             </div>
           </div>
-        )}
+        )} */}
       </div>
       <div className="flex py-2 gap-3 mt-4 flex-wrap">
         <div>
@@ -149,7 +147,10 @@ const LocationAggregatorMap = ({
           </select>
         </div>
         <div>
-          <h1 className="font-bold text-sm text-secondary"> Select Data Visualization </h1>
+          <h1 className="font-bold text-sm text-secondary">
+            {" "}
+            Select Data Visualization{" "}
+          </h1>
           <select
             className="select select-bordered my-1 select-sm"
             onChange={(e) => {
