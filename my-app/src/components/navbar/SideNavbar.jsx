@@ -16,7 +16,7 @@ const SideNavbar = () => {
 
   const orgMemberNav = [
     { label: "Home", icon: HomeIcon, link: "/home" },
-    { label: "Report Event", icon: PlusCircleIcon, link: "/report" },
+    { label: "Report Debris", icon: PlusCircleIcon, link: "/report" },
     { label: "Data Insights", icon: ChartPieIcon, link: "/data-insights" },
     { label: "Events", icon: RectangleGroupIcon, link: "/events?organization=true" },
   ];
@@ -24,7 +24,7 @@ const SideNavbar = () => {
   const orgAdminNav = [
     ...orgMemberNav,
     {
-      label: "My Organization",
+      label: "Manage Organization",
       icon: BuildingOfficeIcon,
       link: "/organization",
     },
@@ -33,9 +33,9 @@ const SideNavbar = () => {
   const adminNav = [
     ...orgAdminNav,
     {
-      label: "Manage Organizations",
+      label: "Admin",
       icon: BuildingOffice2Icon,
-      link: "/admin/manage-organizations",
+      link: "/admin",
     },
   ];
 

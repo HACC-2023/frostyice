@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 import AddOrgMemberModal from "@/components/organization/AddOrgMemberModal";
 import UserOrgTableRow from "@/components/organization/UserOrgTableRow";
+import AddMemberModal from "@/components/manage-org/modals/AddMemberModal";
 
 const MyOrganization = () => {
   const { data: session, status } = useSession();
@@ -71,29 +72,26 @@ const MyOrganization = () => {
     <Container>
       {error ? <Error /> : null}
       <div>
-        <h1 className="w-full text-4xl font-bold mb-12">
+        <h1 className="w-full text-4xl font-bold mb-4">
           My Organization
         </h1>
 
         <div>
-          {session?.user.role !== ROLES.ORG_MEMBER && (
-            <div className="flex flex-row justify-end">
-              <button
-                className="btn btn-sm md:btn-md btn-primary"
-                onClick={() =>
-                  document.getElementById("add_member_modal_1").showModal()
-                }
-              >
-                Add Member
-              </button>
-              <AddOrgMemberModal
-                id="add_member_modal_1"
-                orgId={session?.user.orgId}
-              />
-            </div>
-          )}
           <div className="w-full mb-12">
-            <h1 className="font-bold px-2 py-3">Members</h1>
+            <div className="flex justify-between">
+              <h1 className="font-bold text-2xl px-2 py-3">Members</h1>
+              {session?.user.role !== ROLES.ORG_MEMBER && (
+                <button
+                  className="btn btn-sm md:btn-md btn-primary me-2"
+                  onClick={() => {
+                    document.getElementById("add_member_modal_1").showModal();
+                  }}
+                >
+                  Add Member
+                </button>
+              )}
+              <AddMemberModal id="add_member_modal_1" orgId={session?.user.orgId} />
+            </div>
             <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">
                 <table className="table table-zebra">

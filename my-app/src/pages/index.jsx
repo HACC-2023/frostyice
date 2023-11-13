@@ -54,7 +54,7 @@ const Home = () => {
         style={{ backgroundImage: `url(${bg.src})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-[#00000000] via-[#00000000] to-[#11111188]" />
-        <div className="w-full flex justify-end pt-3">
+        <div className="w-full flex justify-end pt-3 pe-2">
           <Link
             href="/auth/credentials-signin"
             className="text-white text-sm font-bold rounded-xl backdrop-blur hover:bg-sky-400 hover:bg-opacity-30 transition-all tracking-wide px-5 py-2 flex align-center justify-center"
@@ -107,7 +107,7 @@ const Home = () => {
       </div>
       <div id="mapSection" className="bg-black bg-opacity-60 min-h-screen">
         <section className="rounded-lg px-5 md:px-20 py-10">
-          <h1 className="font-extrabold text-neutral text-center text-2xl md:text-5xl mt-4 mb-8 md:mt-12 md:mb-16 opacity-90">
+          <h1 className="font-extrabold text-neutral text-center text-2xl md:text-5xl pb-12 opacity-90">
             See where debris has been reported.
           </h1>
           <LocationAggregatorMap data={coordinates} />

@@ -7,7 +7,7 @@ import Loading from "@/components/Loading";
 import UsersTableRow from "@/components/manage-org/table/UsersTableRow";
 import Container from "@/components/Container";
 
-const ManageOrganizations = () => {
+const Admin = () => {
   const { data, error, isLoading } = useSWR(
     "/api/mongo/organization/get-organizations",
     fetcher,
@@ -23,33 +23,24 @@ const ManageOrganizations = () => {
   return (
     <Container>
       <div className="flex flex-col items-center mb-12">
-        <h1 className="w-full text-4xl font-bold mb-12">
-          Manage Organizations
+        <h1 className="w-full text-4xl font-bold px-2 mb-4">
+          Admin Console
         </h1>
-        <div className="w-full flex gap-3 justify-end">
-          <button
-            className="btn btn-sm md:btn-md btn-primary"
-            onClick={() =>
-              document.getElementById("add_org_modal_1").showModal()
-            }
-          >
-            Add Organization
-          </button>
-          <AddOrgModal id="add_org_modal_1" />
-          <button
-            className="btn btn-sm md:btn-md btn-primary"
-            onClick={() =>
-              document.getElementById("add_member_modal_1").showModal()
-            }
-          >
-            Add Member
-          </button>
-          <AddMemberModal id="add_member_modal_1" orgs={data} />
-        </div>
         {users ? (
           <div className="w-full  mb-12">
-            <h1 className="font-bold px-2 py-3">Members</h1>
-            <div className="h-96 overflow-auto border rounded-md">
+            <div className="flex justify-between">
+              <h1 className="font-bold text-2xl px-2 py-3">Members</h1>
+              <button
+                className="btn btn-sm md:btn-md btn-primary me-2"
+                onClick={() => {
+                  document.getElementById("add_member_modal_1").showModal();
+                }}
+              >
+                Add Member
+              </button>
+              <AddMemberModal id="add_member_modal_1" orgs={data} />
+            </div>
+            <div className="h-96 overflow-auto border rounded-md mt-2">
               <div className="overflow-x-auto w-full flex items-center py-3">
                 <table className="table table-zebra">
                   <thead>
@@ -74,7 +65,18 @@ const ManageOrganizations = () => {
         )}
         {data ? (
           <div className="w-full ">
-            <h1 className="font-bold px-2 py-3">Organizations</h1>
+            <div className="flex justify-between">
+              <h1 className="font-bold text-2xl px-2 py-3">Organizations</h1>
+              <button
+                className="btn btn-sm md:btn-md btn-primary"
+                onClick={() => {
+                  document.getElementById("add_org_modal_1").showModal();
+                }}
+              >
+                Add Organization
+              </button>
+              <AddOrgModal id="add_org_modal_1" />
+            </div>
             <div className="h-96 overflow-auto border rounded-md">
               <div className="overflow-x-auto w-full flex items-center py-3">
                 <table className="table table-zebra">
@@ -166,4 +168,4 @@ const ManageOrganizations = () => {
   );
 };
 
-export default ManageOrganizations;
+export default Admin;
