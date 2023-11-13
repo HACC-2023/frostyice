@@ -75,7 +75,7 @@ const EditRemovalModal = ({ id, event }) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text">Debris Size</span>
+                <span className="label-text">Debris Size <var>(kg/cm<sup>2</sup>)</var></span>
               </label>
               <input
                 {...register("debrisSize")}
@@ -87,7 +87,7 @@ const EditRemovalModal = ({ id, event }) => {
             </div>
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text">Debris Mass</span>
+                <span className="label-text">Debris Mass <var>kg</var></span>
               </label>
               <input
                 {...register("debrisMass")}

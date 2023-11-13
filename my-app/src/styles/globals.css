@@ -23,6 +23,10 @@
   @apply bg-primary;
   @apply text-white;
 }
+
+.textarea-bordered {
+  @apply border border-gray-200;
+}
 /* .divider {
   @apply text-slate-200
 } */
