@@ -70,5 +70,16 @@ export const config = {
     "/data-insights",
     "/thread",
     "/threads",
+    "/api/mongo/thread/:path*",
+    "/api/mongo/organization/:path*",
+    "/api/mongo/sorted-material/:path*",
+    "/api/mongo/user/:path*",
+    "/api/mongo/event/id/:path*",
+    "/api/mongo/event/island/:path*",
+    "/api/mongo/event/removal-org-id/:path*",
+    "/api/mongo/event/status/:path*",
+    "/api/mongo/event/storage-node/:path*",
+    "/api/mongo/event/transport/:path*",
+    "/api/mongo/event/all"
   ],
 };
