@@ -121,7 +121,7 @@ const Dashboard = () => {
   return (
     <Container>
       <div>
-        <h3 className="text-3xl font-semibold pt-8 text-center">
+        <h3 className="text-3xl font-semibold text-center">
           {searchParams.has("organization")
             ? "Organization Events"
             : "All Events"}
@@ -142,11 +142,11 @@ const Dashboard = () => {
           </button>
         </div>
         <hr />
-        <div className="px-8">
+        <div className="md:px-8">
           {(session?.user?.role === "admin" ||
             session?.user.role === "org_admin") && (
             <button
-              className="flex flex-row pb-3 hover:brightness-150 transition-all"
+              className="flex flex-row py-3 hover:brightness-150 transition-all ps-4 md:ps-0"
               onClick={() => {
                 document.getElementById("multieventModal").showModal();
               }}

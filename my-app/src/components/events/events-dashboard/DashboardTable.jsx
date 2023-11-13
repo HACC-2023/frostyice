@@ -115,8 +115,8 @@ const DashboardTable = ({ events, isLoading }) => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex justify-end space-x-8 mb-6">
-        <div className="flex items-center">
+      <div className="md:flex justify-end md:space-x-8 mb-6 ps-4 md:ps-0">
+        <div className="flex items-center my-2">
           <label className="text-gray-600 pr-2">Status:</label>
           <select
             className="select text-gray-500 bg-gray-100"
@@ -136,7 +136,7 @@ const DashboardTable = ({ events, isLoading }) => {
           </select>
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center my-2">
           <label className="text-gray-600 pr-2">Sort by:</label>
           <select
             className="select text-gray-500 bg-gray-100"
@@ -152,7 +152,7 @@ const DashboardTable = ({ events, isLoading }) => {
           </select>
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center my-2">
           <label className="text-gray-600 pr-2">Island:</label>
           <select
             className="select text-gray-500 bg-gray-100"
