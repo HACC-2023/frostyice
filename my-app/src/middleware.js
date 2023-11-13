@@ -66,7 +66,7 @@ export const config = {
     "/events",
     "/event/:path*",
     "/home",
-    // "/organization",
+    "/organization",
     "/data-insights",
     "/thread",
     "/threads",
@@ -80,6 +80,6 @@ export const config = {
     "/api/mongo/event/status/:path*",
     "/api/mongo/event/storage-node/:path*",
     "/api/mongo/event/transport/:path*",
-    "/api/mongo/event/all"
+    // "/api/mongo/event/all"
   ],
 };
