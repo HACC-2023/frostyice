@@ -31,6 +31,7 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
         },
         body: JSON.stringify({
           ...data,
+          disposalDate: convertLocalDateToUTC(data.disposalDate),
         }),
       });
 
@@ -39,7 +40,6 @@ const EditDisposalModal = ({ id, sortedMaterial }) => {
           msg: "success",
           body: "Successfully edited component ✅",
         });
-        reset();
         console.log("Successfully edited component");
       } else {
         throw new Error("Failed to edit component.");
