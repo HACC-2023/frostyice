@@ -59,12 +59,12 @@ const DataInsights = () => {
             Debris Report Locations
           </h6>
           {/* <CityMap /> */}
-          <div className="relative min-h-[400px]">
-            <LocationAggregatorMap data={coordinates} />
-            {/* <div className="absolute h-[400px] w-full top-0 right-0 left-0 bg-primary flex flex-col z-10">
+          {/* <div className="relative min-h-[400px]"> */}
+          <LocationAggregatorMap data={coordinates} />
+          {/* <div className="absolute h-[400px] w-full top-0 right-0 left-0 bg-primary flex flex-col z-10">
               <Loading />
             </div> */}
-          </div>
+          {/* </div> */}
         </div>
       </div>
       <div className="mt-5">
@@ -76,7 +76,7 @@ const DataInsights = () => {
             <h6 className="block text-secondary text-sm font-bold text-center">
               Status
             </h6>
-            <IslandBarChart data={events} className="w-full h-full expanded"/>
+            <IslandBarChart data={events} className="w-full h-full expanded" />
           </div>
           <div className="flex flex-col justify-between h-80 bg-neutral p-4 rounded-xl w-full lg:w-1/2 items-center">
             <h6 className="block text-secondary text-sm font-bold">
@@ -102,7 +102,11 @@ const DataInsights = () => {
           <h6 className="block text-secondary text-xl font-bold mb-4">
             Component Breakdown
           </h6>
-          <DoughnutChart events={events} sortedMaterials={sortedMaterials} className="w-min" />
+          <DoughnutChart
+            events={events}
+            sortedMaterials={sortedMaterials}
+            className="w-min"
+          />
         </div>
       </div>
     </div>,
@@ -113,9 +117,7 @@ const DataInsights = () => {
   return (
     <Container>
       <div>
-        <h1 className="w-full text-4xl font-bold mb-6">
-          Data Insights
-        </h1>
+        <h1 className="w-full text-4xl font-bold mb-6">Data Insights</h1>
         <div className="tabs tabs-boxed">
           {tabContent.map((content, index) => (
             <a
