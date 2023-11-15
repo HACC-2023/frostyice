@@ -19,6 +19,8 @@ const LocationAggregatorMap = ({
 }) => {
   const [layers, setLayers] = useState(null);
 
+  const [doneLoading, setDoneLoading] = useState(false);
+
   const mapVisLayers = {
     hexagonLayer: [
       new HexagonLayer({
