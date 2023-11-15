@@ -4,7 +4,7 @@ import IslandPieChart from "@/components/visualizations/IslandPieChart";
 import DoughnutChart from "@/components/visualizations/DoughnutChart";
 import dynamic from "next/dynamic";
 import Container from "@/components/Container";
-import Loading from "@/components/Loading";
+// import Loading from "@/components/Loading";
 
 const LocationAggregatorMap = dynamic(
   () => import("@/components/map/LocationAggregatorMap"),
@@ -61,9 +61,9 @@ const DataInsights = () => {
           {/* <CityMap /> */}
           <div className="relative min-h-[400px]">
             <LocationAggregatorMap data={coordinates} />
-            <div className="absolute h-[400px] w-full top-0 right-0 left-0 bg-primary flex flex-col z-10">
+            {/* <div className="absolute h-[400px] w-full top-0 right-0 left-0 bg-primary flex flex-col z-10">
               <Loading />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
