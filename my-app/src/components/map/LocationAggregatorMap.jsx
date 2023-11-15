@@ -18,7 +18,6 @@ const LocationAggregatorMap = ({
   data,
 }) => {
   const [layers, setLayers] = useState(null);
-  const [doneLoading, setDoneLoading] = useState(false);
 
   const mapVisLayers = {
     hexagonLayer: [
@@ -98,7 +97,7 @@ const LocationAggregatorMap = ({
 
   return (
     <div>
-      <div className="h-[400px] w-full relative">
+      <div className="h-[400px] z-20 w-full relative">
         <DeckGL
           style={{ width: "100%", height: "100%" }}
           layers={layers ?? mapVisLayers.heatmapLayer}
@@ -115,14 +114,6 @@ const LocationAggregatorMap = ({
             mapStyle="mapbox://styles/giorgio808/cloro3xca005y01pq4dkc11ib"
           />
         </DeckGL>
-        {/* {!doneLoading && (
-          <div className="h-full w-full absolute bg-primary flex flex-col items-center justify-center">
-            <div className="loading loading-ring text-white" />
-            <div className="text-white text-xs py-1 italic font-thin">
-              Loading map...
-            </div>
-          </div>
-        )} */}
       </div>
       <div className="flex py-2 gap-3 mt-4 flex-wrap">
         <div>
