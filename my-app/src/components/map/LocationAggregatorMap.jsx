@@ -1,5 +1,5 @@
 // components/Map.jsx
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Map from "react-map-gl";
 import { HexagonLayer, HeatmapLayer } from "@deck.gl/aggregation-layers";
 // import { HexagonLayer } from "deck.gl";
@@ -18,6 +18,7 @@ const LocationAggregatorMap = ({
   data,
 }) => {
   const [layers, setLayers] = useState(null);
+  const mapRef = useRef();
 
   const mapVisLayers = {
     hexagonLayer: [
@@ -108,10 +109,12 @@ const LocationAggregatorMap = ({
         >
           <Map
             reuseMaps
+            ref={mapRef}
             style={{ width: "100%", height: "100%" }}
             controller={true}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
             mapStyle="mapbox://styles/giorgio808/cloro3xca005y01pq4dkc11ib"
+            onLoad={() => { mapRef.current.resize() }}
           />
         </DeckGL>
       </div>
