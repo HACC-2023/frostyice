@@ -124,7 +124,7 @@ const Home = () => {
           Welcome to Makai
         </h1>
         <p>
-          CMDR&apos;s AI-assisted platform that manages marine debris
+          CMDR&apos;s AI-assisted platform for managing marine debris
           reports, dispatches, and documentation
         </p>
       </header>
