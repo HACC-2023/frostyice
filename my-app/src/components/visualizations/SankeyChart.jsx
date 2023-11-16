@@ -20,6 +20,22 @@ const SankeyDiagram = ({ data }) => (
     linkOpacity={0.6}
     linkHoverOthersOpacity={0.3}
     linkContract={3}
+    linkTooltip={(node) => {
+      return <div className="pointer-events-none absolute z-10 top-0 left-0" style={{ transform: 'translate(15px, -15px)' }}>
+        <div className="bg-white rounded-sm shadow px-2">
+          <div className="whitespace-pre flex items-center">
+            <span className="flex items-center">
+              <span className="block w-3 h-3 me-2" style={{ background: node.link.source.color }}></span>
+              <strong>{node.link.source.id}</strong>
+              &nbsp;&gt;&nbsp;
+              <strong>{node.link.target.id}</strong>
+              <span className="block w-3 h-3 mx-2" style={{ background: node.link.target.color }}></span>
+              <strong>{node.link.formattedValue} KG</strong>
+            </span>
+          </div>
+        </div>
+      </div>;
+    }}
     enableLinkGradient={true}
     labelPosition="outside"
     labelOrientation="horizontal"
@@ -79,8 +95,6 @@ const SankeyChart = ({ events, sortedMaterials }) => {
     (obj) => obj.polymer && obj.disposalMechanism
   );
 
-  console.log(disposalEvents);
-
   // Get node color based on id
   const getNodeColor = (id) => {
     const hash = id
@@ -90,16 +104,16 @@ const SankeyChart = ({ events, sortedMaterials }) => {
   };
 
   disposalEvents.forEach((item) => {
-    const { closestIsland, polymer, disposalMechanism } = item;
+    const { closestIsland, polymer, disposalMechanism, mass } = item;
 
     // Update node counts
     nodes[closestIsland] = (nodes[closestIsland] || 0) + 1;
-    nodes[polymer] = (nodes[polymer] || 0) + 1;
-    nodes[disposalMechanism] = (nodes[disposalMechanism] || 0) + 1;
+    nodes[polymer] = (nodes[polymer] || 0) + mass;
+    nodes[disposalMechanism] = (nodes[disposalMechanism] || 0) + mass;
 
     // Create links
-    links.push({ source: closestIsland, target: polymer, value: 1 });
-    links.push({ source: polymer, target: disposalMechanism, value: 1 });
+    links.push({ source: closestIsland, target: polymer, value: mass });
+    links.push({ source: polymer, target: disposalMechanism, value: mass });
   });
 
   const nodesArray = Object.keys(nodes).map((id) => ({
