@@ -17,11 +17,30 @@ const SankeyDiagram = ({ data }) => (
       modifiers: [["darker", 0.8]],
     }}
     nodeBorderRadius={3}
+    nodeTooltip={(node) => {
+      // get approx width of title
+      const toNodeWidth = node.node.id.length * 8 + 115;
+      // if link is on the right side of the chart, move tooltip to the left
+      const transform = node.node.x0 > 10 ? `translate(-${toNodeWidth}px, -15px)` : 'translate(15px, -15px)';
+      return <div className="pointer-events-none absolute z-10 top-0 left-0" style={{ transform: transform }}>
+        <div className="bg-white rounded-sm shadow px-2">
+          <div className="whitespace-pre flex items-center">
+            <strong>{node.node.id}</strong>
+            <span className="block w-3 h-3 mx-2" style={{ background: node.node.color }}></span>
+            <strong>{node.node.formattedValue} KG</strong>
+          </div>
+        </div>
+      </div>;
+    }}
     linkOpacity={0.6}
     linkHoverOthersOpacity={0.3}
     linkContract={3}
     linkTooltip={(node) => {
-      return <div className="pointer-events-none absolute z-10 top-0 left-0" style={{ transform: 'translate(15px, -15px)' }}>
+      // get approx width of title
+      const toNodeWidth = node.link.target.id.length * 8 + 175;
+      // if link is on the right side of the chart, move tooltip to the left
+      const transform = node.link.source.x0 > 10 ? `translate(-${toNodeWidth}px, -15px)` : 'translate(15px, -15px)';
+      return <div className="pointer-events-none absolute z-10 top-0 left-0" style={{ transform: transform }}>
         <div className="bg-white rounded-sm shadow px-2">
           <div className="whitespace-pre flex items-center">
             <span className="flex items-center">
