@@ -137,7 +137,7 @@ const DoughnutChart = ({ events, sortedMaterials }) => {
       {
         label: "Polymers",
         data: polQnts,
-        backgroundColor: ['#22d3ee', '#06b6d4', '#06b6d4', '#0e7490', '#155e75', '#164e63', '#083344'],
+        backgroundColor: ['#67e8f9', '#22d3ee', '#06b6d4', '#06b6d4', '#0e7490', '#155e75', '#164e63', '#083344'],
         borderWidth: 1,
         hoverOffset: 4,
         legend: {
