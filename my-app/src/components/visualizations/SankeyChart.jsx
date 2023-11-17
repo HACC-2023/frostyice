@@ -27,7 +27,7 @@ const SankeyDiagram = ({ data }) => (
           <div className="whitespace-pre flex items-center">
             <strong>{node.node.id}</strong>
             <span className="block w-3 h-3 mx-2" style={{ background: node.node.color }}></span>
-            <strong>{node.node.formattedValue} KG</strong>
+            <strong>{node.node.formattedValue} kg</strong>
           </div>
         </div>
       </div>;
@@ -49,7 +49,7 @@ const SankeyDiagram = ({ data }) => (
               &nbsp;&gt;&nbsp;
               <strong>{node.link.target.id}</strong>
               <span className="block w-3 h-3 mx-2" style={{ background: node.link.target.color }}></span>
-              <strong>{node.link.formattedValue} KG</strong>
+              <strong>{node.link.formattedValue} kg</strong>
             </span>
           </div>
         </div>
