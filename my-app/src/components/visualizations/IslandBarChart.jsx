@@ -88,7 +88,7 @@ const IslandBarChart = ({ data }) => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col items-center pb-3">
       <Bar options={options} data={dataPlot} className="my-auto" />
 
       {graphReady ? (

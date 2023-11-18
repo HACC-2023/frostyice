@@ -71,12 +71,12 @@ const DataInsights = () => {
         <h6 className="block text-secondary text-lg font-bold mb-4">
           Debris Reports by Island
         </h6>
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-3">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-3">
           <div className="h-80 bg-neutral p-4 rounded-xl w-full lg:w-1/2 items-center">
             <h6 className="block text-secondary text-sm font-bold text-center">
               Status
             </h6>
-            <IslandBarChart data={events} className="w-full h-full expanded" />
+            <IslandBarChart data={events} className="w-full h-full" />
           </div>
           <div className="flex flex-col justify-between h-80 bg-neutral p-4 rounded-xl w-full lg:w-1/2 items-center">
             <h6 className="block text-secondary text-sm font-bold">
