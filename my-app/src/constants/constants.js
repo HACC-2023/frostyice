@@ -42,6 +42,10 @@ export const ISLANDS_CENTER_COORDINATES = {
     name: "All Islands",
     mapInfo: { lat: 21, long: -157, zoom: 5.6 },
   },
+  OAHU: {
+    name: "Oahu",
+    mapInfo: { lat: 21.4337, long: -157.9636, zoom: 8.7 },
+  },
   BIG_ISLAND: {
     name: "Big Island",
     mapInfo: { lat: 19.6385, long: -155.5565, zoom: 7.5 },
@@ -65,10 +69,6 @@ export const ISLANDS_CENTER_COORDINATES = {
   KAHOOLAWE: {
     name: "Kahoolawe",
     mapInfo: { lat: 20.5501, long: -156.6168, zoom: 11 },
-  },
-  OAHU: {
-    name: "Oahu",
-    mapInfo: { lat: 21.4337, long: -157.9636, zoom: 8.7 },
   },
   KAUAI: {
     name: "Kauai",
